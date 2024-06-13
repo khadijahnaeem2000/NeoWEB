@@ -1,0 +1,64 @@
+.rbc-time-view .rbc-label {
+    display: none;
+}
+
+.rbc-time-view .rbc-time-content {
+    display: none;
+}
+
+.rbc-toolbar-label {
+    text-transform: capitalize;
+}
+
+.rbc-month-view {
+    text-transform: capitalize;
+}
+
+.rbc-button-link {
+    text-transform: capitalize;
+}
+
+.rbc-overlay-header {
+    text-transform: capitalize;
+}
+
+.rbc-event-content {
+    overflow: scroll !important;
+    overflow-y: scroll;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+}
+
+.rbc-event-content::-webkit-scrollbar { /* WebKit */
+    width: 0;
+    height: 0;
+}
+
+.rbc-today {
+    background-color: #FFF44F;
+}
+   
+.calendar-container {
+    overflow-x: auto;
+    display:flex;
+    width:96%;
+    margin:2%;
+}
+
+.calendar-container-child {
+    flex-grow: 1;
+}
+
+.calendar-event-cell {
+    display:flex;
+}
+
+.calendar-event-cell-image {
+    max-width:3em;
+    border-radius:3%;
+}
+
+.rbc-toolbar-label {
+    font-weight: bolder;
+    font-size: x-large;
+}

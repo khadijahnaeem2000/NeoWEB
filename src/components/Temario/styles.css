@@ -1,0 +1,11 @@
+.stackStyle{
+    display: flex;
+}
+
+@media screen and (max-width: 850px) {
+    .stackStyle{
+        flex-direction: column-reverse;
+        height: 96.5vh;
+        justify-content: flex-end;
+    }
+}

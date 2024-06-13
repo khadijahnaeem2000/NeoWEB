@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '~sanitize.css';
+@import '~sanitize.css/forms.css';
+@import '~sanitize.css/typography.css';
+
+@font-face {
+  font-family: 'AGENCYR-regular';
+  src: local('AGENCYR-regular'), url(../fonts/AGENCYR-Regular.TTF) format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat-bold';
+  src: local('Montserrat-bold'), url(../fonts/Montserrat-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Montserrat-regular';
+  src: local('Montserrat-regular'), url(../fonts/Montserrat-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'ProximaNovaSoft-regular';
+  src: local('ProximaNovaSoft-regular'), url(../fonts/FontsFreeNetProximaNovaSoftW03-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'pnsb';
+  src: local('pnsb'), url(../fonts/pnsb.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Proxima-regular';
+  src: local('Proxima-regular'), url(../fonts/Proxima-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'ProximaNovaSoft-bold';
+  src: local('ProximaNovaSoft-bold'), url(../fonts/ProximaNovaSoftW03-Bold.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'RoundedElegance-regular';
+  src: local('RoundedElegance-regular'), url(../fonts/RoundedElegance-Regular.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'ProximaSoft-regular';
+  src: local('ProximaSoft-regular'), url(../fonts/ProximaSoft-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'ProximaSoft-bold';
+  src: local('ProximaSoft-bold'), url(../fonts/ProximaSoft-Bold.ttf) format('truetype');
+}
+@font-face {
+  font-family: 'ProximaSoft-regularlt';
+  src: local('ProximaSoft-regularlt'), url(../fonts/ProximaSoft-RegularIt.ttf) format('truetype');
+}
+
+body {
+  margin: 0;
+  font-family: 'ProximaNovaSoft-regular',
+    'ProximaSoft-regular','AGENCYR-regular', 'pnsb', 'Proxima-regular', 'RoundedElegance-regular';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

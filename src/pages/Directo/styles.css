@@ -1,0 +1,14 @@
+.main-content{
+    align-items: flex-start !important;
+    width:100vw !important;
+}
+
+.root-inner {
+    width: 100vw !important;
+}
+
+@media screen and (max-width: 1100px) {
+    html, body {
+        min-width:unset !important;
+    }
+}

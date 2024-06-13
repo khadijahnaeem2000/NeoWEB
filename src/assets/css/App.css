@@ -1,0 +1,318 @@
+.otpInputStyle {
+  border: 1px solid #3ea9fb;
+  width: 3rem !important;
+  height: 3rem;
+  font-size: 2rem;
+  border-radius: 4px;
+  color: white;
+}
+
+#zmmtg-root {
+  display: none;
+}
+
+.wd-styl {
+  width: 170px;
+}
+
+.imgcard-styl {
+  width: 150px;
+  height: 150px;
+}
+.imgwidth {
+  width: 130px;
+}
+
+.bg-input {
+  background: url("../img/images/Textbox-_Cuadro-de-texto_.webp"),
+    url("../img/images/Textbox\ \(Cuadro\ de\ texto\).png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.font-styl {
+  color: white;
+  font-family: "Montserrat";
+  font-weight: 700;
+}
+
+::placeholder {
+  /* color: blue; */
+  font-family: "Montserrat";
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 90px;
+  height: 34px;
+}
+
+.switch input {
+  display: none;
+}
+
+.loginslider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: 0.2s;
+  background: url("../img/off.webp"), url("../img/off.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+  transition: 0.2s;
+}
+
+.loginslider:before {
+  position: absolute;
+  height: 20px;
+  width: 20px;
+  left: 4px;
+  bottom: 6px;
+  background-color: white;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+input:checked + .loginslider {
+  background: url("../img/switch_on.webp"), url("../img/switch_on.png");
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+
+input:focus + .loginslider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .loginslider:before {
+  -webkit-transform: translateX(55px);
+  -ms-transform: translateX(55px);
+  transform: translateX(55px);
+}
+
+/*------ ADDED CSS ---------*/
+.on {
+  display: none;
+}
+
+.on {
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 38%;
+  left: 40%;
+  font-weight: bold;
+  font-size: 13px;
+}
+.off {
+  color: white;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 33%;
+  left: 58%;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+input:checked + .loginslider .on {
+  display: block;
+}
+
+input:checked + .loginslider .off {
+  display: none;
+}
+
+/*--------- END --------*/
+
+/* Rounded sliders */
+
+.sliderMargin .MuiSlider-thumb {
+  margin-left: -50px !important;
+}
+
+@media screen and (max-width: 767px) {
+  .w-9-p {
+    width: 10%;
+  }
+
+  .w-20-p {
+    width: 20%;
+  }
+
+  .mtmob {
+    margin-top: 100px;
+  }
+
+  .MuiSlider-root {
+    background-image: url("../img/images/border1.webp"),
+      url("../img/images/border1.png");
+    background-repeat: round;
+    height: 50px !important;
+    padding: 10px 0px !important;
+  }
+  .sliderMargin .MuiSlider-thumb {
+    margin-left: -50px !important;
+  }
+
+  .MuiSlider-rail {
+    border-radius: 35px !important;
+    width: 97% !important;
+    height: 46px !important;
+    margin-left: 7px !important;
+    background: linear-gradient(to right, #333, #333 50%, #eee 100%) !important;
+  }
+
+  .MuiSlider-track {
+    height: 47px !important;
+    margin-top: 3px !important;
+    border-radius: 20px !important;
+    margin-left: 8px !important;
+    opacity: 0.8;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, #006176, #00a7cb);
+  }
+  .MuiSlider-thumb {
+    background-image: url("../img/images/slider.webp"),
+      url("../img/images/slider.png") !important;
+    height: 63px !important;
+    width: 63px !important;
+    background-repeat: round;
+    z-index: 9999;
+    font-family: agency fb, regular;
+  }
+}
+
+.bg-image12 {
+  background-image: url("../img/images/slider.webp"),
+    url("../img/images/slider.png");
+  width: 100%;
+  height: calc(100vh - 0.5em);
+  background-repeat: round;
+}
+
+.menuBackColor {
+  height: calc(100vh - 0.5em);
+  background-color: #214151;
+  opacity: 0.5;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+}
+
+.RoundElegance-Regular {
+  font-family: rounded elegance, regular;
+}
+
+.ProximaNovaSoftW03 {
+  font-family: proxima nova, regular;
+}
+
+.FontFreeNetProximaNovaSoftW03 {
+  font-family: proxima soft, regular;
+}
+
+.AGENCYR {
+  font-family: agency fb, regular;
+}
+
+@media screen and (min-width: 767px) {
+  .w-9-p {
+    width: 6%;
+  }
+
+  .w-20-p {
+    width: 15%;
+  }
+  .MuiSlider-root {
+    background-image: url("../img/images/border1.webp"),
+      url("../img/images/border1.png");
+    background-repeat: round;
+    height: 70px !important;
+  }
+  .sliderMargin .MuiSlider-thumb {
+    margin-left: -50px !important;
+  }
+
+  .MuiSlider-rail {
+    border-radius: 35px !important;
+    width: 97% !important;
+    height: 70px !important;
+    margin-left: 7px !important;
+    background: linear-gradient(to right, #333, #333 50%, #eee 100%) !important;
+  }
+
+  .MuiSlider-track {
+    height: 64px !important;
+    margin-top: 6px !important;
+    border-top-left-radius: 35px !important;
+    border-bottom-left-radius: 35px !important;
+    margin-left: 8px !important;
+    opacity: 0.8;
+    background: rgb(2, 0, 36);
+    background: linear-gradient(90deg, #006176, #00a7cb);
+  }
+  .MuiSlider-thumb {
+    background-image: url("../img/images/slider.webp"),
+      url("../img/images/slider.png") !important;
+    height: 80px !important;
+    width: 80px !important;
+    background-repeat: round;
+    z-index: 9999;
+    font-family: agency fb, regular;
+  }
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Change opacity to control transparency */
+  z-index: 1000; /* Ensure it appears above other content */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup {
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  margin-top: 40px;
+}
+
+.expiry__reg__form__wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.css-1d1r5q-MuiFormHelperText-root {
+  padding: 0px !important;
+  margin: 0px !important;
+  font-size: 12px !important;
+}
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root {
+  left: -15px !important;
+  top: 7px !important;
+  font-size: 0.7 !important;
+}
+
+.css-1wc848c-MuiFormHelperText-root {
+  margin: 0px !important;
+  padding: 0px !important;
+}
+
+.input{
+  :last-child{
+      
+      &::placeholder{
+        font-weight: 400, 
+      }
+  } 
+}

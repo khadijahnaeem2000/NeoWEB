@@ -1,0 +1,9 @@
+.buttonStyle{
+    max-width:8%;
+    cursor: pointer;
+    transition: transform .2s; /* Animation */
+} 
+
+.buttonStyle:hover {
+    transform: scale(1.05);
+}

@@ -1,0 +1,24 @@
+@media screen and (max-width: 730px) {
+    .avatarStyles {
+        width:22px !important;
+        height:22px !important;
+    }
+    .avatarText {
+        font-size: 9px;
+        font-family: 'RoundedElegance-regular';
+    }
+    .fileText {
+        font-size: 9px;
+    }
+    .goBackButton {
+        font-size: 9px !important;
+    }
+}
+
+.avatarText {
+    font-family: 'RoundedElegance-regular';
+}
+
+.goBackButton {
+    font-size: 14px;
+}

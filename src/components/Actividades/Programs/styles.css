@@ -1,0 +1,58 @@
+.activities_carousel {
+    width: 100%;
+    height:100%;
+    margin-top:2%;
+    overflow-y: scroll !important;
+}
+
+.activity_image {
+    width: 25%;
+    height: 70%;
+}
+
+.actividadesButton {
+    margin-right: 1px;
+    border: none;
+    width: 160px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1254px) {
+    .activity_image {
+        width: 38%;
+    }
+}
+
+@media screen and (max-width: 1050px) {
+    .activity_image {
+        width: 45%;
+    }
+}
+
+@media screen and (max-width: 850px) {
+    .activity_image {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 660px) {
+    .activity_image {
+        width: 60%;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .activity_image {
+        width: 85%;
+    }
+    .carousel_navigation{
+        bottom: 100px ;
+        top: unset !important;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .activity_image {
+        width: 100%;
+    }
+}

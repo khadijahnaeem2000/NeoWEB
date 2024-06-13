@@ -1,0 +1,57 @@
+@media screen and (max-width: 730px) {
+    .avatarStyles {
+        width:22px !important;
+        height:22px !important;
+    }
+    .avatarText {
+        font-size: 9px;
+        font-family: 'RoundedElegance-regular';
+    }
+    .fileText {
+        font-size: 9px;
+        line-height: 0px;
+    }
+    .goBackButton {
+        font-size: 9px !important;
+    }
+}
+
+.avatarText {
+    font-family: 'RoundedElegance-regular';
+}
+
+.goBackButton {
+    font-size: 14px;
+}
+
+@media screen and (max-width: 850px) {
+    .temarioFolderView{
+        width: 100% !important;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .avatarStyles {
+        width:24px !important;
+        height:24px !important;
+    }
+    .avatarText {
+        font-size: 12px;
+        font-family: 'RoundedElegance-regular';
+    }
+    .fileText {
+        font-size: 12px;
+    }
+    .goBackButton {
+        font-size: 12px !important;
+    }
+    .listStyles {
+        margin-top: 1% !important;
+    }
+    .listItem {
+        padding: 1% !important;
+    }
+    .backButton {
+        display: flex !important;
+    }
+}

@@ -1,0 +1,37 @@
+.sidebaritems{
+    display:flex;
+}
+
+@media screen and (max-width: 940px) {
+    .menuItem{
+        width:28%;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .menuItem{
+        width:34%;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .fSize{
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 790px) {
+    .fSize{
+        font-size: 10px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .sidebaritems {
+        display:block;
+    }
+    .menuItem{
+        width:50%;
+    }
+
+}

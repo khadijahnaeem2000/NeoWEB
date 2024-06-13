@@ -1,0 +1,17 @@
+.mobileVideo {
+    position:absolute;
+    height:100vh; 
+    object-fit:fill;
+    margin-top:1%;
+    z-index:-1
+}
+
+.webVideo {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit:fill;
+    z-index:-1
+}

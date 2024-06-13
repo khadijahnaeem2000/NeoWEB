@@ -1,0 +1,35 @@
+.commentCard {
+    margin-left:10%;
+    width:40%;
+    height:80vh;
+    overflow-y:scroll;
+    overflow-x:hidden;
+}
+
+@media screen and (max-width: 850px) {
+    .commentCard {
+        display: none !important;
+    }
+}
+
+@media screen and (min-width: 850px) {
+    .commentButton {
+        display: none !important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .changeLayout {
+        flex-direction: column !important;
+    }
+    .actionLayout {
+        flex-direction: row !important;
+        justify-content: center !important;
+        margin-top: -4%;
+        margin-bottom: 3%;
+    }
+}
+
+.videodiv {
+    width: unset !important;
+}

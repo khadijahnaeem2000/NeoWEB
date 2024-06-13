@@ -1,0 +1,20 @@
+em-emoji-picker {
+    height: 30vh;
+    min-height: 200px;
+    max-height: 600px;
+}
+
+.comment-field {
+    position:sticky;
+    bottom:0;
+    background:white;
+    opacity:1;
+    z-index:100;
+    margin-top:5%;
+}
+
+@media screen and (max-width: 850px) {
+    .comment-field {
+        bottom: -20px;
+    }
+}

@@ -1,0 +1,17 @@
+.temarioButton {
+    margin-right: 10px;
+    border: none;
+    width: 150px;
+    cursor: pointer;
+}
+
+  .react-pdf__Page__svg {
+    margin: 0 auto;
+    width: 100% !important;
+    height: 100% !important;
+  }
+  
+  .react-pdf__Page__svg svg {
+    width:100%;
+    height: 100%;
+  }

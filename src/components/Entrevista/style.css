@@ -1,0 +1,50 @@
+@font-face {
+    font-family: "Rounded Elegance";
+    src: url("//db.onlinewebfonts.com/t/21c892a7f38e340a2c73f61f1bb86c34.eot");
+    src: url("//db.onlinewebfonts.com/t/21c892a7f38e340a2c73f61f1bb86c34.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/21c892a7f38e340a2c73f61f1bb86c34.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/21c892a7f38e340a2c73f61f1bb86c34.woff") format("woff"), url("//db.onlinewebfonts.com/t/21c892a7f38e340a2c73f61f1bb86c34.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/21c892a7f38e340a2c73f61f1bb86c34.svg#Rounded Elegance") format("svg");
+  }
+  
+  .selectedAns:focus {
+    background-color: blue;
+  }
+  
+  .noAnswer {
+    background-image: url("../../assets/img/images/transparent.webp");
+    background-size: cover;
+  }
+  
+  .css-eglki6-MuiLinearProgress-root {
+    background-color: #d7d5d5 !important;
+    height: 6px !important;
+  }
+  
+  .css-5xe99f-MuiLinearProgress-bar1 {
+    background-color: #001aff !important;
+    transition: transform .04s ease !important;
+    transform-origin: left !important;
+  }
+  
+  .MuiLinearProgress-bar,
+  .MuiLinearProgress-barColorPrimary,
+  .MuiLinearProgress-bar1Determinate .css-5xe99f {
+    transition: transform .04s ease !important;
+    transform-origin: left !important;
+    background-color: #0A52CB !important;
+  }
+  
+  .css-eglki6 {
+    background-color: #d7d5d5 !important;
+    height: 6px !important;
+  }
+  
+  .bold {
+    font-family: "ProximaSoft-bold";
+  }
+  
+  .regular {
+    font-family: "ProximaSoft-regular";
+  }
+  
+  p {
+    padding: 10px 0px;
+  }
