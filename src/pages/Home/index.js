@@ -21,6 +21,7 @@ import Video from "components/Video/Video";
 import AudioLibro from "components/AudioLibro/AudioLibro";
 import Actividades from "components/Actividades/Actividades";
 import Entrenamiento from "components/Entrenamiento/Entrenamiento";
+import ProductosCarrito from "components/Productos";
 const Directo = React.lazy(() => import("../../components/Directo/Directo.js"));
 
 function Home() {
@@ -34,7 +35,7 @@ function Home() {
 
   useEffect(() => {
     let timerInterval = setInterval(() => {
-      if (data.type === "Alumno" && data.expiry_date !== null) {
+      if (data?.type === "Alumno" && data?.expiry_date !== null) {
         let { expiry_date } = data;
         expiry_date = new Date(expiry_date);
         const trial_ended = compareAsc(new Date(), expiry_date);
@@ -70,7 +71,7 @@ function Home() {
   // User has switched back to the tab
   const onFocus = () => {
     userServices
-      .commonPostService("/loginTime", { user_id: data.id })
+      .commonPostService("/loginTime", { user_id: data?.id })
       .then((response) => {
         if (response.status !== 200) {
           console.log("Cannot log in time");
@@ -109,7 +110,7 @@ function Home() {
   const updatePage = (option) => {
     setCurrentPage(option);
   };
- 
+
   const renderOption = () => {
     if (currentPage === "Mi escritorio") return <Homepage />;
     else if (currentPage === "Temario")
@@ -129,6 +130,7 @@ function Home() {
     else if (currentPage === "Descargas") return <Descargas />;
     else if (currentPage === "Audiolibro") return <AudioLibro />;
     else if (currentPage === "Actividades") return <Actividades />;
+    else if (currentPage === "Products") return <ProductosCarrito />;
     else if (currentPage === "Entrenamiento") {
       return <Entrenamiento />;
     } else if (currentPage === "En Directo") {

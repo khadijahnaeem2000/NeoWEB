@@ -20,11 +20,7 @@ const Descargas = () => {
 
   return (
     <div className="flex flex-col">
-    { 
-      /*<div style={{marginTop:'1%', marginLeft:'2%'}}>   
-        <img name="download" ref={downloadref} src={download} alt="download icon" className='buttonStyle' onClick={handleClick}/>
-      </div>*/
-    }
+   
       <div style={{marginTop:'3%', marginLeft:'2%'}}>
         <DownloadMaterial /> 
       </div>

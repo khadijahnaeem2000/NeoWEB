@@ -30,7 +30,7 @@ const Homepage = () => {
   const [logout, setLogout] = useState(false);
 
   useEffect (() => {
-    userServices.commonPostService('/user',{"id":data.id})
+    userServices.commonPostService('/user',{"id":data?.id})
     .then((response) => {
       
       if(response.status===200) {

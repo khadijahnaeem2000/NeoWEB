@@ -1,0 +1,23 @@
+.product-cart-price{
+    width: fit-content !important;
+    margin-top: 22px;
+  }
+  
+  .product-image {
+    width: 150px;
+    height: 150px;
+}
+/* Responsive  */
+
+@media (max-width: 600px) {
+    .product-image {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+  @media (max-width: 600px) {
+    .product-cart-price {
+      margin-top: 10px;
+    }
+  }

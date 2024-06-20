@@ -22,6 +22,8 @@ const SideMenu = (props) => {
     "Repaso",
     "Entrevista",
     "Descargas",
+    // "Descargas",
+    "Products",
     "Salir",
   ]);
 
@@ -39,6 +41,7 @@ const SideMenu = (props) => {
     "repaso",
     "entrevista_personal",
     "descargas",
+    "shopping",
     "salir",
   ]);
 

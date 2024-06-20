@@ -168,7 +168,7 @@ const ProgramActivities = (props) => {
             return 'ProximaNovaSoft-bold';
         }
         else if(item.type==='video') {
-            const matchFound=getLocalUserdata().openedVideos.filter((entry) => {return entry.title===item.activityName});
+            const matchFound=getLocalUserdata()?.openedVideos.filter((entry) => {return entry.title===item.activityName});
             if(matchFound.length===0){
                   return 'ProximaNovaSoft-regular';
             }
