@@ -109,6 +109,28 @@ const ExpiryRegistrationForm = ({
       setLoading(false);
     }
   };
+  const commonSelectStyles = {
+    "& .MuiSelect-select": {
+      color: "#212529",
+      backgroundColor: "white",
+      padding: "19px",
+      width: "100%",
+      justifyContent: "center",
+      textAlign: "center",
+      borderRadius: "2px",
+      fontWeight: "light",
+      boxShadow: "0 4px 20px grey",
+    },
+    "& .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+      border: "none",
+    },
+    "&:focus-within": {
+      boxShadow: "0 0 10px black",
+    },
+  };
 
   return (
     <Box
@@ -124,7 +146,7 @@ const ExpiryRegistrationForm = ({
         margin: "auto",
         marginTop: "-10px",
         position: "relative",
-        background: "linear-gradient(135deg, #0D47A1, #2196F3, #E3F2FD)",
+        background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
         padding: "20px",
         borderRadius: "15px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
@@ -161,10 +183,6 @@ const ExpiryRegistrationForm = ({
           srcSet={iosLogo}
           alt="logo"
         />
-        <p>Bienvenid@ al Curso de Ingreso a la Guardia Civil</p>
-        <p>2024/2025</p>
-        <p>Ya puedes disfrutar de tu Prueba de 30 días Gratis</p>
-        <p>Ahora... ¡REGÍSTRATE!</p>
       </Box>
       <Box
         sx={{
@@ -175,226 +193,358 @@ const ExpiryRegistrationForm = ({
         }}
         className="expiry__reg__form__wrapper"
       >
-        <center style={{ color: "red", fontWeight: "bold" }}>
+        <center
+          style={{ color: "white", fontWeight: "bold", fontSize: "18px" }}
+        >
           Bienvenid@ al Curso de Ingreso a la Guardia Civil
         </center>
-        <center style={{ color: "red", fontWeight: "bold" }}>2024/2025</center>
-        <center style={{ color: "red", fontWeight: "bold" }}>
+        <center style={{ color: "white", fontWeight: "bold" }}>
+          2024/2025
+        </center>
+        <center style={{ color: "white", fontWeight: "bold" }}>
           Ya puedes disfrutar de tu
         </center>
-        <center style={{ color: "red", fontWeight: "bold" }}>
+        <center style={{ color: "white", fontWeight: "bold" }}>
           Prueba de 30 días Gratis
         </center>
-
-        <TextField
-          variant="standard"
-          label="Dirección"
-          placeholder="Ingresa tu dirección completa"
-          name="domi"
-          value={formData.domi}
-          onChange={handleChange}
-          error={!!errors.domi}
-          helperText={errors.domi}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Localidad y provincia"
-          name="localidad"
-          placeholder="Ingresa tu localidad y provincia"
-          value={formData.localidad}
-          onChange={handleChange}
-          error={!!errors.localidad}
-          helperText={errors.localidad}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Código Postal"
-          name="postal"
-          placeholder="000000"
-          value={formData.postal}
-          onChange={handleChange}
-          error={!!errors.postal}
-          helperText={errors.postal}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="DNI"
-          placeholder="Ingresa tu DNI"
-          name="dni"
-          value={formData.dni}
-          onChange={handleChange}
-          error={!!errors.dni}
-          helperText={errors.dni}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-
-        <TextField
-          variant="standard"
-          label="Instagram (optional)"
-          name="instagram"
-          value={formData.instagram}
-          onChange={handleChange}
-          error={!!errors.instagram}
-          helperText={errors.instagram}
-          sx={{
-            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
-            input: {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              marginLeft: "9px",
-              borderBottom: "1px solid grey", // White bottom border
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Telegram (optional)"
-          name="telegram"
-          value={formData.telegram}
-          onChange={handleChange}
-          error={!!errors.telegram}
-          helperText={errors.telegram}
-          sx={{
-            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
-            input: {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              marginLeft: "9px",
-              borderBottom: "1px solid grey", // Custom bottom border
-            },
-          }}
-          InputProps={{
-            disableUnderline: true, // Remove the default underline
-          }}
-        />
-
-        <FormControl error={!!errors.shirtsize}>
-          <InputLabel
-            id="demo-simple-select-standard-label"
-            sx={{ color: "#ffffff" }}
-          >
-            Talla de camiseta
-          </InputLabel>
-          <Select
+        <br></br>
+        <center>
+          <TextField
             variant="standard"
-            name="shirtsize"
-            value={formData.shirtsize}
+            placeholder="Dirección"
+            name="domi"
+            value={formData.domi}
             onChange={handleChange}
-            error={!!errors.shirtsize}
+            error={!!errors.domi}
+            helperText={errors.domi}
             sx={{
-              color: "#ffffff",
-              ".MuiSelect-icon": { color: "#ffffff" },
-              "& .MuiInputBase-input": { color: "#ffffff", fontWeight: "bold" },
-              backgroundColor: "transparent",
+              "& .MuiFormLabel-root": {
+                color: "#ffffff",
+                marginLeft: "9px",
+                marginTop: "-3%",
+              },
+              "& .MuiInputBase-input": {
+                color: "#212529",
+                backgroundColor: "white",
+                padding: "19px",
+                width: "100%",
+                justifyContent: "center",
+                textAlign: "center",
+                borderRadius: "2px",
+                fontWeight: "light",
+                boxShadow: "0 4px 20px grey",
+              },
+              "& .MuiInputBase-root": {
+                "&:focus-within": {
+                  boxShadow: "0 0 10px black",
+                },
+              },
             }}
-          >
-            <MenuItem value="S">S</MenuItem>
-            <MenuItem value="M">M</MenuItem>
-            <MenuItem value="L">L</MenuItem>
-          </Select>
-          <FormHelperText sx={{ color: "#ffffff" }}>
-            {errors.shirtsize}
-          </FormHelperText>
-        </FormControl>
-        <FormControl error={!!errors.color}>
-          <InputLabel
-            id="demo-simple-select-standard-label"
-            sx={{ color: "#ffffff" }}
-          >
-            Color de camiseta
-          </InputLabel>
-          <Select
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </center>
+
+        <center>
+          <TextField
             variant="standard"
-            name="color"
-            value={formData.color}
+            name="localidad"
+            placeholder="Localidad y provincia"
+            value={formData.localidad}
             onChange={handleChange}
-            error={!!errors.color}
+            error={!!errors.localidad}
+            helperText={errors.localidad}
             sx={{
-              color: "#ffffff",
-              ".MuiSelect-icon": { color: "#ffffff" },
-              "& .MuiInputBase-input": { color: "#ffffff", fontWeight: "bold" },
-              backgroundColor: "transparent",
+              "& .MuiFormLabel-root": {
+                color: "#ffffff",
+                marginLeft: "9px",
+                marginTop: "-3%",
+              },
+              "& .MuiInputBase-input": {
+                color: "#212529",
+                backgroundColor: "white",
+                padding: "19px",
+                width: "100%",
+                justifyContent: "center",
+                textAlign: "center",
+                borderRadius: "2px",
+                fontWeight: "light",
+                boxShadow: "0 4px 20px grey",
+              },
+              "& .MuiInputBase-root": {
+                "&:focus-within": {
+                  boxShadow: "0 0 10px black",
+                },
+              },
             }}
-          >
-            <MenuItem value="Blanco">Blanco</MenuItem>
-            <MenuItem value="Negro">Negro</MenuItem>
-          </Select>
-          <FormHelperText sx={{ color: "#ffffff" }}>
-            {errors.color}
-          </FormHelperText>
-        </FormControl>
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </center>
+        <center>
+          <TextField
+            variant="standard"
+            name="postal"
+            placeholder="Código Postal"
+            value={formData.postal}
+            onChange={handleChange}
+            error={!!errors.postal}
+            helperText={errors.postal}
+            sx={{
+              "& .MuiFormLabel-root": {
+                color: "#ffffff",
+                marginLeft: "9px",
+                marginTop: "-3%",
+              },
+              "& .MuiInputBase-input": {
+                color: "#212529",
+                backgroundColor: "white",
+                padding: "19px",
+                width: "100%",
+                justifyContent: "center",
+                textAlign: "center",
+                borderRadius: "2px",
+                fontWeight: "light",
+                boxShadow: "0 4px 20px grey",
+              },
+              "& .MuiInputBase-root": {
+                "&:focus-within": {
+                  boxShadow: "0 0 10px black",
+                },
+              },
+            }}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </center>
+        <center>
+          <TextField
+            variant="standard"
+            placeholder="DNI"
+            name="dni"
+            value={formData.dni}
+            onChange={handleChange}
+            error={!!errors.dni}
+            helperText={errors.dni}
+            sx={{
+              "& .MuiFormLabel-root": {
+                color: "#ffffff",
+                marginLeft: "9px",
+                marginTop: "-3%",
+              },
+              "& .MuiInputBase-input": {
+                color: "#212529",
+                backgroundColor: "white",
+                padding: "19px",
+                width: "100%",
+                justifyContent: "center",
+                textAlign: "center",
+                borderRadius: "2px",
+                fontWeight: "light",
+                boxShadow: "0 4px 20px grey",
+              },
+              "& .MuiInputBase-root": {
+                "&:focus-within": {
+                  boxShadow: "0 0 10px black",
+                },
+              },
+            }}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </center>
+
+        <center>
+          <TextField
+            variant="standard"
+            placeholder="Instagram (optional)"
+            name="instagram"
+            value={formData.instagram}
+            onChange={handleChange}
+            error={!!errors.instagram}
+            helperText={errors.instagram}
+            sx={{
+              "& .MuiFormLabel-root": {
+                color: "#ffffff",
+                marginLeft: "9px",
+                marginTop: "-3%",
+              },
+              "& .MuiInputBase-input": {
+                color: "#212529",
+                backgroundColor: "white",
+                padding: "19px",
+                width: "100%",
+                justifyContent: "center",
+                textAlign: "center",
+                borderRadius: "2px",
+
+                boxShadow: "0 4px 20px grey",
+              },
+              "& .MuiInputBase-root": {
+                "&:focus-within": {
+                  boxShadow: "0 0 10px black",
+                },
+              },
+            }}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </center>
+        <center>
+          <TextField
+            variant="standard"
+            placeholder="Telegram (optional)"
+            name="telegram"
+            value={formData.telegram}
+            onChange={handleChange}
+            error={!!errors.telegram}
+            helperText={errors.telegram}
+            sx={{
+              "& .MuiFormLabel-root": {
+                color: "#ffffff",
+                marginLeft: "9px",
+                marginTop: "-3%",
+              },
+              "& .MuiInputBase-input": {
+                color: "#212529",
+                backgroundColor: "white",
+                padding: "19px",
+                width: "100%",
+                justifyContent: "center",
+                fontFamily: "serif",
+                textAlign: "center",
+                borderRadius: "2px",
+
+                boxShadow: "0 4px 20px grey",
+              },
+              "& .MuiInputBase-root": {
+                "&:focus-within": {
+                  boxShadow: "0 0 10px black",
+                },
+              },
+            }}
+            InputProps={{
+              disableUnderline: true,
+            }}
+          />
+        </center>
+
+        <center>
+          <FormControl error={!!errors.shirtsize}>
+            <Select
+              variant="standard"
+              displayEmpty
+              name="shirtsize"
+              value={formData.shirtsize}
+              onChange={handleChange}
+              error={!!errors.shirtsize}
+              sx={{
+                color: "#212529",
+                ".MuiSelect-icon": { color: "black" },
+                "& .MuiInputBase-input": {
+                  color: "#212529",
+                  backgroundColor: "white",
+                  padding: "9px",
+                  width: "200px",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  borderRadius: "2px",
+
+                  boxShadow: "0 4px 20px grey",
+                },
+                backgroundColor: "white",
+              }}
+              inputProps={{ disableUnderline: false }}
+              renderValue={(selected) => {
+                if (selected === "") {
+                  return (
+                    <span
+                      style={{
+                        color: "#aaa",
+                        fontFamily: "serif",
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Talla de camiseta
+                    </span>
+                  );
+                }
+                return selected;
+              }}
+            >
+              <MenuItem value="" disabled>
+                Talla de camiseta
+              </MenuItem>
+              <MenuItem value="S">S</MenuItem>
+              <MenuItem value="M">M</MenuItem>
+              <MenuItem value="L">L</MenuItem>
+            </Select>
+            <FormHelperText sx={{ color: "#ffffff" }}>
+              {errors.shirtsize}
+            </FormHelperText>
+          </FormControl>
+        </center>
+        <center>
+          <FormControl error={!!errors.color} sx={commonSelectStyles}>
+            <Select
+              variant="standard"
+              displayEmpty
+              name="color"
+              value={formData.color}
+              onChange={handleChange}
+              error={!!errors.color}
+              sx={{
+                color: "#212529",
+                ".MuiSelect-icon": { color: "black" },
+                "& .MuiInputBase-input": {
+                  color: "#212529",
+                  backgroundColor: "white",
+                  padding: "9px",
+                  width: "200px",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  borderRadius: "4px",
+                  fontWeight: "light",
+                  boxShadow: "0 4px 20px grey",
+                },
+                backgroundColor: "white",
+              }}
+              inputProps={{ disableUnderline: false, color: "#aaa" }}
+              renderValue={(selected) => {
+                if (selected === "") {
+                  return (
+                    <span
+                      style={{
+                        color: "#aaa",
+                        fontFamily: "serif",
+                        fontWeight: "bold",
+                        fontSize: "16px",
+                      }}
+                    >
+                      Color de camiseta
+                    </span>
+                  );
+                }
+                return selected;
+              }}
+            >
+              <MenuItem value="" disabled>
+                Color de camiseta
+              </MenuItem>
+              <MenuItem value="Blanco">Blanco</MenuItem>
+              <MenuItem value="Negro">Negro</MenuItem>
+            </Select>
+            <FormHelperText sx={{ color: "#ffffff" }}>
+              {errors.color}
+            </FormHelperText>
+          </FormControl>
+        </center>
       </Box>
       <Button
         endIcon={isSuccess ? <DoneSharp /> : <Send />}
@@ -405,10 +555,10 @@ const ExpiryRegistrationForm = ({
         color={isSuccess ? "success" : "primary"}
         sx={{
           mt: 2,
-          bgcolor: isSuccess ? "success.main" : "primary.main",
+          bgcolor: "#295651FF", // Set the background color here
           color: "white",
           "&:hover": {
-            bgcolor: isSuccess ? "success.dark" : "primary.dark",
+            bgcolor: "#1E3B3A", // Darker shade for hover effect if needed
           },
           "& .MuiButton-endIcon": {
             animation: "pulse 2s infinite",
@@ -426,7 +576,8 @@ const ExpiryRegistrationForm = ({
           },
         }}
       >
-        {isSuccess ? "Éxito" : "Probar 30 dias Gratis "}
+        {isSuccess ? "Éxito" : "Probar 30 días Gratis"}{" "}
+        {/* Corrected typo here */}
       </Button>
     </Box>
   );
