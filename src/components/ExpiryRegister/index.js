@@ -93,7 +93,7 @@ const ExpiryRegistrationForm = ({
             }));
           }
 
-          toast.success("Regístrese con éxito");
+          toast.success("Registro exitoso");
           setIsSuccess(true);
           setTimeout(() => {
             setIsSuccess(false);
@@ -101,7 +101,7 @@ const ExpiryRegistrationForm = ({
           }, 5000);
         }
       } else {
-        toast.error("Por favor complete el registro desde");
+        toast.error("Por favor complete el formulario correctamente");
       }
     } catch (error) {
       toast.error(error?.message ? error?.message : "Algo salió mal");
@@ -118,17 +118,18 @@ const ExpiryRegistrationForm = ({
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        maxWidth: { xs: "90vw", sm: "80vw", md: "50vw", lg: "30vw" },
-        width: "100%",
+        maxWidth: { xs: "90vw", sm: "70vw", md: "50vw", lg: "30vw" },
+        width: { xs: "90vw", sm: "70vw", md: "50vw", lg: "25vw" },
+        maxHeight: "85vh", // Limiting the height
         margin: "auto",
         marginTop: "-10px",
         position: "relative",
-        padding: { xs: 2, sm: 3 },
-        height: "fit-content",
-        background: "linear-gradient(to right, #8360c3, #2ebf91)", // Gradient background
-        borderRadius: 4, // Rounded corners
-        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
-        color: "#fff", // White text color for better contrast
+        background: "linear-gradient(135deg, #0D47A1, #2196F3, #E3F2FD)",
+        padding: "20px",
+        borderRadius: "15px",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
+        overflowX: "auto", // Horizontal scrolling if needed
+        overflowY: "auto", // Vertical scrolling if needed
       }}
     >
       <Stack style={{ position: "absolute", right: 0, top: 10 }}>
@@ -138,7 +139,7 @@ const ExpiryRegistrationForm = ({
           }}
           style={{
             cursor: "pointer",
-            color: "#fff", // White color for better contrast
+            color: "white",
           }}
         />
       </Stack>
@@ -148,7 +149,7 @@ const ExpiryRegistrationForm = ({
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          marginBottom: 2,
+          mb: 2,
         }}
       >
         <img
@@ -169,10 +170,22 @@ const ExpiryRegistrationForm = ({
         sx={{
           display: "flex",
           flexDirection: "column",
-          gap: 2,
+          gap: 1,
+          overflow: "auto",
         }}
         className="expiry__reg__form__wrapper"
       >
+        <center style={{ color: "red", fontWeight: "bold" }}>
+          Bienvenid@ al Curso de Ingreso a la Guardia Civil
+        </center>
+        <center style={{ color: "red", fontWeight: "bold" }}>2024/2025</center>
+        <center style={{ color: "red", fontWeight: "bold" }}>
+          Ya puedes disfrutar de tu
+        </center>
+        <center style={{ color: "red", fontWeight: "bold" }}>
+          Prueba de 30 días Gratis
+        </center>
+
         <TextField
           variant="standard"
           label="Dirección"
@@ -182,40 +195,49 @@ const ExpiryRegistrationForm = ({
           onChange={handleChange}
           error={!!errors.domi}
           helperText={errors.domi}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-              color: "#fff", // White label color
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
+            "& .MuiInputBase-input": {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              borderBottom: "1px solid grey",
+              marginLeft: "9px",
             },
           }}
           InputProps={{
-            sx: {
-              color: "#fff", // White text color
-            },
+            disableUnderline: true,
           }}
         />
-
         <TextField
           variant="standard"
-          label="Localidad y Provincia"
+          label="Localidad y provincia"
           name="localidad"
           placeholder="Ingresa tu localidad y provincia"
           value={formData.localidad}
           onChange={handleChange}
           error={!!errors.localidad}
           helperText={errors.localidad}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-              color: "#fff", // White label color
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
+            "& .MuiInputBase-input": {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              borderBottom: "1px solid grey",
+              marginLeft: "9px",
             },
           }}
           InputProps={{
-            sx: {
-              color: "#fff", // White text color
-            },
+            disableUnderline: true,
           }}
         />
         <TextField
@@ -227,17 +249,22 @@ const ExpiryRegistrationForm = ({
           onChange={handleChange}
           error={!!errors.postal}
           helperText={errors.postal}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-              color: "#fff", // White label color
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
+            "& .MuiInputBase-input": {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              borderBottom: "1px solid grey",
+              marginLeft: "9px",
             },
           }}
           InputProps={{
-            sx: {
-              color: "#fff", // White text color
-            },
+            disableUnderline: true,
           }}
         />
         <TextField
@@ -249,17 +276,22 @@ const ExpiryRegistrationForm = ({
           onChange={handleChange}
           error={!!errors.dni}
           helperText={errors.dni}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-              color: "#fff", // White label color
+          sx={{
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
+            "& .MuiInputBase-input": {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              borderBottom: "1px solid grey",
+              marginLeft: "9px",
             },
           }}
           InputProps={{
-            sx: {
-              color: "#fff", // White text color
-            },
+            disableUnderline: true,
           }}
         />
 
@@ -271,17 +303,18 @@ const ExpiryRegistrationForm = ({
           onChange={handleChange}
           error={!!errors.instagram}
           helperText={errors.instagram}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-              color: "#fff", // White label color
+          sx={{
+            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            input: {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              marginLeft: "9px",
+              borderBottom: "1px solid grey", // White bottom border
             },
           }}
           InputProps={{
-            sx: {
-              color: "#fff", // White text color
-            },
+            disableUnderline: true,
           }}
         />
         <TextField
@@ -292,24 +325,25 @@ const ExpiryRegistrationForm = ({
           onChange={handleChange}
           error={!!errors.telegram}
           helperText={errors.telegram}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-              color: "#fff", // White label color
+          sx={{
+            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            input: {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              marginLeft: "9px",
+              borderBottom: "1px solid grey", // Custom bottom border
             },
           }}
           InputProps={{
-            sx: {
-              color: "#fff", // White text color
-            },
+            disableUnderline: true, // Remove the default underline
           }}
         />
 
         <FormControl error={!!errors.shirtsize}>
           <InputLabel
             id="demo-simple-select-standard-label"
-            sx={{ color: "#fff" }} // White label color
+            sx={{ color: "#ffffff" }}
           >
             Talla de camiseta
           </InputLabel>
@@ -319,19 +353,25 @@ const ExpiryRegistrationForm = ({
             value={formData.shirtsize}
             onChange={handleChange}
             error={!!errors.shirtsize}
-            sx={{ color: "#fff" }} // White text color
+            sx={{
+              color: "#ffffff",
+              ".MuiSelect-icon": { color: "#ffffff" },
+              "& .MuiInputBase-input": { color: "#ffffff", fontWeight: "bold" },
+              backgroundColor: "transparent",
+            }}
           >
             <MenuItem value="S">S</MenuItem>
             <MenuItem value="M">M</MenuItem>
             <MenuItem value="L">L</MenuItem>
           </Select>
-          <FormHelperText>{errors.shirtsize}</FormHelperText>
+          <FormHelperText sx={{ color: "#ffffff" }}>
+            {errors.shirtsize}
+          </FormHelperText>
         </FormControl>
-
         <FormControl error={!!errors.color}>
           <InputLabel
             id="demo-simple-select-standard-label"
-            sx={{ color: "#fff" }} // White label color
+            sx={{ color: "#ffffff" }}
           >
             Color de camiseta
           </InputLabel>
@@ -341,12 +381,19 @@ const ExpiryRegistrationForm = ({
             value={formData.color}
             onChange={handleChange}
             error={!!errors.color}
-            sx={{ color: "#fff" }} // White text color
+            sx={{
+              color: "#ffffff",
+              ".MuiSelect-icon": { color: "#ffffff" },
+              "& .MuiInputBase-input": { color: "#ffffff", fontWeight: "bold" },
+              backgroundColor: "transparent",
+            }}
           >
             <MenuItem value="Blanco">Blanco</MenuItem>
             <MenuItem value="Negro">Negro</MenuItem>
           </Select>
-          <FormHelperText>{errors.color}</FormHelperText>
+          <FormHelperText sx={{ color: "#ffffff" }}>
+            {errors.color}
+          </FormHelperText>
         </FormControl>
       </Box>
       <Button
@@ -357,14 +404,29 @@ const ExpiryRegistrationForm = ({
         variant="contained"
         color={isSuccess ? "success" : "primary"}
         sx={{
-          alignSelf: "center",
-          backgroundColor: isSuccess ? "#4caf50" : "#1976d2", // Custom background color for success state
+          mt: 2,
+          bgcolor: isSuccess ? "success.main" : "primary.main",
+          color: "white",
           "&:hover": {
-            backgroundColor: isSuccess ? "#388e3c" : "#1565c0", // Custom hover color for success state
+            bgcolor: isSuccess ? "success.dark" : "primary.dark",
+          },
+          "& .MuiButton-endIcon": {
+            animation: "pulse 2s infinite",
+            "@keyframes pulse": {
+              "0%": {
+                transform: "scale(1)",
+              },
+              "50%": {
+                transform: "scale(1.2)",
+              },
+              "100%": {
+                transform: "scale(1)",
+              },
+            },
           },
         }}
       >
-        {isSuccess ? "Éxito" : "Registrarse"}
+        {isSuccess ? "Éxito" : "Probar 30 dias Gratis "}
       </Button>
     </Box>
   );

@@ -316,3 +316,8 @@ input:checked + .loginslider .off {
       }
   } 
 }
+
+p {
+  padding-block: 0px !important;
+}
+

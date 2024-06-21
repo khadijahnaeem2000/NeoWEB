@@ -49,7 +49,7 @@ const Homepage = () => {
 
   useEffect(() => {
     userServices
-      .commonPostService("/user", { id: data.id })
+      .commonPostService("/user", { id: data?.id })
       .then((response) => {
         if (response.status === 200) {
           if (response.data.data.IsBlocked === "True") {

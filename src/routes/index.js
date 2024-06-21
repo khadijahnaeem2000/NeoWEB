@@ -19,7 +19,7 @@ function Root() {
   return (
     <Router history={history}>
       <Routes>
-        {/* <Route exact path="/" element={<Signin />} /> */}
+        <Route exact path="/home" element={<Signin />} />
         <Route
           exact
           path="/"

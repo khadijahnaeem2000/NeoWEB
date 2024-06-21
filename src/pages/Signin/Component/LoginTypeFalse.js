@@ -89,6 +89,7 @@ function LoginTypeFalse(props) {
                     "¡Estás bloqueado, por favor contacta al administrador!"
                   );
                 } else {
+                  debugger
                   saveLocalData(data.data.data, data.data.time);
                   setToNext(true);
                 }

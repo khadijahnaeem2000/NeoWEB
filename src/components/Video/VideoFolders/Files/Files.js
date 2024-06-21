@@ -91,7 +91,7 @@ const Files = (props) => {
   }*/
 
   const searchStorage = (title) => {
-    const matchFound = getLocalUserdata().openedVideos.filter((entry) => {
+    const matchFound = getLocalUserdata()?.openedVideos?.filter((entry) => {
       return entry.title === title;
     });
     if (matchFound.length === 0) {
