@@ -16,6 +16,7 @@ import userServices from "services/httpService/userAuth/userServices";
 import { getLocalUserdata } from "services/auth/localStorageData";
 import logo from "../../assets/img/images/logo.webp";
 import iosLogo from "../../assets/img/images/logo.png";
+
 const ExpiryRegistrationForm = ({
   isVerifiedData,
   setIsVerifiedData,
@@ -117,12 +118,17 @@ const ExpiryRegistrationForm = ({
         display: "flex",
         flexDirection: "column",
         gap: 2,
-        maxWidth: "30vw",
-        width: "25vw",
-        height: "85vh",
+        maxWidth: { xs: "90vw", sm: "80vw", md: "50vw", lg: "30vw" },
+        width: "100%",
         margin: "auto",
         marginTop: "-10px",
         position: "relative",
+        padding: { xs: 2, sm: 3 },
+        height: "fit-content",
+        background: "linear-gradient(to right, #8360c3, #2ebf91)", // Gradient background
+        borderRadius: 4, // Rounded corners
+        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)", // Subtle shadow for depth
+        color: "#fff", // White text color for better contrast
       }}
     >
       <Stack style={{ position: "absolute", right: 0, top: 10 }}>
@@ -132,6 +138,7 @@ const ExpiryRegistrationForm = ({
           }}
           style={{
             cursor: "pointer",
+            color: "#fff", // White color for better contrast
           }}
         />
       </Stack>
@@ -141,6 +148,7 @@ const ExpiryRegistrationForm = ({
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
+          marginBottom: 2,
         }}
       >
         <img
@@ -152,41 +160,19 @@ const ExpiryRegistrationForm = ({
           srcSet={iosLogo}
           alt="logo"
         />
+        <p>Bienvenid@ al Curso de Ingreso a la Guardia Civil</p>
+        <p>2024/2025</p>
+        <p>Ya puedes disfrutar de tu Prueba de 30 días Gratis</p>
+        <p>Ahora... ¡REGÍSTRATE!</p>
       </Box>
       <Box
-        style={{
+        sx={{
           display: "flex",
           flexDirection: "column",
-          gap: 10,
-          // height: "100%",
-          overflow: "auto",
+          gap: 2,
         }}
         className="expiry__reg__form__wrapper"
       >
-        <TextField
-          variant="standard"
-          label="Nombre"
-          placeholder="Ingresa tu nombre"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          error={!!errors.name}
-          helperText={errors.name}
-          InputProps={{
-            sx: {
-              "&::placeholder": {
-                fontWeight: 400, 
-              },
-            },
-          }}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
-            },
-          }}
-        />
-
         <TextField
           variant="standard"
           label="Dirección"
@@ -200,13 +186,19 @@ const ExpiryRegistrationForm = ({
             sx: {
               fontSize: "15px",
               bottom: "20px",
+              color: "#fff", // White label color
+            },
+          }}
+          InputProps={{
+            sx: {
+              color: "#fff", // White text color
             },
           }}
         />
 
         <TextField
           variant="standard"
-          label="localidad y provincia"
+          label="Localidad y Provincia"
           name="localidad"
           placeholder="Ingresa tu localidad y provincia"
           value={formData.localidad}
@@ -217,6 +209,12 @@ const ExpiryRegistrationForm = ({
             sx: {
               fontSize: "15px",
               bottom: "20px",
+              color: "#fff", // White label color
+            },
+          }}
+          InputProps={{
+            sx: {
+              color: "#fff", // White text color
             },
           }}
         />
@@ -233,6 +231,12 @@ const ExpiryRegistrationForm = ({
             sx: {
               fontSize: "15px",
               bottom: "20px",
+              color: "#fff", // White label color
+            },
+          }}
+          InputProps={{
+            sx: {
+              color: "#fff", // White text color
             },
           }}
         />
@@ -249,45 +253,19 @@ const ExpiryRegistrationForm = ({
             sx: {
               fontSize: "15px",
               bottom: "20px",
+              color: "#fff", // White label color
             },
           }}
-        />
-        <TextField
-          variant="standard"
-          label="Usuario"
-          name="usuario"
-          value={formData.usuario}
-          onChange={handleChange}
-          error={!!errors.usuario}
-          helperText={errors.usuario}
-          InputLabelProps={{
+          InputProps={{
             sx: {
-              fontSize: "15px",
-              bottom: "20px",
-            },
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Contraseña"
-          placeholder="Ingresa tu contraseña"
-          type="password"
-          name="password"
-          value={formData.password}
-          onChange={handleChange}
-          error={!!errors.password}
-          helperText={errors.password}
-          InputLabelProps={{
-            sx: {
-              fontSize: "15px",
-              bottom: "20px",
+              color: "#fff", // White text color
             },
           }}
         />
 
         <TextField
           variant="standard"
-          label="Instagram"
+          label="Instagram (optional)"
           name="instagram"
           value={formData.instagram}
           onChange={handleChange}
@@ -297,12 +275,18 @@ const ExpiryRegistrationForm = ({
             sx: {
               fontSize: "15px",
               bottom: "20px",
+              color: "#fff", // White label color
+            },
+          }}
+          InputProps={{
+            sx: {
+              color: "#fff", // White text color
             },
           }}
         />
         <TextField
           variant="standard"
-          label="Telegram"
+          label="Telegram (optional)"
           name="telegram"
           value={formData.telegram}
           onChange={handleChange}
@@ -312,12 +296,21 @@ const ExpiryRegistrationForm = ({
             sx: {
               fontSize: "15px",
               bottom: "20px",
+              color: "#fff", // White label color
+            },
+          }}
+          InputProps={{
+            sx: {
+              color: "#fff", // White text color
             },
           }}
         />
 
         <FormControl error={!!errors.shirtsize}>
-          <InputLabel id="demo-simple-select-standard-label">
+          <InputLabel
+            id="demo-simple-select-standard-label"
+            sx={{ color: "#fff" }} // White label color
+          >
             Talla de camiseta
           </InputLabel>
           <Select
@@ -326,20 +319,20 @@ const ExpiryRegistrationForm = ({
             value={formData.shirtsize}
             onChange={handleChange}
             error={!!errors.shirtsize}
+            sx={{ color: "#fff" }} // White text color
           >
             <MenuItem value="S">S</MenuItem>
             <MenuItem value="M">M</MenuItem>
             <MenuItem value="L">L</MenuItem>
           </Select>
-          <FormHelperText
-          // sx={{ color: "#bf3333", marginLeft: "14px !important" }}
-          >
-            {errors.shirtsize}
-          </FormHelperText>
+          <FormHelperText>{errors.shirtsize}</FormHelperText>
         </FormControl>
 
         <FormControl error={!!errors.color}>
-          <InputLabel id="demo-simple-select-standard-label">
+          <InputLabel
+            id="demo-simple-select-standard-label"
+            sx={{ color: "#fff" }} // White label color
+          >
             Color de camiseta
           </InputLabel>
           <Select
@@ -348,15 +341,12 @@ const ExpiryRegistrationForm = ({
             value={formData.color}
             onChange={handleChange}
             error={!!errors.color}
+            sx={{ color: "#fff" }} // White text color
           >
             <MenuItem value="Blanco">Blanco</MenuItem>
             <MenuItem value="Negro">Negro</MenuItem>
           </Select>
-          <FormHelperText
-          // sx={{ color: "#bf3333", marginLeft: "14px !important" }}
-          >
-            {errors.color}
-          </FormHelperText>
+          <FormHelperText>{errors.color}</FormHelperText>
         </FormControl>
       </Box>
       <Button
@@ -366,6 +356,13 @@ const ExpiryRegistrationForm = ({
         size="small"
         variant="contained"
         color={isSuccess ? "success" : "primary"}
+        sx={{
+          alignSelf: "center",
+          backgroundColor: isSuccess ? "#4caf50" : "#1976d2", // Custom background color for success state
+          "&:hover": {
+            backgroundColor: isSuccess ? "#388e3c" : "#1565c0", // Custom hover color for success state
+          },
+        }}
       >
         {isSuccess ? "Éxito" : "Registrarse"}
       </Button>
