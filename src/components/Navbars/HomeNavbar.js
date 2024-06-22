@@ -25,18 +25,31 @@ const HomeNavbar = (props) => {
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
 
-  useEffect(() => {
-    const regData = localStorage?.getItem("registerData");
 
-    if (regData && regData !== "undefined") {
-      try {
-        const parsedData = JSON.parse(regData);
-        setIsVerifiedData(parsedData);
-      } catch (e) {
-        console.error("Failed to parse registerData:", e);
+
+  useEffect(() => {
+    
+    const handleStorageChange = () => {
+      const regData = localStorage.getItem("registerData");
+
+      if (regData && regData !== "undefined") {
+        try {
+          const parsedData = JSON.parse(regData);
+          setIsVerifiedData(parsedData);
+        } catch (e) {
+          console.error("Failed to parse registerData:", e);
+        }
       }
-    }
-  }, [localStorage.getItem("registerData")]);
+    };
+
+   
+    handleStorageChange();
+
+    window.addEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+    };
+  }, []);
 
   const showRegForm = (show) => {
     setShowRegister(show);

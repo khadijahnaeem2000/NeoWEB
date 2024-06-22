@@ -132,7 +132,7 @@ const ExpiryRegistrationForm = ({
         overflowY: "auto", // Vertical scrolling if needed
       }}
     >
-      <Stack style={{ position: "absolute", right: 0, top: 10 }}>
+      <Stack style={{ position: "absolute", right: 10, top: 10 }}>
         <CloseOutlined
           onClick={() => {
             onVerify(false);
@@ -168,16 +168,13 @@ const ExpiryRegistrationForm = ({
           flexDirection: "column",
           gap: 1,
           overflow: "auto",
-        
         }}
         className="expiry__reg__form__wrapper"
       >
         <center style={{ color: "red", fontWeight: "bold" }}>
           Bienvenid@ al Curso de Ingreso a la Guardia Civil
         </center>
-        <center style={{ color: "red", fontWeight: "bold" }}>
-          2024/2025
-        </center>
+        <center style={{ color: "red", fontWeight: "bold" }}>2024/2025</center>
         <center style={{ color: "red", fontWeight: "bold" }}>
           Ya puedes disfrutar de tu
         </center>
@@ -195,7 +192,11 @@ const ExpiryRegistrationForm = ({
           error={!!errors.domi}
           helperText={errors.domi}
           sx={{
-            "& .MuiFormLabel-root": { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
             "& .MuiInputBase-input": {
               color: "#ffffff",
               backgroundColor: "transparent",
@@ -218,7 +219,11 @@ const ExpiryRegistrationForm = ({
           error={!!errors.localidad}
           helperText={errors.localidad}
           sx={{
-            "& .MuiFormLabel-root": { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
             "& .MuiInputBase-input": {
               color: "#ffffff",
               backgroundColor: "transparent",
@@ -241,7 +246,11 @@ const ExpiryRegistrationForm = ({
           error={!!errors.postal}
           helperText={errors.postal}
           sx={{
-            "& .MuiFormLabel-root": { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
             "& .MuiInputBase-input": {
               color: "#ffffff",
               backgroundColor: "transparent",
@@ -264,7 +273,11 @@ const ExpiryRegistrationForm = ({
           error={!!errors.dni}
           helperText={errors.dni}
           sx={{
-            "& .MuiFormLabel-root": { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            "& .MuiFormLabel-root": {
+              color: "#ffffff",
+              marginLeft: "9px",
+              marginTop: "-3%",
+            },
             "& .MuiInputBase-input": {
               color: "#ffffff",
               backgroundColor: "transparent",
@@ -277,7 +290,7 @@ const ExpiryRegistrationForm = ({
             disableUnderline: true,
           }}
         />
-  
+
         <TextField
           variant="standard"
           label="Instagram (optional)"
@@ -287,12 +300,12 @@ const ExpiryRegistrationForm = ({
           error={!!errors.instagram}
           helperText={errors.instagram}
           sx={{
-            label: { color: "#ffffff",marginLeft:"9px" , marginTop: "-3%"},
+            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
             input: {
               color: "#ffffff",
               backgroundColor: "transparent",
               fontWeight: "bold",
-              marginLeft:"9px",
+              marginLeft: "9px",
               borderBottom: "1px solid grey", // White bottom border
             },
           }}
@@ -300,28 +313,28 @@ const ExpiryRegistrationForm = ({
             disableUnderline: true,
           }}
         />
-    <TextField
-  variant="standard"
-  label="Telegram (optional)"
-  name="telegram"
-  value={formData.telegram}
-  onChange={handleChange}
-  error={!!errors.telegram}
-  helperText={errors.telegram}
-  sx={{
-    label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
-    input: {
-      color: "#ffffff",
-      backgroundColor: "transparent",
-      fontWeight: "bold",
-      marginLeft: "9px",
-      borderBottom: "1px solid grey", // Custom bottom border
-    },
-  }}
-  InputProps={{
-    disableUnderline: true, // Remove the default underline
-  }}
-/>
+        <TextField
+          variant="standard"
+          label="Telegram (optional)"
+          name="telegram"
+          value={formData.telegram}
+          onChange={handleChange}
+          error={!!errors.telegram}
+          helperText={errors.telegram}
+          sx={{
+            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
+            input: {
+              color: "#ffffff",
+              backgroundColor: "transparent",
+              fontWeight: "bold",
+              marginLeft: "9px",
+              borderBottom: "1px solid grey", // Custom bottom border
+            },
+          }}
+          InputProps={{
+            disableUnderline: true, // Remove the default underline
+          }}
+        />
 
         <FormControl error={!!errors.shirtsize}>
           <InputLabel

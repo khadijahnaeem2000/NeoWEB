@@ -11,7 +11,6 @@ import userServices from "services/httpService/userAuth/userServices";
 import OtpInput from "react18-input-otp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
-
 import { useNavigate } from "react-router-dom";
 import ExpiryRegistrationForm from "components/ExpiryRegister";
 const GetMobileNumber = ({ onVerify }) => {
@@ -57,7 +56,8 @@ const GetMobileNumber = ({ onVerify }) => {
     }
     if (isVerifiedData?.IsRegistered === "NO") {
       setShowSteps(2);
-      return onVerify(true);
+      onVerify(true);
+      return;
     }
     if (
       isVerifiedData?.IsTelephoneverified === "YES" &&
@@ -148,6 +148,10 @@ const GetMobileNumber = ({ onVerify }) => {
     <>
       {!isVerifiedData ? (
         <Box
+          style={{
+            background: "#fff",
+            padding: "25px",
+          }}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -173,6 +177,10 @@ const GetMobileNumber = ({ onVerify }) => {
             {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 1 && (
               <>
                 <Box
+                  style={{
+                    background: "#fff",
+                    padding: "25px",
+                  }}
                   sx={{
                     display: "flex",
                     justifyContent: "flex-start",
@@ -232,7 +240,12 @@ const GetMobileNumber = ({ onVerify }) => {
             )}
 
             {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 0 && (
-              <>
+              <Box
+                style={{
+                  background: "#fff",
+                  padding: "25px",
+                }}
+              >
                 <Typography>Ingresa número telefónico</Typography>
 
                 <TextField
@@ -270,7 +283,7 @@ const GetMobileNumber = ({ onVerify }) => {
                 >
                   Entregar
                 </Button>
-              </>
+              </Box>
             )}
           </Box>
           {isVerifiedData?.IsRegistered === "NO" && showSteps === 2 && (

@@ -52,6 +52,9 @@ function Home() {
     window.addEventListener("blur", onBlur);
     window.addEventListener("beforeunload", handleWindowClose);
 
+    if (data?.IsPaymentComplete === "NO") {
+      setCurrentPage("Tenda");
+    }
     // Calls onFocus when the window first loads
     onFocus();
     // Specify how to clean up after this effect:
@@ -130,7 +133,7 @@ function Home() {
     else if (currentPage === "Descargas") return <Descargas />;
     else if (currentPage === "Audiolibro") return <AudioLibro />;
     else if (currentPage === "Actividades") return <Actividades />;
-    else if (currentPage === "Products") return <ProductosCarrito />;
+    else if (currentPage === "Tenda") return <ProductosCarrito />;
     else if (currentPage === "Entrenamiento") {
       return <Entrenamiento />;
     } else if (currentPage === "En Directo") {

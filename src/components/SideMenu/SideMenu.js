@@ -23,7 +23,7 @@ const SideMenu = (props) => {
     "Entrevista",
     "Descargas",
     // "Descargas",
-    "Tenda",
+    "Tienda",
     "Salir",
   ]);
 

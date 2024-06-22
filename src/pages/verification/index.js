@@ -24,6 +24,7 @@ const Verification = () => {
           "package",
           JSON.stringify(response?.data?.package)
         );
+       
         navigate("/");
       } else {
       }
