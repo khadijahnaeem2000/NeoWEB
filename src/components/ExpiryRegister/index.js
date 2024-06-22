@@ -202,11 +202,6 @@ const ExpiryRegistrationForm = ({
         >
           iYA PUEDES DISFRUTAR DE TU
         </center>
-<<<<<<< HEAD
-        <center style={{ color: "red", fontWeight: "bold" }}>2024/2025</center>
-        <center style={{ color: "red", fontWeight: "bold" }}>
-          Ya puedes disfrutar de tu
-=======
         <center
           style={{
             color: "black",
@@ -259,7 +254,6 @@ const ExpiryRegistrationForm = ({
               disableUnderline: true,
             }}
           />
->>>>>>> e51e630daa07b36b7a60ae52cb77ee52b87e198a
         </center>
         <center>
           <TextField
@@ -305,161 +299,6 @@ const ExpiryRegistrationForm = ({
           />
         </center>
 
-<<<<<<< HEAD
-        <TextField
-          variant="standard"
-          label="Dirección"
-          placeholder="Ingresa tu dirección completa"
-          name="domi"
-          value={formData.domi}
-          onChange={handleChange}
-          error={!!errors.domi}
-          helperText={errors.domi}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Localidad y provincia"
-          name="localidad"
-          placeholder="Ingresa tu localidad y provincia"
-          value={formData.localidad}
-          onChange={handleChange}
-          error={!!errors.localidad}
-          helperText={errors.localidad}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Código Postal"
-          name="postal"
-          placeholder="000000"
-          value={formData.postal}
-          onChange={handleChange}
-          error={!!errors.postal}
-          helperText={errors.postal}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="DNI"
-          placeholder="Ingresa tu DNI"
-          name="dni"
-          value={formData.dni}
-          onChange={handleChange}
-          error={!!errors.dni}
-          helperText={errors.dni}
-          sx={{
-            "& .MuiFormLabel-root": {
-              color: "#ffffff",
-              marginLeft: "9px",
-              marginTop: "-3%",
-            },
-            "& .MuiInputBase-input": {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              borderBottom: "1px solid grey",
-              marginLeft: "9px",
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-
-        <TextField
-          variant="standard"
-          label="Instagram (optional)"
-          name="instagram"
-          value={formData.instagram}
-          onChange={handleChange}
-          error={!!errors.instagram}
-          helperText={errors.instagram}
-          sx={{
-            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
-            input: {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              marginLeft: "9px",
-              borderBottom: "1px solid grey", // White bottom border
-            },
-          }}
-          InputProps={{
-            disableUnderline: true,
-          }}
-        />
-        <TextField
-          variant="standard"
-          label="Telegram (optional)"
-          name="telegram"
-          value={formData.telegram}
-          onChange={handleChange}
-          error={!!errors.telegram}
-          helperText={errors.telegram}
-          sx={{
-            label: { color: "#ffffff", marginLeft: "9px", marginTop: "-3%" },
-            input: {
-              color: "#ffffff",
-              backgroundColor: "transparent",
-              fontWeight: "bold",
-              marginLeft: "9px",
-              borderBottom: "1px solid grey", // Custom bottom border
-            },
-          }}
-          InputProps={{
-            disableUnderline: true, // Remove the default underline
-          }}
-        />
-=======
         <center>
           <TextField
             variant="standard"
@@ -589,7 +428,6 @@ const ExpiryRegistrationForm = ({
             }}
           />
         </center>
->>>>>>> e51e630daa07b36b7a60ae52cb77ee52b87e198a
 
         <center>
           <TextField
