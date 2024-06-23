@@ -9,6 +9,12 @@ const Verification = () => {
   const { userId } = useParams();
   const navigate = useNavigate();
 
+  const handleLoginSuccess = () => {
+    const loginTime = new Date().getTime();
+    localStorage.setItem('loginTime', loginTime);
+   
+  };
+
   const userVerification = async () => {
     try {
       const response = await userServices.verifyingUser("/user", {
@@ -24,6 +30,8 @@ const Verification = () => {
           "package",
           JSON.stringify(response?.data?.package)
         );
+
+        handleLoginSuccess()
        
         navigate("/");
       } else {

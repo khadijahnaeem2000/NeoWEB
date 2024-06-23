@@ -34,32 +34,33 @@ function Home() {
   const data = getLocalUserdata();
 
   useEffect(() => {
-    let timerInterval = setInterval(() => {
-      if (data?.type === "Alumno" && data?.expiry_date !== null) {
-        let { expiry_date } = data;
-        expiry_date = new Date(expiry_date);
-        const trial_ended = compareAsc(new Date(), expiry_date);
-        if (trial_ended === 1) {
-          setLogout(true);
-          localStorage.clear();
-          toast.error(
-            "Su prueba de un día ha expirado, compre un plan para continuar."
-          );
-        }
-      }
-    }, 1000 * 60);
+    // let timerInterval = setInterval(() => {
+    //   if (data?.type === "Alumno" && data?.expiry_date !== null) {
+    //     let { expiry_date } = data;
+    //     expiry_date = new Date(expiry_date);
+    //     const trial_ended = compareAsc(new Date(), expiry_date);
+    //     if (trial_ended === 1) {
+          
+    //       setLogout(true);
+    //       localStorage.clear();
+    //       toast.error(
+    //         "Su prueba de un día ha expirado, compre un plan para continuar."
+    //       );
+    //     }
+    //   }
+    // }, 1000 * 60);
     window.addEventListener("focus", onFocus);
     window.addEventListener("blur", onBlur);
     window.addEventListener("beforeunload", handleWindowClose);
 
     if (data?.IsPaymentComplete === "NO") {
-      setCurrentPage("Tenda");
+      setCurrentPage("Tienda");
     }
     // Calls onFocus when the window first loads
     onFocus();
     // Specify how to clean up after this effect:
     return () => {
-      clearInterval(timerInterval);
+      // clearInterval(timerInterval);
       onBlur();
       window.removeEventListener("focus", onFocus);
       window.removeEventListener("blur", onBlur);
@@ -133,7 +134,7 @@ function Home() {
     else if (currentPage === "Descargas") return <Descargas />;
     else if (currentPage === "Audiolibro") return <AudioLibro />;
     else if (currentPage === "Actividades") return <Actividades />;
-    else if (currentPage === "Tenda") return <ProductosCarrito />;
+    else if (currentPage === "Tienda") return <ProductosCarrito />;
     else if (currentPage === "Entrenamiento") {
       return <Entrenamiento />;
     } else if (currentPage === "En Directo") {

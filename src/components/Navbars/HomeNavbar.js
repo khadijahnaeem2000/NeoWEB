@@ -25,26 +25,44 @@ const HomeNavbar = (props) => {
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
 
+  const handleStorageChange = () => {
+    const regData = localStorage.getItem("registerData");
 
+    if (regData && regData !== "undefined") {
+      try {
+        const parsedData = JSON.parse(regData);
+        setIsVerifiedData(parsedData);
+      } catch (e) {
+        console.error("Failed to parse registerData:", e);
+      }
+    }
+  };
 
   useEffect(() => {
-    
-    const handleStorageChange = () => {
-      const regData = localStorage.getItem("registerData");
-
-      if (regData && regData !== "undefined") {
-        try {
-          const parsedData = JSON.parse(regData);
-          setIsVerifiedData(parsedData);
-        } catch (e) {
-          console.error("Failed to parse registerData:", e);
+    let timerInterval = setInterval(() => {
+      const logTime = localStorage.getItem("loginTime");
+      if (logTime) {
+        const currentTime = new Date().getTime();
+        const elapsedTime = currentTime - logTime;
+        const timeToPopup = 5 * 60 * 1000;
+        if (isVerifiedData === null) {
+          handleStorageChange();
+        }
+        if (elapsedTime >= timeToPopup) {
+          setShowRegister(true);
+          localStorage.removeItem("loginTime");
+        } else {
+          setShowRegister(false);
         }
       }
+    }, 1000 * 60 * 1);
+    return () => {
+      clearInterval(timerInterval);
     };
+  }, []);
 
-   
+  useEffect(() => {
     handleStorageChange();
-
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
@@ -52,6 +70,7 @@ const HomeNavbar = (props) => {
   }, []);
 
   const showRegForm = (show) => {
+    handleStorageChange();
     setShowRegister(show);
   };
 

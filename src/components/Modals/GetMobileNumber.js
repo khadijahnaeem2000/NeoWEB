@@ -48,22 +48,26 @@ const GetMobileNumber = ({ onVerify }) => {
     }
   }, []);
 
+
   useEffect(() => {
     if (isVerifiedData?.IsTelephoneverified === "NO") {
       onVerify(true);
       setShowSteps(0);
       return;
     }
-    if (isVerifiedData?.IsRegistered === "NO") {
-      setShowSteps(2);
-      onVerify(true);
-      return;
-    }
+    // if (isVerifiedData?.IsRegistered === "NO") {
+    //   setShowSteps(2);
+    //   onVerify(true);
+    //   return;
+    // }
     if (
       isVerifiedData?.IsTelephoneverified === "YES" &&
       isVerifiedData?.IsRegistered === "YES"
     ) {
       return onVerify(false);
+    }
+    else {
+      onVerify(false);
     }
   }, [isVerifiedData?.IsTelephoneverified, isVerifiedData?.IsRegistered]);
 
@@ -104,6 +108,12 @@ const GetMobileNumber = ({ onVerify }) => {
     }
   };
 
+  const handleLoginSuccess = () => {
+    const loginTime = new Date().getTime();
+    localStorage.setItem('loginTime', loginTime);
+   
+  };
+
   const submitOtp = async () => {
     try {
       if (otp?.length === 6) {
@@ -117,6 +127,7 @@ const GetMobileNumber = ({ onVerify }) => {
             ...prevState,
             IsTelephoneverified: "YES",
           }));
+          handleLoginSuccess()
         } else if (response?.data?.status === 100) {
           setIsVerifiedData((prevState) => ({
             ...prevState,
@@ -131,6 +142,8 @@ const GetMobileNumber = ({ onVerify }) => {
       setOtp("");
     }
   };
+
+
 
   const handleChange = (e) => {
     const value = e.target.value;

@@ -59,7 +59,7 @@ const AudioPlayer = (props) => {
   return (
     <div className={isMobile ? "" : "audiocontainer"}>
       <div className={isMobile ? "mobileaudio-wrapper" : "audioplayer-wrapper"}>
-        {!props.item.vimeolink ? (
+        {!props?.item?.vimeolink ? (
           <Stack
             width={500}
             spacing={2}
@@ -70,7 +70,7 @@ const AudioPlayer = (props) => {
         ) : (
           <Vimeo
             speed={true}
-            video={props.item.vimeolink}
+            video={props?.item?.vimeolink}
             responsive={true}
             height={500}
             width={750}
