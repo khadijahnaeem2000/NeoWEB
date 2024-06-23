@@ -11,8 +11,7 @@ const Verification = () => {
 
   const handleLoginSuccess = () => {
     const loginTime = new Date().getTime();
-    localStorage.setItem('loginTime', loginTime);
-   
+    localStorage.setItem("loginTime", loginTime);
   };
 
   const userVerification = async () => {
@@ -30,9 +29,10 @@ const Verification = () => {
           "package",
           JSON.stringify(response?.data?.package)
         );
+        if (response?.data?.data?.IsTelephoneverified === "YES") {
+          handleLoginSuccess();
+        }
 
-        handleLoginSuccess()
-       
         navigate("/");
       } else {
       }

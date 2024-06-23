@@ -20,7 +20,9 @@ const AudioLibro = () => {
   return (
     <div className='stackStyle'>
       <AudioFolder updateUrl={updateUrl}/>
+      
       <AudioPlayer url={url} title={title} userId={userId} folderId={folderId} subId={subId}/>
+      
     </div>
   )
 }

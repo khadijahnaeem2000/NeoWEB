@@ -4,22 +4,20 @@ import {
   getTimeStamp,
 } from "../../../services/auth/localStorageData";
 import userServices from "services/httpService/userAuth/userServices";
-import Alert from "@mui/material/Alert";
-import Vimeo from "@u-wave/react-vimeo";
-import Stack from "@mui/material/Stack";
+import ReactPlayer from "react-player/lazy";
 import "./styles.css";
 
 const AudioPlayer = (props) => {
-  console.log('props: ', props);
-  
-
+  console.log("props: ", props);
+  const audioRef = useRef();
+  const [duration, setDuration] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
 
   const addToSchedule = () => {
     userServices
       .commonPostService("/SendSchedule", {
         studentId: props.userId,
-        task: `Audio: ${props.activityName}`,
+        task: `Audio: ${props.title}`,
         type: "audio",
         folderId: props.folderId,
         sub_Id: props.subId,
@@ -52,35 +50,45 @@ const AudioPlayer = (props) => {
     return () => window.removeEventListener("resize", checkIsMobile);
   }, [isMobile]);
 
-  const onProgress = (event) => {
-    updateLocalStorageTimeStamp("openedAudios", props.activityName, event.duration);
+  const onProgress = () => {
+    setDuration(audioRef.current.getCurrentTime());
+    updateLocalStorageTimeStamp("openedAudios", props.title, duration);
   };
 
   return (
     <div className={isMobile ? "" : "audiocontainer"}>
-      <div className={isMobile ? "mobileaudio-wrapper" : "audioplayer-wrapper"}>
-        {!props?.item?.vimeolink ? (
-          <Stack
-            width={500}
-            spacing={2}
-            style={{ margin: "auto", paddingTop: "2em" }}
-          >
-            <Alert severity="error">Volver a actividades.</Alert>
-          </Stack>
-        ) : (
-          <Vimeo
-            speed={true}
-            video={props?.item?.vimeolink}
-            responsive={true}
-            height={500}
-            width={750}
-            start={getTimeStamp("openedAudios", props.item.activityName)}
-            onProgress={onProgress}
-            onPlay={() => {
-              addToSchedule();
-            }}
-          />
-        )}
+      <div className={isMobile ? "mobileaudio-wrapper" : "mobileaudio-wrapper"}>
+        <ReactPlayer
+          // style={{
+          //   height: isMobile ? "" : "50px",
+          //   paddingTop: isMobile ? "" : "54px",
+          // }}
+          // Disable download button
+          config={{
+            file: {
+              attributes: { controlsList: "nodownload" },
+              forceAudio: true,
+            },
+          }}
+          // Disable right click
+          onContextMenu={(e) => e.preventDefault()}
+          // className={ "mobileaudio-player"}
+          width="100%"
+          // height={isMobile ? "50px" : null}
+          url={props.url}
+          controls={true}
+          muted={true}
+          playing={true}
+          ref={audioRef}
+          onProgress={onProgress}
+          onStart={() => {
+            const timeToStart = getTimeStamp("openedAudios", props.title);
+            audioRef.current.seekTo(timeToStart, "seconds");
+          }}
+          onPlay={() => {
+            addToSchedule();
+          }}
+        />
       </div>
     </div>
   );
