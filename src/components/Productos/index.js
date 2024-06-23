@@ -63,12 +63,12 @@ const ProductosCarrito = () => {
           ...product,
           quantity: 1,
           checked:
-            product?.name === "Curso Ingreso a Guardia Civil" ? true : false,
+            product?.order === 1 ? true : false,
         }));
 
         if (getData?.IsPaymentComplete === "YES") {
           productsWithQuantity = productsWithQuantity?.filter(
-            (product) => product?.name === "Curso Ingreso a Guardia Civil"
+            (product) => product?.order === 1
           );
         }
         setItems(productsWithQuantity);
@@ -127,9 +127,11 @@ const ProductosCarrito = () => {
   return (
     <div className="flex flex-col">
       <div style={{ marginTop: "3%", marginLeft: "2%", marginRight: "2%" }}>
+     <center>
       <Typography variant="h4" gutterBottom>
        Tienda
       </Typography>
+      </center>
         <CssBaseline />
         <Grid container spacing={3}>
           {items?.length > 0 &&
@@ -148,7 +150,7 @@ const ProductosCarrito = () => {
                           checked={item?.checked || false}
                           onChange={() => {
                             if (
-                              item?.name === "Curso Ingreso a Guardia Civil"
+                              item?.order === 1
                             ) {
                               return;
                             } else {
@@ -157,8 +159,8 @@ const ProductosCarrito = () => {
                           }}
                           style={{
                             position: "absolute",
-                            top: -10,
-                            left: -10,
+                            top: -12,
+                            left: -28,
                           }}
                         />
                       </Box>
@@ -168,7 +170,7 @@ const ProductosCarrito = () => {
                         <Box display="flex" gap={2}>
                           <Typography variant="h6">{item?.name}</Typography>{" "}
                           {getData?.IsPaymentComplete === "YES" &&
-                            item?.name === "Curso Ingreso a Guardia Civil" && (
+                            item?.order === 1 && (
                               <Chip
                                 size="small"
                                 color="success"
@@ -183,6 +185,7 @@ const ProductosCarrito = () => {
                       <span
                         dangerouslySetInnerHTML={{ __html: item?.description }}
                       ></span>
+                      
 
                       <Chip
                         marginTop="10px"
