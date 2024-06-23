@@ -158,6 +158,7 @@ const ProductosCarrito = () => {
                               alt={item?.name}
                               className="product-image"
                             />
+                            {getData?.IsPaymentComplete === "NO" &&(
                             <Checkbox
                               checked={item?.checked || false}
                               onChange={() => {
@@ -172,23 +173,18 @@ const ProductosCarrito = () => {
                                 top: -12,
                                 left: -28,
                               }}
+
                             />
+                            )}
                           </Box>
                         </Grid>
                         <Grid item xs>
                           <Box display="flex" justifyContent="space-between">
                             <Box display="flex" gap={2}>
                               <Typography variant="h6">{item?.name}</Typography>{" "}
-                              {getData?.IsPaymentComplete === "YES" &&
-                                item?.order === 1 && (
-                                  <Chip
-                                    size="small"
-                                    color="success"
-                                    label={item?.status}
-                                    variant="filled"
-                                  />
-                                )}
+                            
                             </Box>
+                           
 
                             <Typography variant="h6">${item?.price}</Typography>
                           </Box>
@@ -199,15 +195,36 @@ const ProductosCarrito = () => {
                           ></span>
 
                           {item?.order === 1 && (
+                              <Box
+                              display="flex"
+                              gap={1}
+                              alignItems="center"
+                              className="product-cart-price"
+                            >
                             <Chip
-                              marginTop="10px"
+                              marginTop="5px"
                               size="small"
                               color="default"
                               label={getData?.Payment_ExpiryDate}
                               variant="filled"
                             />
+                             {getData?.IsPaymentComplete === "YES" &&
+                                item?.order === 1 && (
+                                 
+                                  <Chip
+                                  marginTop="10px"
+                                  size="small"
+                                  color="success"
+                                  label="Activada"
+                                  variant="filled"
+                                />
+                                
+                                )}
+                             </Box>
                           )}
-
+                          
+                          
+{/* 
                           <Box
                             display="flex"
                             gap={2}
@@ -239,14 +256,14 @@ const ProductosCarrito = () => {
                             >
                               <Add />
                             </IconButton>
-                          </Box>
+                          </Box> */}
                         </Grid>
                       </Grid>
                     </Paper>
                   </Grid>
                 ))}
             </Grid>
-            {items?.length > 0 && (
+            {items?.length > 0  && getData?.IsPaymentComplete === "NO" && (
               <TableContainer style={{ marginBlock: "20px" }} component={Paper}>
                 <Table>
                   <TableHead>
@@ -288,6 +305,7 @@ const ProductosCarrito = () => {
                 </Table>
               </TableContainer>
             )}
+             {items?.length > 0  && getData?.IsPaymentComplete === "NO" && (
             <Button
               disabled={!isAnyItemChecked}
               style={{ marginBlock: "10px", float: "right" }}
@@ -297,6 +315,7 @@ const ProductosCarrito = () => {
             >
               Pagar
             </Button>
+             )}
           </>
         )}
       </div>
