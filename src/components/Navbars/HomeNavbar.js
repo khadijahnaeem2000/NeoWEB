@@ -24,9 +24,11 @@ const WhiteTextTypography = withStyles({
 const HomeNavbar = (props) => {
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
+  const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
   const handleStorageChange = () => {
     const regData = localStorage.getItem("registerData");
+  
 
     if (regData && regData !== "undefined") {
       try {
@@ -44,15 +46,19 @@ const HomeNavbar = (props) => {
       if (logTime) {
         const currentTime = new Date().getTime();
         const elapsedTime = currentTime - logTime;
-        const timeToPopup = 5 * 60 * 1000;
+        const timeToPopup = 3 * 60 * 1000;
         if (isVerifiedData === null) {
           handleStorageChange();
         }
         if (elapsedTime >= timeToPopup) {
-          setShowRegister(true);
+          if (getData?.IsRegistered === "NO") {
+            setShowRegister(true);
+          }
           localStorage.removeItem("loginTime");
         } else {
-          setShowRegister(false);
+          if (getData?.IsRegistered === "NO") {
+            setShowRegister(false);
+          }
         }
       }
     }, 1000 * 60 * 1);
@@ -97,7 +103,7 @@ const HomeNavbar = (props) => {
           </div>
           <div className={classes.grow} />
 
-          {isVerifiedData?.IsRegistered === "NO" && (
+          {getData?.IsRegistered === "NO" && (
             <Button
               type="button"
               variant="contained"

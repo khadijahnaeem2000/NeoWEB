@@ -187,7 +187,8 @@ const GetMobileNumber = ({ onVerify }) => {
               <>
                 <Box
                   style={{
-                    background: "#fff",
+                    background:"linear-gradient(to bottom right, #FFD600FF, #295651FF)",
+                    
                     padding: "25px",
                   }}
                   sx={{
@@ -206,12 +207,13 @@ const GetMobileNumber = ({ onVerify }) => {
                   <Button
                     sx={{
                       marginLeft: "auto",
+                      color:"white"
                     }}
                     size="small"
                     variant="text"
                     onClick={handleSubmit}
                   >
-                    New OPT
+                    Nueva OTP
                   </Button>
                 </Box>
                 <OtpInput
@@ -226,11 +228,13 @@ const GetMobileNumber = ({ onVerify }) => {
                   inputStyle={{
                     width: "40px",
                     height: "40px",
-                    backgroundColor: "white",
+                    backgroundColor:"#295651FF",
                     borderColor: "gray",
+                    color:"white",
                     borderWidth: 1,
                     borderRadius: 0,
                     textAlign: "center",
+                    marginTop:"10px",
                     fontSize: 24,
                   }}
                 />
@@ -238,8 +242,10 @@ const GetMobileNumber = ({ onVerify }) => {
                   type="button"
                   fullWidth
                   variant="contained"
-                  color="primary"
-                  sx={{ mb: 2, mt: 3 }}
+                  
+                  sx={{ mb: 2, mt: 3,
+                    background:"linear-gradient(to bottom right, #FFD600FF, #295651FF)"
+                   }}
                   disabled={!otp}
                   onClick={submitOtp}
                 >
@@ -251,14 +257,16 @@ const GetMobileNumber = ({ onVerify }) => {
             {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 0 && (
               <Box
                 style={{
-                  background: "#fff",
+                  background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
                   padding: "25px",
                 }}
               >
                 <Typography>Ingresa número telefónico</Typography>
 
                 <TextField
-                  sx={{ mb: 1 }}
+                  sx={{ mb: 1,
+                    background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
+                   }}
                   variant="outlined"
                   required
                   fullWidth
@@ -287,7 +295,13 @@ const GetMobileNumber = ({ onVerify }) => {
                   fullWidth
                   variant="contained"
                   color="primary"
-                  sx={{ mb: 2 }}
+                  sx={{ mb: 2,
+                    bgcolor: "#295651FF",
+                    color: "white",
+                    "&:hover": {
+                      bgcolor: "#295651FF", // Darker shade for hover effect if needed
+                    }, 
+                   }}
                   onClick={handleSubmit}
                 >
                   Entregar

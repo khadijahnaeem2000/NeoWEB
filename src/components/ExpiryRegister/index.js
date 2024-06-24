@@ -53,12 +53,12 @@ const ExpiryRegistrationForm = ({
   const validate = () => {
     let tempErrors = {};
     tempErrors.name = formData.name ? "" : "El nombre es requerido.";
-    tempErrors.password = formData.password
-      ? ""
-      : "La contraseña es requerida.";
-    tempErrors.usuario = formData.usuario
-      ? ""
-      : "El nombre de usuario es requerido.";
+    // tempErrors.password = formData.password
+    //   ? ""
+    //   : "La contraseña es requerida.";
+    // tempErrors.usuario = formData.usuario
+    //   ? ""
+    //   : "El nombre de usuario es requerido.";
     tempErrors.shirtsize = formData.shirtsize
       ? ""
       : "El tamaño de camiseta es requerido.";
