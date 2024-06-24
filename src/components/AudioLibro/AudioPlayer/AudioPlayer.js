@@ -59,11 +59,7 @@ const AudioPlayer = (props) => {
     <div className={isMobile ? "" : "audiocontainer"}>
       <div className={isMobile ? "mobileaudio-wrapper" : "mobileaudio-wrapper"}>
         <ReactPlayer
-          // style={{
-          //   height: isMobile ? "" : "50px",
-          //   paddingTop: isMobile ? "" : "54px",
-          // }}
-          // Disable download button
+         
           config={{
             file: {
               attributes: { controlsList: "nodownload" },
@@ -72,9 +68,10 @@ const AudioPlayer = (props) => {
           }}
           // Disable right click
           onContextMenu={(e) => e.preventDefault()}
-          // className={ "mobileaudio-player"}
+          className={ "mobileaudio-player"}
           width="100%"
-          // height={isMobile ? "50px" : null}
+          
+          height="60px"
           url={props.url}
           controls={true}
           muted={true}

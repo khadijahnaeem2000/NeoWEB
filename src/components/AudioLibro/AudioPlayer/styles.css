@@ -11,10 +11,7 @@
   padding-bottom: 30px;
   height: 0;
 }
-.mobileaudio-player {
-  height: 360px !important;
-  width: 100% !important;
-}
+
 .audioreact-player {
   box-sizing: border-box;
   padding-top: 7.7%;
@@ -34,14 +31,17 @@
     position: relative;
     padding: 5%;
     margin: 2%;
-    width: 40vw;
+   
     height: 113px;
   }
 }
+
+.mobileaudio-player {
+    margin-top: 50px;
+ }
 @media screen and (max-width: 550px) {
   .mobileaudio-player {
-    height: 50px !important;
-    width: 100% !important;
+     margin-top: 0px;
   }
 
   .mobileaudio-wrapper {
