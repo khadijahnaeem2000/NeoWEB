@@ -27,6 +27,7 @@ import { useMemo } from "react";
 import { toast } from "react-toastify";
 const ProductosCarrito = () => {
   const [loading, setLoading] = useState(false);
+  
 
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
@@ -149,7 +150,7 @@ const ProductosCarrito = () => {
               {items?.length > 0 &&
                 items?.map((item) => (
                   <Grid item xs={12} key={item?.id}>
-                    <Paper elevation={3} style={{ padding: 16 }}>
+                    <Paper elevation={3} style={{ padding: 12 }}>
                       <Grid container spacing={2}>
                         <Grid item>
                           <Box position="relative" display="inline-block">
@@ -157,6 +158,7 @@ const ProductosCarrito = () => {
                               src={item?.photo}
                               alt={item?.name}
                               className="product-image"
+                              style={{ marginTop:'15px'}}
                             />
                             {getData?.IsPaymentComplete === "NO" &&(
                             <Checkbox
@@ -170,8 +172,8 @@ const ProductosCarrito = () => {
                               }}
                               style={{
                                 position: "absolute",
-                                top: -12,
-                                left: -28,
+                                top: -2,
+                                left: -12,
                               }}
 
                             />
@@ -181,47 +183,72 @@ const ProductosCarrito = () => {
                         <Grid item xs>
                           <Box display="flex" justifyContent="space-between">
                             <Box display="flex" gap={2}>
-                              <Typography variant="h6">{item?.name}</Typography>{" "}
+                              <Typography  sx={{
+                            fontSize: '35px',
+                            fontWeight: 800,
+                            color:'#141414' // Use numeric value for fontWeight
+                           
+                           // Ensure no overflow
+                          }}  >{item?.name}</Typography>{" "}
                             
                             </Box>
                            
 
-                            <Typography variant="h6">${item?.price}</Typography>
+                            
                           </Box>
-                          <span
+                          {/* <span
                             dangerouslySetInnerHTML={{
                               __html: item?.description,
                             }}
-                          ></span>
+                          ></span> */}
+                         <Typography variant="h6"
+                          sx={{
+                            fontSize: '20px',
+                            fontWeight: 800, // Use numeric value for fontWeight
+                            whiteSpace: 'nowrap', // Prevent text wrapping
+                            overflow: 'hidden', // Ensure no overflow
+                          }}
+                        >
+                          {item?.price}€
+                        </Typography>
 
                           {item?.order === 1 && (
-                              <Box
-                              display="flex"
-                              gap={1}
-                              alignItems="center"
-                              className="product-cart-price"
-                            >
-                            <Chip
-                              marginTop="5px"
-                              size="small"
-                              color="default"
-                              label={getData?.Payment_ExpiryDate}
-                              variant="filled"
-                            />
-                             {getData?.IsPaymentComplete === "YES" &&
-                                item?.order === 1 && (
-                                 
-                                  <Chip
-                                  marginTop="10px"
-                                  size="small"
-                                  color="success"
-                                  label="Activada"
-                                  variant="filled"
-                                />
-                                
-                                )}
-                             </Box>
+                              
+                          
+                             <Typography 
+                          sx={{
+                            fontSize: '25px',
+                            fontWeight: 800, // Use numeric value for fontWeight
+                            whiteSpace: 'nowrap', // Prevent text wrapping
+                            overflow: 'hidden',
+                            color:'#636363' // Ensure no overflow
+                           
+                           // Ensure no overflow
+                          }}
+                        >
+                          Expiración: {getData?.Payment_ExpiryDate}
+                        </Typography>
+                        
+                            
                           )}
+
+                           {item?.order === 1 && (
+                          <Typography 
+                          sx={{
+                            fontSize: '25px',
+                            fontWeight: 800, // Use numeric value for fontWeight
+                            whiteSpace: 'nowrap', // Prevent text wrapping
+                            overflow: 'hidden',
+                            color:'#636363' // Ensure no overflow
+                          
+                           // Ensure no overflow
+                          }}
+                        >
+                         Renovación: <Button size="small" variant="contained" style={{ fontSize: '10px', padding: '4px 9px', backgroundColor: 'green',  color: 'white' }}>Activada</Button>
+                        </Typography>
+                         )}
+                       
+                                          
                           
                           
 {/* 
@@ -289,18 +316,48 @@ const ProductosCarrito = () => {
                           </TableCell>
                           <TableCell align="center">{item?.quantity}</TableCell>
                           <TableCell align="right">
-                            ${getTotalPrice(item)}
+                            {getTotalPrice(item)}€
                           </TableCell>
                         </TableRow>
                       ))}
+                     
                     <TableRow>
+                      
+                   
                       <TableCell colSpan={2} align="right">
                         Suma total
                       </TableCell>
+
                       <TableCell align="right">
-                        ${totalSum.toFixed(2)}
+                        {totalSum.toFixed(2)}€
                       </TableCell>
                     </TableRow>
+                    <TableRow>
+                        <TableCell colSpan={3} align="center">
+                          <TextField
+                            fullWidth
+                            label="Código descuento"
+                            variant="outlined"
+                            InputLabelProps={{
+                              style: {
+                               
+                                fontSize: '15px',
+                                width: '100%',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                marginLeft:"7px",
+                              },
+                            }}
+                            sx={{
+                              width: '70%',
+                              
+                             // Adjust the width as per your requirement
+                            }}
+                            // Example inline style for margin top
+                          />
+                        </TableCell>
+                      </TableRow>
+                   
                   </TableBody>
                 </Table>
               </TableContainer>
@@ -308,7 +365,7 @@ const ProductosCarrito = () => {
              {items?.length > 0  && getData?.IsPaymentComplete === "NO" && (
             <Button
               disabled={!isAnyItemChecked}
-              style={{ marginBlock: "10px", float: "right" }}
+             style={{ margin: "10px auto", width: "100%" }}
               variant="contained"
               color="primary"
               onClick={handleCheckout}

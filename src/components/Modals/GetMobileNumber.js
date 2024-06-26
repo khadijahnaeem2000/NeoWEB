@@ -79,6 +79,9 @@ const GetMobileNumber = ({ onVerify }) => {
       if (response?.status == 200) {
         return response;
       }
+      if (response?.status == 201) {
+        return response;
+      }
     } catch (error) {
       toast.error("Error al enviar el código.");
     }
@@ -94,8 +97,14 @@ const GetMobileNumber = ({ onVerify }) => {
         setSubmitMobileNumberLoading(true);
         const response = await getOtp(data?.id, phoneNumber);
         if (response) {
+          if (response?.status == 200)
+            {
           toast.success("OTP enviada a tu número de móvil");
           setShowSteps(1);
+            }
+            else{
+              toast.error("El teléfono ya existe");
+            }
         }
       } catch (error) {
         console.log("error: ", error);
@@ -261,20 +270,27 @@ const GetMobileNumber = ({ onVerify }) => {
                   padding: "25px",
                 }}
               >
-                <Typography>Ingresa número telefónico</Typography>
+                <Typography  sx={{
+                  fontSize: '15px',
+                  textAlign: 'center',
+                  whiteSpace: 'nowrap', // Prevent text wrapping
+                  overflow: 'hidden', // Ensure no overflow
+                 
+                   }}>¡Enhorabuena Ya solo queda un paso:</Typography>
+                
+
 
                 <TextField
                   sx={{ mb: 1,
                     background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
+                 
                    }}
-                  variant="outlined"
                   required
                   fullWidth
                   id="phoneNumber"
-                  label="Phone Number"
+                  label="Verifica tu número de Telefónico"
                   name="phoneNumber"
                   autoComplete="phoneNumber"
-                  autoFocus
                   value={phoneNumber}
                   onChange={handleChange}
                   InputProps={{
@@ -285,8 +301,18 @@ const GetMobileNumber = ({ onVerify }) => {
                   error={!!error}
                   helperText={error}
                   size="medium"
+                  InputLabelProps={{
+                    style: { 
+                      marginLeft: '10%',
+                      fontSize: '12px',
+                      width:'100%',
+                      top: '50%',
+                      transform: 'translateY(-50%)',
+                    },
+                  }}
                   style={{
-                    paddingBlock: 5,
+                    paddingBlock: 8,
+                    
                   }}
                 />
                 <Button
@@ -304,7 +330,7 @@ const GetMobileNumber = ({ onVerify }) => {
                    }}
                   onClick={handleSubmit}
                 >
-                  Entregar
+                  Enviar
                 </Button>
               </Box>
             )}
