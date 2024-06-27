@@ -184,9 +184,9 @@ const ProductosCarrito = () => {
                           <Box display="flex" justifyContent="space-between">
                             <Box display="flex" gap={2}>
                               <Typography  sx={{
-                            fontSize: '35px',
-                            fontWeight: 800,
+                            fontSize: '20px',
                             color:'#141414' // Use numeric value for fontWeight
+                            
                            
                            // Ensure no overflow
                           }}  >{item?.name}</Typography>{" "}
@@ -203,10 +203,8 @@ const ProductosCarrito = () => {
                           ></span> */}
                          <Typography variant="h6"
                           sx={{
-                            fontSize: '20px',
-                            fontWeight: 800, // Use numeric value for fontWeight
-                            whiteSpace: 'nowrap', // Prevent text wrapping
-                            overflow: 'hidden', // Ensure no overflow
+                            fontSize: '22px',
+                          
                           }}
                         >
                           {item?.price}€
@@ -217,10 +215,8 @@ const ProductosCarrito = () => {
                           
                              <Typography 
                           sx={{
-                            fontSize: '25px',
-                            fontWeight: 800, // Use numeric value for fontWeight
-                            whiteSpace: 'nowrap', // Prevent text wrapping
-                            overflow: 'hidden',
+                            fontSize: '15px',
+                           
                             color:'#636363' // Ensure no overflow
                            
                            // Ensure no overflow
@@ -235,16 +231,15 @@ const ProductosCarrito = () => {
                            {item?.order === 1 && (
                           <Typography 
                           sx={{
-                            fontSize: '25px',
-                            fontWeight: 800, // Use numeric value for fontWeight
-                            whiteSpace: 'nowrap', // Prevent text wrapping
-                            overflow: 'hidden',
+                            fontSize: '15px',
+                            
+                            
                             color:'#636363' // Ensure no overflow
                           
                            // Ensure no overflow
                           }}
                         >
-                         Renovación: <Button size="small" variant="contained" style={{ fontSize: '10px', padding: '4px 9px', backgroundColor: 'green',  color: 'white' }}>Activada</Button>
+                         Renovación: <Button size="small" variant="contained" style={{ fontSize: '8px', padding: '3px 8px', backgroundColor: 'green',  color: 'white' }}>Activada</Button>
                         </Typography>
                          )}
                        

@@ -198,6 +198,8 @@ const ExpiryRegistrationForm = ({
             color: "black",
             fontWeight: "bold",
             fontFamily: '"Montserrat", sans-serif',
+            whiteSpace: 'nowrap', // Prevent text wrapping
+            
           }}
         >
           iYA PUEDES DISFRUTAR DE TU
@@ -207,6 +209,8 @@ const ExpiryRegistrationForm = ({
             color: "black",
             fontWeight: "bold",
             fontFamily: '"Montserrat", sans-serif',
+            whiteSpace: 'nowrap', // Prevent text wrapping
+          
           }}
         >
           PRUEBA DE 30 DÍAS GRATIS!
@@ -532,7 +536,7 @@ const ExpiryRegistrationForm = ({
                   color: "#999999",
                   backgroundColor: "white",
                   padding: "9px",
-                  width: "200px",
+                  width: "185px",
                   justifyContent: "center",
                   textAlign: "center",
                   borderRadius: "2px",
@@ -588,7 +592,7 @@ const ExpiryRegistrationForm = ({
                   color: "#999999",
                   backgroundColor: "white",
                   padding: "9px",
-                  width: "200px",
+                  width: "185px",
                   justifyContent: "center",
                   textAlign: "center",
                   borderRadius: "4px",
