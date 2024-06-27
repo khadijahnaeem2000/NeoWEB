@@ -283,6 +283,13 @@ const GetMobileNumber = ({ onVerify }) => {
                 <TextField
                   sx={{ mb: 1,
                     background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
+                    '& .MuiInputLabel-root': {
+                      marginLeft: '3%',
+                      fontSize: '15px',
+                      width: '100%',
+                      marginTop:'3%'
+                     
+                    }
                  
                    }}
                   required
@@ -301,15 +308,6 @@ const GetMobileNumber = ({ onVerify }) => {
                   error={!!error}
                   helperText={error}
                   size="medium"
-                  InputLabelProps={{
-                    style: { 
-                      marginLeft: '10%',
-                      fontSize: '12px',
-                      width:'100%',
-                      top: '50%',
-                      transform: 'translateY(-50%)',
-                    },
-                  }}
                   style={{
                     paddingBlock: 8,
                     
