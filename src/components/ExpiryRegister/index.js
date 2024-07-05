@@ -16,6 +16,7 @@ import userServices from "services/httpService/userAuth/userServices";
 import { getLocalUserdata } from "services/auth/localStorageData";
 import logo from "../../assets/img/images/logo.webp";
 import iosLogo from "../../assets/img/images/logo.png";
+import backgroundImage from "../../assets/img/expirybg.png";
 
 const ExpiryRegistrationForm = ({
   isVerifiedData,
@@ -146,7 +147,9 @@ const ExpiryRegistrationForm = ({
         margin: "auto",
         marginTop: "-10px",
         position: "relative",
-        background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
+        backgroundImage: `url(${backgroundImage})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         padding: "20px",
         borderRadius: "15px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
@@ -195,22 +198,20 @@ const ExpiryRegistrationForm = ({
       >
         <center
           style={{
-            color: "black",
+            color: "white",
             fontWeight: "bold",
             fontFamily: '"Montserrat", sans-serif',
-            whiteSpace: 'nowrap', // Prevent text wrapping
-            
+            whiteSpace: "nowrap", // Prevent text wrapping
           }}
         >
           iYA PUEDES DISFRUTAR DE TU
         </center>
         <center
           style={{
-            color: "black",
+            color: "white",
             fontWeight: "bold",
             fontFamily: '"Montserrat", sans-serif',
-            whiteSpace: 'nowrap', // Prevent text wrapping
-          
+            whiteSpace: "nowrap", // Prevent text wrapping
           }}
         >
           PRUEBA DE 30 DÍAS GRATIS!
@@ -227,26 +228,20 @@ const ExpiryRegistrationForm = ({
             helperText={errors.name}
             sx={{
               "& .MuiFormLabel-root": {
-                color: "#ffffff",
+                color: "#FFFFFF",
                 marginLeft: "9px",
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
                 textAlign: "center",
                 borderRadius: "2px",
-                fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
+                fontWeight: 300,
                 boxShadow: "0 4px 20px grey",
-                "&::placeholder": {
-                  color: "#212530",
-                  fontFamily: "serif",
-                  fontSize: "16px",
-                  fontWeight: 300, // Adjusted to semi-light
-                },
               },
               "& .MuiInputBase-root": {
                 "&:focus-within": {
@@ -256,6 +251,21 @@ const ExpiryRegistrationForm = ({
             }}
             InputProps={{
               disableUnderline: true,
+              inputProps: {
+                style: {
+                  color: "#FFFFFF",
+                },
+              },
+            }}
+            inputProps={{
+              style: {
+                "::placeholder": {
+                  color: "#FFFFFF",
+                  fontFamily: "serif",
+                  fontSize: "16px",
+                  fontWeight: 300,
+                },
+              },
             }}
           />
         </center>
@@ -275,8 +285,8 @@ const ExpiryRegistrationForm = ({
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
@@ -285,7 +295,7 @@ const ExpiryRegistrationForm = ({
                 fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
-                  color: "#212530",
+                  color: "#FFFFFF",
                   fontFamily: "serif",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
@@ -319,8 +329,8 @@ const ExpiryRegistrationForm = ({
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
@@ -329,7 +339,7 @@ const ExpiryRegistrationForm = ({
                 fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
-                  color: "#212530",
+                  color: "#FFFFFF",
                   fontFamily: "serif",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
@@ -362,8 +372,8 @@ const ExpiryRegistrationForm = ({
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
@@ -372,7 +382,7 @@ const ExpiryRegistrationForm = ({
                 fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
-                  color: "#212530",
+                  color: "#FFFFFF",
                   fontFamily: "serif",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
@@ -405,8 +415,8 @@ const ExpiryRegistrationForm = ({
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
@@ -415,7 +425,7 @@ const ExpiryRegistrationForm = ({
                 fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
-                  color: "#212530",
+                  color: "#FFFFFF",
                   fontFamily: "serif",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
@@ -449,8 +459,8 @@ const ExpiryRegistrationForm = ({
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
@@ -459,7 +469,7 @@ const ExpiryRegistrationForm = ({
                 fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
-                  color: "#212530",
+                  color: "#FFFFFF",
                   fontFamily: "serif",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
@@ -492,8 +502,8 @@ const ExpiryRegistrationForm = ({
                 marginTop: "-3%",
               },
               "& .MuiInputBase-input": {
-                color: "#212530",
-                backgroundColor: "white",
+                color: "#FFFFFF",
+                backgroundColor: "transparent",
                 padding: "19px",
                 width: "100%",
                 justifyContent: "center",
@@ -502,7 +512,7 @@ const ExpiryRegistrationForm = ({
                 fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
-                  color: "#212530",
+                  color: "#FFFFFF",
                   fontFamily: "serif",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
@@ -534,7 +544,7 @@ const ExpiryRegistrationForm = ({
                 ".MuiSelect-icon": { color: "black" },
                 "& .MuiInputBase-input": {
                   color: "#999999",
-                  backgroundColor: "white",
+                  backgroundColor: "transparent",
                   padding: "9px",
                   width: "200px",
                   justifyContent: "center",
@@ -543,7 +553,7 @@ const ExpiryRegistrationForm = ({
 
                   boxShadow: "0 4px 20px grey",
                 },
-                backgroundColor: "white",
+                backgroundColor: "tranparent",
               }}
               inputProps={{ disableUnderline: false }}
               renderValue={(selected) => {
@@ -590,16 +600,16 @@ const ExpiryRegistrationForm = ({
                 ".MuiSelect-icon": { color: "black" },
                 "& .MuiInputBase-input": {
                   color: "#999999",
-                  backgroundColor: "white",
+                  backgroundColor: "transparent",
                   padding: "9px",
-                  width:"200px",
+                  width: "200px",
                   justifyContent: "center",
                   textAlign: "center",
                   borderRadius: "4px",
                   fontWeight: "light",
                   boxShadow: "0 4px 20px grey",
                 },
-                backgroundColor: "white",
+                backgroundColor: "transparent",
               }}
               inputProps={{ disableUnderline: false, color: "#aaa" }}
               renderValue={(selected) => {
@@ -641,10 +651,12 @@ const ExpiryRegistrationForm = ({
         color={isSuccess ? "success" : "primary"}
         sx={{
           mt: 2,
-          bgcolor: "#295651FF", // Set the background color here
+          bgcolor: "transparent", // Set the background color here
           color: "white",
+          fontFamily: '"Montserrat", sans-serif',
+          fontWeight: "bold",
           "&:hover": {
-            bgcolor: "#1E3B3A", // Darker shade for hover effect if needed
+            bgcolor: "transparent", // Darker shade for hover effect if needed
           },
           "& .MuiButton-endIcon": {
             animation: "pulse 2s infinite",
@@ -662,7 +674,7 @@ const ExpiryRegistrationForm = ({
           },
         }}
       >
-        {isSuccess ? "Éxito" : "AMPLIAR A 30 días Gratis"}{" "}
+        {isSuccess ? "Éxito" : "AMPLIAR A 30 días Gratis"}
         {/* Corrected typo here */}
       </Button>
     </Box>

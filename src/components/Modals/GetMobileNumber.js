@@ -4,12 +4,15 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
+import { useMediaQuery } from "@mui/material";
 import { Typography } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import { getLocalUserdata } from "services/auth/localStorageData";
 import userServices from "services/httpService/userAuth/userServices";
 import OtpInput from "react18-input-otp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import backgroundImage from "../../assets/img/otp.png";
+import background from "../../assets/img/telephono.png";
 
 import { useNavigate } from "react-router-dom";
 import ExpiryRegistrationForm from "components/ExpiryRegister";
@@ -49,7 +52,6 @@ const GetMobileNumber = ({ onVerify }) => {
   }, []);
 
   useEffect(() => {
-    
     if (isVerifiedData?.IsTelephoneverified === "NO") {
       onVerify(true);
       setShowSteps(0);
@@ -97,14 +99,12 @@ const GetMobileNumber = ({ onVerify }) => {
         setSubmitMobileNumberLoading(true);
         const response = await getOtp(data?.id, phoneNumber);
         if (response) {
-          if (response?.status == 200)
-            {
-          toast.success("OTP enviada a tu número de móvil");
-          setShowSteps(1);
-            }
-            else{
-              toast.error("El teléfono ya existe");
-            }
+          if (response?.status == 200) {
+            toast.success("OTP enviada a tu número de móvil");
+            setShowSteps(1);
+          } else {
+            toast.error("El teléfono ya existe");
+          }
         }
       } catch (error) {
         console.log("error: ", error);
@@ -191,155 +191,129 @@ const GetMobileNumber = ({ onVerify }) => {
         </Box>
       ) : (
         <>
-          <Box sx={{ mt: 1 }}>
-            {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 1 && (
-              <>
-                <Box
-                  style={{
-                    background:"linear-gradient(to bottom right, #FFD600FF, #295651FF)",
-                    
-                    padding: "25px",
-                  }}
-                  sx={{
-                    display: "flex",
-                    justifyContent: "flex-start",
-                    alignItems: "center",
-                    gap: "10px",
-                  }}
-                >
-                  <ArrowBackIcon
-                    onClick={() => setShowSteps(0)}
-                    fontSize="small"
-                    sx={{ color: "black", cursor: "pointer" }}
-                  />
-                  <Typography>Ingrese la OTP</Typography>
-                  <Button
-                    sx={{
-                      marginLeft: "auto",
-                      color:"white"
-                    }}
-                    size="small"
-                    variant="text"
-                    onClick={handleSubmit}
-                  >
-                    Nueva OTP
-                  </Button>
-                </Box>
-                <OtpInput
-                  value={otp}
-                  onChange={handleChangeOtp}
-                  numInputs={6}
-                  separator={<span>-</span>}
-                  containerStyle={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                  inputStyle={{
-                    width: "40px",
-                    height: "40px",
-                    backgroundColor:"#295651FF",
-                    borderColor: "gray",
-                    color:"white",
-                    borderWidth: 1,
-                    borderRadius: 0,
-                    textAlign: "center",
-                    marginTop:"10px",
-                    fontSize: 24,
-                  }}
-                />
-                <Button
-                  type="button"
-                  fullWidth
-                  variant="contained"
-                  
-                  sx={{ mb: 2, mt: 3,
-                    background:"linear-gradient(to bottom right, #FFD600FF, #295651FF)"
-                   }}
-                  disabled={!otp}
-                  onClick={submitOtp}
-                >
-                  Enviar OTP
-                </Button>
-              </>
-            )}
-
-            {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 0 && (
-              <Box
-                style={{
-                  background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
-                  padding: "25px",
-                }}
-              >
-                <Typography  sx={{
-                  fontSize: '15px',
-                  textAlign: 'center',
-                  whiteSpace: 'nowrap', // Prevent text wrapping
-                  overflow: 'hidden', // Ensure no overflow
-                 
-                   }}>¡Enhorabuena Ya solo queda un paso:</Typography>
-                
-
-
-                <TextField
-                  sx={{ mb: 1,
-                    background: "linear-gradient(to bottom right, #FFD600FF, #295651FF)",
-                    '& .MuiInputLabel-root': {
-                      marginLeft: '3%',
-                      fontSize: '15px',
-                      width: '100%',
-                      marginTop:'3%'
-                     
-                    }
-                 
-                   }}
-                  required
-                  fullWidth
-                  id="phoneNumber"
-                  label="Verifica tu número de Telefónico"
-                  name="phoneNumber"
-                  autoComplete="phoneNumber"
-                  value={phoneNumber}
-                  onChange={handleChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">+34</InputAdornment>
-                    ),
-                  }}
-                  error={!!error}
-                  helperText={error}
-                  size="medium"
-                  style={{
-                    paddingBlock: 8,
-                    
-                  }}
-                />
-                <Button
-                  type="button"
-                  disabled={!phoneNumber || submitMobileNumberLoading}
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  sx={{ mb: 2,
-                    bgcolor: "#295651FF",
-                    color: "white",
-                    "&:hover": {
-                      bgcolor: "#295651FF", // Darker shade for hover effect if needed
-                    }, 
-                   }}
-                  onClick={handleSubmit}
-                >
-                  Enviar
-                </Button>
-              </Box>
-            )}
-          </Box>
-          {isVerifiedData?.IsRegistered === "NO" && showSteps === 2 && (
-            <ExpiryRegistrationForm
-              setIsVerifiedData={setIsVerifiedData}
-              isVerifiedData={isVerifiedData}
-              onVerify={onVerify}
+          <Box
+            style={{
+              backgroundImage: `url(${background})`,
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              padding: "100px",
+            }}
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "flex-start",
+              alignItems: "center",
+              gap: "10px",
+              position: "relative",
+              width: "100%", // Default width
+              "@media (max-width: 342px)": {
+                width: "30%", // Width for mobile screens
+                padding: "50px",
+                marginLeft: "25%", // Adjust padding for mobile
+              },
+            }}
+          >
+            <ArrowBackIcon
+              onClick={() => setShowSteps(0)}
+              fontSize="large"
+              sx={{
+                color: "white",
+                cursor: "pointer",
+                position: "absolute",
+                left: 0, // Move it to the left
+                top: 0, // Adjust top position as needed
+                margin: "10px",
+                "@media (max-width: 342px)": {
+                  marginLeft: "125%", // Adjust padding for mobile
+                }, // Add some margin if needed
+              }}
             />
-          )}
+            <center
+              style={{
+                color: "white",
+                fontWeight: "bold",
+
+                fontFamily: '"Montserrat", sans-serif',
+                whiteSpace: "nowrap", // Prevent text wrapping
+              }}
+              sx={{
+                "@media (max-width: 342px)": {
+                  fontSize: "2px", // Smaller font size for mobile
+                },
+              }}
+            >
+              INTRODUCE EL CÓDIGO DE VERIFICACIÓN
+            </center>
+            <center
+              style={{
+                color: "white",
+
+                fontWeight: "bold",
+                fontFamily: '"Montserrat", sans-serif',
+                whiteSpace: "nowrap", // Prevent text wrapping
+              }}
+              sx={{
+                "@media (max-width: 342px)": {
+                  fontSize: "2px",
+                  // Smaller font size for mobile
+                },
+              }}
+            >
+              ENVIADO AL TELEFONO POR SMS
+            </center>
+            <Button
+              sx={{
+                color: "white",
+              }}
+              size="small"
+              variant="text"
+              onClick={handleSubmit}
+            >
+              Nueva OTP
+            </Button>
+
+            <OtpInput
+              value={otp}
+              onChange={handleChangeOtp}
+              numInputs={6}
+              separator={<span>-</span>}
+              containerStyle={{
+                display: "flex",
+                justifyContent: "space-between",
+              }}
+              inputStyle={{
+                width: "60px",
+                height: "60px",
+                backgroundColor: "transparent",
+                borderColor: "gray",
+                color: "white",
+                borderWidth: 1,
+                borderRadius: 0,
+                textAlign: "center",
+                marginTop: "10px",
+                fontSize: 24,
+                "@media (max-width: 342px)": {
+                  width: "40px", // Adjust width for mobile
+                  height: "40px", // Adjust height for mobile
+                  fontSize: "16px", // Adjust font size for mobile
+                },
+              }}
+            />
+            <Button
+              type="button"
+              fullWidth
+              variant="contained"
+              sx={{
+                mb: 2,
+                mt: 3,
+                background: "transparent",
+              }}
+              disabled={!otp}
+              onClick={submitOtp}
+            >
+              ENVIAR
+            </Button>
+          </Box>
         </>
       )}
     </>
