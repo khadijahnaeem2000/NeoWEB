@@ -10,6 +10,7 @@ import userServices from "services/httpService/userAuth/userServices";
 import "./styles.css";
 
 const VideoPlayer = (props) => {
+  console.log('props Video: ', props);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 1000);
 
   const addToSchedule = () => {
