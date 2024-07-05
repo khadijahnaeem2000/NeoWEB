@@ -92,7 +92,7 @@ const ExpiryRegistrationForm = ({
               IsRegistered: "YES",
             }));
           }
-
+          localStorage.removeItem("loginTime");
           toast.success("Registro exitoso");
           setIsSuccess(true);
           setTimeout(() => {

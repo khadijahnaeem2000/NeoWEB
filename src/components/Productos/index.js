@@ -27,7 +27,6 @@ import { useMemo } from "react";
 import { toast } from "react-toastify";
 const ProductosCarrito = () => {
   const [loading, setLoading] = useState(false);
-  
 
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
@@ -147,227 +146,187 @@ const ProductosCarrito = () => {
           <>
             <CssBaseline />
             <Grid container spacing={3}>
-              {items?.length > 0 &&
-                items?.map((item) => (
-                  <Grid item xs={12} key={item?.id}>
-                    <Paper elevation={3} style={{ padding: 12 }}>
-                      <Grid container spacing={2}>
-                        <Grid item>
-                          <Box position="relative" display="inline-block">
-                            <img
-                              src={item?.photo}
-                              alt={item?.name}
-                              className="product-image"
-                              style={{ marginTop:'15px'}}
-                            />
-                            {getData?.IsPaymentComplete === "NO" &&(
-                            <Checkbox
-                              checked={item?.checked || false}
-                              onChange={() => {
-                                if (item?.order === 1) {
-                                  return;
-                                } else {
-                                  handleCheckboxChange(item?.id);
-                                }
-                              }}
-                              style={{
-                                position: "absolute",
-                                top: -2,
-                                left: -12,
-                              }}
+              <Grid item xs={12} sm={8}>
+                <Grid container spacing={3}>
+                  {items?.length > 0 &&
+                    items?.map((item) => (
+                      <Grid item xs={12} sm={6} key={item?.id}>
+                        <Paper elevation={3} style={{ padding: 12 }}>
+                          <Grid container spacing={2}>
+                            <Grid item>
+                              <Box position="relative" display="inline-block">
+                                <img
+                                  src={item?.photo}
+                                  alt={item?.name}
+                                  className="product-image"
+                                  style={{ marginTop: "15px" }}
+                                />
+                                {getData?.IsPaymentComplete === "NO" && (
+                                  <Checkbox
+                                    checked={item?.checked || false}
+                                    onChange={() => {
+                                      if (item?.order === 1) {
+                                        return;
+                                      } else {
+                                        handleCheckboxChange(item?.id);
+                                      }
+                                    }}
+                                    style={{
+                                      position: "absolute",
+                                      top: -2,
+                                      left: -12,
+                                    }}
+                                  />
+                                )}
+                              </Box>
+                            </Grid>
+                            <Grid item xs>
+                              <Box
+                                display="flex"
+                                justifyContent="space-between"
+                              >
+                                <Box display="flex" gap={2}>
+                                  <Typography
+                                    sx={{
+                                      fontSize: "20px",
+                                      color: "#141414", // Use numeric value for fontWeight
+                                    }}
+                                  >
+                                    {item?.name}
+                                  </Typography>{" "}
+                                </Box>
+                              </Box>
+                              <Typography
+                                variant="h6"
+                                sx={{
+                                  fontSize: "22px",
+                                }}
+                              >
+                                {item?.price}€
+                              </Typography>
 
-                            />
-                            )}
-                          </Box>
-                        </Grid>
-                        <Grid item xs>
-                          <Box display="flex" justifyContent="space-between">
-                            <Box display="flex" gap={2}>
-                              <Typography  sx={{
-                            fontSize: '20px',
-                            color:'#141414' // Use numeric value for fontWeight
-                            
-                           
-                           // Ensure no overflow
-                          }}  >{item?.name}</Typography>{" "}
-                            
-                            </Box>
-                           
+                              {item?.order === 1 && (
+                                <Typography
+                                  sx={{
+                                    fontSize: "15px",
+                                    color: "#636363", // Ensure no overflow
+                                  }}
+                                >
+                                  Expiración: {getData?.Payment_ExpiryDate}
+                                </Typography>
+                              )}
 
-                            
-                          </Box>
-                          {/* <span
-                            dangerouslySetInnerHTML={{
-                              __html: item?.description,
-                            }}
-                          ></span> */}
-                         <Typography variant="h6"
-                          sx={{
-                            fontSize: '22px',
-                          
-                          }}
-                        >
-                          {item?.price}€
-                        </Typography>
-
-                          {item?.order === 1 && (
-                              
-                          
-                             <Typography 
-                          sx={{
-                            fontSize: '15px',
-                           
-                            color:'#636363' // Ensure no overflow
-                           
-                           // Ensure no overflow
-                          }}
-                        >
-                          Expiración: {getData?.Payment_ExpiryDate}
-                        </Typography>
-                        
-                            
-                          )}
-
-                           {item?.order === 1 && (
-                          <Typography 
-                          sx={{
-                            fontSize: '15px',
-                            
-                            
-                            color:'#636363' // Ensure no overflow
-                          
-                           // Ensure no overflow
-                          }}
-                        >
-                         Renovación: <Button size="small" variant="contained" style={{ fontSize: '8px', padding: '3px 8px', backgroundColor: 'green',  color: 'white' }}>Activada</Button>
-                        </Typography>
-                         )}
-                       
-                                          
-                          
-                          
-{/* 
-                          <Box
-                            display="flex"
-                            gap={2}
-                            alignItems="center"
-                            className="product-cart-price"
-                          >
-                            <IconButton
-                              disabled={true}
-                              sx={{
-                                border: "1px solid",
-                                borderColor: "primary.main",
-                                padding: "3px",
-                              }}
-                              onClick={() => handleDecrement(item?.id)}
-                            >
-                              <Remove />
-                            </IconButton>
-                            <Typography variant="body1" color="green">
-                              {item?.quantity}
-                            </Typography>
-                            <IconButton
-                              disabled={true}
-                              sx={{
-                                border: "1px solid",
-                                borderColor: "primary.main",
-                                padding: "3px",
-                              }}
-                              onClick={() => handleIncrement(item?.id)}
-                            >
-                              <Add />
-                            </IconButton>
-                          </Box> */}
-                        </Grid>
+                              {item?.order === 1 && (
+                                <Typography
+                                  sx={{
+                                    fontSize: "15px",
+                                    color: "#636363", // Ensure no overflow
+                                  }}
+                                >
+                                  Renovación:{" "}
+                                  <Button
+                                    size="small"
+                                    variant="contained"
+                                    style={{
+                                      fontSize: "8px",
+                                      padding: "3px 8px",
+                                      backgroundColor: "green",
+                                      color: "white",
+                                    }}
+                                  >
+                                    Activada
+                                  </Button>
+                                </Typography>
+                              )}
+                            </Grid>
+                          </Grid>
+                        </Paper>
                       </Grid>
-                    </Paper>
-                  </Grid>
-                ))}
-            </Grid>
-            {items?.length > 0  && getData?.IsPaymentComplete === "NO" && (
-              <TableContainer style={{ marginBlock: "20px" }} component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell style={{ width: "80%" }}>
-                        Nombre del árticulo
-                      </TableCell>
-                      <TableCell align="center" style={{ width: "10%" }}>
-                        Cantidad
-                      </TableCell>
-                      <TableCell align="right" style={{ width: "10%" }}>
-                        Precio total
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {items
-                      ?.filter((item) => item?.checked)
-                      .map((item) => (
-                        <TableRow key={item.id}>
-                          <TableCell component="th" scope="row">
-                            {item.name}
+                    ))}
+                </Grid>
+              </Grid>
+
+              {items?.length > 0 && getData?.IsPaymentComplete === "NO" && (
+                <Grid item xs={12} sm={4}>
+                  <TableContainer
+                    style={{ marginBlock: "20px" }}
+                    component={Paper}
+                  >
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell style={{ width: "80%" }}>
+                            Nombre del árticulo
                           </TableCell>
-                          <TableCell align="center">{item?.quantity}</TableCell>
-                          <TableCell align="right">
-                            {getTotalPrice(item)}€
+                          <TableCell align="center" style={{ width: "10%" }}>
+                            Cantidad
+                          </TableCell>
+                          <TableCell align="right" style={{ width: "10%" }}>
+                            Precio total
                           </TableCell>
                         </TableRow>
-                      ))}
-                     
-                    <TableRow>
-                      
-                   
-                      <TableCell colSpan={2} align="right">
-                        Suma total
-                      </TableCell>
-
-                      <TableCell align="right">
-                        {totalSum.toFixed(2)}€
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell colSpan={3} align="center">
-                          <TextField
-                            fullWidth
-                            label="Código descuento"
-                            variant="outlined"
-                            InputLabelProps={{
-                              style: {
-                               
-                                fontSize: '15px',
-                                width: '100%',
-                                top: '50%',
-                                transform: 'translateY(-50%)',
-                                marginLeft:"7px",
-                              },
-                            }}
-                            sx={{
-                              width: '70%',
-                              
-                             // Adjust the width as per your requirement
-                            }}
-                            // Example inline style for margin top
-                          />
-                        </TableCell>
-                      </TableRow>
-                   
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-             {items?.length > 0  && getData?.IsPaymentComplete === "NO" && (
-            <Button
-              disabled={!isAnyItemChecked}
-             style={{ margin: "10px auto", width: "100%" }}
-              variant="contained"
-              color="primary"
-              onClick={handleCheckout}
-            >
-              Pagar
-            </Button>
-             )}
+                      </TableHead>
+                      <TableBody>
+                        {items
+                          ?.filter((item) => item?.checked)
+                          .map((item) => (
+                            <TableRow key={item.id}>
+                              <TableCell component="th" scope="row">
+                                {item.name}
+                              </TableCell>
+                              <TableCell align="center">
+                                {item?.quantity}
+                              </TableCell>
+                              <TableCell align="right">
+                                {getTotalPrice(item)}€
+                              </TableCell>
+                            </TableRow>
+                          ))}
+                        <TableRow>
+                          <TableCell colSpan={2} align="right">
+                            Suma total
+                          </TableCell>
+                          <TableCell align="right">
+                            {totalSum.toFixed(2)}€
+                          </TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell colSpan={3} align="center">
+                            <TextField
+                              fullWidth
+                              label="Código descuento"
+                              variant="outlined"
+                              InputLabelProps={{
+                                style: {
+                                  fontSize: "15px",
+                                  width: "100%",
+                                  top: "50%",
+                                  transform: "translateY(-50%)",
+                                  marginLeft: "7px",
+                                },
+                              }}
+                              sx={{
+                                width: "70%",
+                                // Adjust the width as per your requirement
+                              }}
+                            />
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <Button
+                    disabled={!isAnyItemChecked}
+                    style={{ margin: "10px auto", width: "100%" }}
+                    variant="contained"
+                    color="primary"
+                    onClick={handleCheckout}
+                  >
+                    Pagar
+                  </Button>
+                </Grid>
+              )}
+            </Grid>
           </>
         )}
       </div>

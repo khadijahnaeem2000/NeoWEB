@@ -28,7 +28,6 @@ const HomeNavbar = (props) => {
 
   const handleStorageChange = () => {
     const regData = localStorage.getItem("registerData");
-  
 
     if (regData && regData !== "undefined") {
       try {
@@ -41,39 +40,58 @@ const HomeNavbar = (props) => {
   };
 
   useEffect(() => {
-    let timerInterval = setInterval(() => {
-      const logTime = localStorage.getItem("loginTime");
-      if (logTime) {
-        const currentTime = new Date().getTime();
-        const elapsedTime = currentTime - logTime;
-        const timeToPopup = 3 * 60 * 1000;
-        if (isVerifiedData === null) {
-          handleStorageChange();
-        }
-        if (elapsedTime >= timeToPopup) {
-          if (getData?.IsRegistered === "NO") {
-            setShowRegister(true);
+    let timerInterval;
+    const registerData = localStorage.getItem("registerData");
+    if (registerData) {
+      const parsedData = JSON.parse(registerData);
+      if (parsedData.IsRegistered === "NO"){
+        timerInterval = setInterval(() => {
+          const logTime = localStorage.getItem("loginTime");
+          if (logTime) {
+            const currentTime = new Date().getTime();
+            const elapsedTime = currentTime - logTime;
+            const timeToPopup = 3 * 60 * 1000;
+            if (isVerifiedData === null) {
+              handleStorageChange();
+            }
+            if (elapsedTime >= timeToPopup) {
+              if (getData?.IsRegistered === "NO") {
+                setShowRegister(true);
+              }
+            
+            } else {
+              if (getData?.IsRegistered === "NO") {
+                setShowRegister(false);
+              }
+            }
           }
-          localStorage.removeItem("loginTime");
-        } else {
-          if (getData?.IsRegistered === "NO") {
-            setShowRegister(false);
-          }
-        }
+        }, 1000 * 60 * 1);
+      }else if (parsedData.IsRegistered === "YES") {
+        localStorage.removeItem("loginTime");
       }
-    }, 1000 * 60 * 1);
+    }
     return () => {
       clearInterval(timerInterval);
     };
   }, []);
 
+
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
+   
+  };
+
   useEffect(() => {
     handleStorageChange();
+    window.addEventListener('beforeunload', handleLogout);
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
+      window.removeEventListener('beforeunload', handleLogout);
     };
   }, []);
+ 
 
   const showRegForm = (show) => {
     handleStorageChange();
@@ -108,7 +126,7 @@ const HomeNavbar = (props) => {
               type="button"
               variant="contained"
               color="primary"
-              sx={{ mb: 2 }}
+              sx={{ marginBlock: 2 }}
               onClick={() => {
                 setShowRegister(true);
               }}
