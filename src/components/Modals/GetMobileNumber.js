@@ -4,15 +4,14 @@ import Button from "@mui/material/Button";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
 import { toast } from "react-toastify";
-import { useMediaQuery } from "@mui/material";
 import { Typography } from "@mui/material";
 import InputAdornment from "@mui/material/InputAdornment";
 import { getLocalUserdata } from "services/auth/localStorageData";
 import userServices from "services/httpService/userAuth/userServices";
 import OtpInput from "react18-input-otp";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import backgroundImage from "../../assets/img/otp.png";
 import background from "../../assets/img/telephono.png";
+import backgroundImage from "../../assets/img/otp.png";
 
 import { useNavigate } from "react-router-dom";
 import ExpiryRegistrationForm from "components/ExpiryRegister";
@@ -191,129 +190,287 @@ const GetMobileNumber = ({ onVerify }) => {
         </Box>
       ) : (
         <>
-          <Box
-            style={{
-              backgroundImage: `url(${background})`,
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              padding: "100px",
-            }}
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "flex-start",
-              alignItems: "center",
-              gap: "10px",
-              position: "relative",
-              width: "100%", // Default width
-              "@media (max-width: 342px)": {
-                width: "30%", // Width for mobile screens
-                padding: "50px",
-                marginLeft: "25%", // Adjust padding for mobile
-              },
-            }}
-          >
-            <ArrowBackIcon
-              onClick={() => setShowSteps(0)}
-              fontSize="large"
-              sx={{
-                color: "white",
-                cursor: "pointer",
-                position: "absolute",
-                left: 0, // Move it to the left
-                top: 0, // Adjust top position as needed
-                margin: "10px",
-                "@media (max-width: 342px)": {
-                  marginLeft: "125%", // Adjust padding for mobile
-                }, // Add some margin if needed
-              }}
-            />
-            <center
-              style={{
-                color: "white",
-                fontWeight: "bold",
+          <Box sx={{ mt: 1 }}>
+            {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 1 && (
+              <>
+                <Box
+                  style={{
+                    backgroundImage: `url(${background})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    padding: "100px",
+                  }}
+                  sx={{
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "flex-start",
+                    alignItems: "center",
+                    gap: "10px",
+                    position: "relative",
+                    width: "100%", // Default width
+                    "@media (max-width: 342px)": {
+                      width: "30%", // Width for mobile screens
+                      padding: "50px",
+                      marginLeft: "25%", // Adjust padding for mobile
+                    },
+                  }}
+                >
+                  <ArrowBackIcon
+                    onClick={() => setShowSteps(0)}
+                    y
+                    fontSize="large"
+                    sx={{
+                      color: "white",
+                      cursor: "pointer",
+                      position: "absolute",
+                      left: 0, // Move it to the left
+                      top: 0, // Adjust top position as needed
+                      margin: "10px",
+                      "@media (max-width: 342px)": {
+                        marginLeft: "125%", // Adjust padding for mobile
+                      }, // Add some margin if needed
+                    }}
+                  />
+                  <center
+                    style={{
+                      color: "white",
+                      fontWeight: "bold",
 
-                fontFamily: '"Montserrat", sans-serif',
-                whiteSpace: "nowrap", // Prevent text wrapping
-              }}
-              sx={{
-                "@media (max-width: 342px)": {
-                  fontSize: "2px", // Smaller font size for mobile
-                },
-              }}
-            >
-              INTRODUCE EL CÓDIGO DE VERIFICACIÓN
-            </center>
-            <center
-              style={{
-                color: "white",
+                      fontFamily: '"Montserrat", sans-serif',
+                      whiteSpace: "nowrap", // Prevent text wrapping
+                    }}
+                    sx={{
+                      "@media (max-width: 342px)": {
+                        fontSize: "2px", // Smaller font size for mobile
+                      },
+                    }}
+                  >
+                    INTRODUCE EL CÓDIGO DE VERIFICACIÓN
+                  </center>
+                  <center
+                    style={{
+                      color: "white",
 
-                fontWeight: "bold",
-                fontFamily: '"Montserrat", sans-serif',
-                whiteSpace: "nowrap", // Prevent text wrapping
-              }}
-              sx={{
-                "@media (max-width: 342px)": {
-                  fontSize: "2px",
-                  // Smaller font size for mobile
-                },
-              }}
-            >
-              ENVIADO AL TELEFONO POR SMS
-            </center>
-            <Button
-              sx={{
-                color: "white",
-              }}
-              size="small"
-              variant="text"
-              onClick={handleSubmit}
-            >
-              Nueva OTP
-            </Button>
+                      fontWeight: "bold",
+                      fontFamily: '"Montserrat", sans-serif',
+                      whiteSpace: "nowrap", // Prevent text wrapping
+                    }}
+                    sx={{
+                      "@media (max-width: 342px)": {
+                        fontSize: "2px",
+                        // Smaller font size for mobile
+                      },
+                    }}
+                  >
+                    ENVIADO AL TELEFONO POR SMS
+                  </center>
+                  <Button
+                    sx={{
+                      color: "white",
+                    }}
+                    size="small"
+                    variant="text"
+                    onClick={handleSubmit}
+                  >
+                    Nueva OTP
+                  </Button>
 
-            <OtpInput
-              value={otp}
-              onChange={handleChangeOtp}
-              numInputs={6}
-              separator={<span>-</span>}
-              containerStyle={{
-                display: "flex",
-                justifyContent: "space-between",
-              }}
-              inputStyle={{
-                width: "60px",
-                height: "60px",
-                backgroundColor: "transparent",
-                borderColor: "gray",
-                color: "white",
-                borderWidth: 1,
-                borderRadius: 0,
-                textAlign: "center",
-                marginTop: "10px",
-                fontSize: 24,
-                "@media (max-width: 342px)": {
-                  width: "40px", // Adjust width for mobile
-                  height: "40px", // Adjust height for mobile
-                  fontSize: "16px", // Adjust font size for mobile
-                },
-              }}
-            />
-            <Button
-              type="button"
-              fullWidth
-              variant="contained"
-              sx={{
-                mb: 2,
-                mt: 3,
-                background: "transparent",
-              }}
-              disabled={!otp}
-              onClick={submitOtp}
-            >
-              ENVIAR
-            </Button>
+                  <OtpInput
+                    value={otp}
+                    onChange={handleChangeOtp}
+                    numInputs={6}
+                    separator={<span>-</span>}
+                    containerStyle={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                    inputStyle={{
+                      width: "60px",
+                      height: "60px",
+                      backgroundColor: "transparent",
+                      borderColor: "gray",
+                      color: "white",
+                      borderWidth: 1,
+                      borderRadius: 0,
+                      textAlign: "center",
+                      marginTop: "10px",
+                      fontSize: 24,
+                      "@media (max-width: 342px)": {
+                        width: "40px", // Adjust width for mobile
+                        height: "40px", // Adjust height for mobile
+                        fontSize: "16px", // Adjust font size for mobile
+                      },
+                    }}
+                  />
+                  <Button
+                    type="button"
+                    fullWidth
+                    variant="contained"
+                    sx={{
+                      mb: 2,
+                      mt: 3,
+                      background: "transparent",
+                    }}
+                    disabled={!otp}
+                    onClick={submitOtp}
+                  >
+                    ENVIAR
+                  </Button>
+                </Box>
+              </>
+            )}
+
+            {isVerifiedData?.IsTelephoneverified === "NO" && showSteps === 0 && (
+              <Box
+                style={{
+                  backgroundImage: `url(${backgroundImage})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  padding: "100px",
+                }}
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  alignItems: "center",
+                  gap: "10px",
+                  position: "relative",
+                  width: "100%", // Default width
+                  "@media (max-width: 342px)": {
+                    width: "30%", // Width for mobile screens
+                    padding: "50px",
+                    marginLeft: "25%", // Adjust padding for mobile
+                  },
+                }}
+              >
+                <center
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontFamily: '"Montserrat", sans-serif',
+                    whiteSpace: "nowrap", // Prevent text wrapping
+                  }}
+                >
+                  ¡BIENVENIDO/A AL CURSO DE INGRESO
+                </center>
+                <center
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontFamily: '"Montserrat", sans-serif',
+                    whiteSpace: "nowrap", // Prevent text wrapping
+                  }}
+                >
+                  A GUARDIA CIVIL!
+                </center>
+                <center
+                  style={{
+                    color: "white",
+                    fontWeight: "bold",
+                    fontFamily: '"Montserrat", sans-serif',
+                    whiteSpace: "nowrap", // Prevent text wrapping
+                  }}
+                >
+                  Ahora verifica tu número de teléfono
+                </center>
+                <center>
+                  <TextField
+                    sx={{
+                      "& .MuiFormLabel-root": {
+                        color: "#ffffff",
+                        marginLeft: "9px",
+                        marginTop: "-3%",
+                      },
+                      "& .MuiInputBase-input": {
+                        color: "#ffffff", // Set input text color to white
+                        backgroundColor: "transparent",
+                        padding: "19px",
+                        width: "100%",
+                        justifyContent: "center",
+                        textAlign: "center",
+                        borderRadius: "2px",
+                        fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
+                        boxShadow: "0 4px 20px grey",
+                        "&::placeholder": {
+                          color: "#FFFFFF", // Set placeholder text color to white
+                          fontFamily: "serif",
+                          fontSize: "16px",
+                          fontWeight: 300, // Adjusted to semi-light
+                        },
+                      },
+                      "& .MuiInputBase-root": {
+                        borderColor: "#ffffff", // Set border color to white
+                        "&:focus-within": {
+                          boxShadow: "0 0 10px black",
+                        },
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: "#ffffff", // Set the outline border color to white
+                        },
+                        "&:hover fieldset": {
+                          borderColor: "#ffffff", // Set the outline border color to white on hover
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#ffffff", // Set the outline border color to white when focused
+                        },
+                      },
+                      "& .MuiInputAdornment-root": {
+                        color: "#ffffff", // Set the color of the InputAdornment
+                      },
+                    }}
+                    required
+                    fullWidth
+                    id="phoneNumber"
+                    name="phoneNumber"
+                    autoComplete="phoneNumber"
+                    value={phoneNumber}
+                    onChange={handleChange}
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          <span style={{ color: "#ffffff" }}>+34</span>
+                        </InputAdornment>
+                      ),
+                    }}
+                    error={!!error}
+                    helperText={error}
+                    size="medium"
+                    style={{
+                      paddingBlock: 8,
+                    }}
+                  />
+                </center>
+
+                <Button
+                  type="button"
+                  disabled={!phoneNumber || submitMobileNumberLoading}
+                  fullWidth
+                  variant="contained"
+                  color="primary"
+                  sx={{
+                    mb: 2,
+                    marginTop: "10%",
+                    bgcolor: "transparent",
+                    color: "white",
+                    "&:hover": {
+                      bgcolor: "transparent", // Darker shade for hover effect if needed
+                    },
+                  }}
+                  onClick={handleSubmit}
+                >
+                  Enviar
+                </Button>
+              </Box>
+            )}
           </Box>
+          {isVerifiedData?.IsRegistered === "NO" && showSteps === 2 && (
+            <ExpiryRegistrationForm
+              setIsVerifiedData={setIsVerifiedData}
+              isVerifiedData={isVerifiedData}
+              onVerify={onVerify}
+            />
+          )}
         </>
       )}
     </>
