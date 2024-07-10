@@ -256,7 +256,7 @@ const ProductosCarrito = () => {
                       <TableHead>
                         <TableRow>
                           <TableCell style={{ width: "80%" }}>
-                            Nombre del árticulo
+                          Nombre del producto o servicio
                           </TableCell>
                           <TableCell align="center" style={{ width: "10%" }}>
                             Cantidad

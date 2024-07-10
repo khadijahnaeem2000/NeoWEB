@@ -222,9 +222,12 @@ const GetMobileNumber = ({ onVerify }) => {
                       color: "white",
                       cursor: "pointer",
                       position: "absolute",
-                      left: 0, // Move it to the left
+                      left: 1, // Move it to the left
                       top: 0, // Adjust top position as needed
-                      margin: "15px",
+                      margin: "10px",
+                      "@media (max-width: 360px)": {
+                        left: 2,
+                    },
                       // Add some margin if needed
                       
                     }}
@@ -273,8 +276,8 @@ const GetMobileNumber = ({ onVerify }) => {
                       justifyContent: "space-between",
                     }}
                     inputStyle={{
-                      width: "60px",
-                      height: "60px",
+                      width: "50px",
+                      height: "50px",
                       backgroundColor: "transparent",
                       borderColor: "gray",
                       color: "white",
@@ -283,9 +286,9 @@ const GetMobileNumber = ({ onVerify }) => {
                       textAlign: "center",
                       marginTop: "10px",
                       fontSize: 24,
-                      "@media (max-width: 342px)": {
-                        width: "40px", // Adjust width for mobile
-                        height: "40px", // Adjust height for mobile
+                      "@media (max-width: 360px)": {
+                        width: "50px",
+                        height: "50px",
                         fontSize: "16px", // Adjust font size for mobile
                       },
                     }}
