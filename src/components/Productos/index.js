@@ -1,5 +1,5 @@
 // src/ShoppingCart.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import {
   Container,
   Grid,
@@ -23,13 +23,13 @@ import {
 import { Add, Remove } from "@mui/icons-material";
 import productosService from "services/httpService/Productos/productServices";
 import "./style.css";
-import { useMemo } from "react";
 import { toast } from "react-toastify";
+import ProductCard from "../ProductCard";
+
+
 const ProductosCarrito = () => {
   const [loading, setLoading] = useState(false);
-
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
-
   const [items, setItems] = useState([]);
 
   const handleIncrement = (id) => {
@@ -62,14 +62,12 @@ const ProductosCarrito = () => {
     try {
       setLoading(true);
       const response = await productosService.getProductos("/productslist");
-
       if (response?.data?.status === "Successful") {
         let productsWithQuantity = response?.data?.data.map((product) => ({
           ...product,
           quantity: 1,
           checked: product?.order === 1 ? true : false,
         }));
-
         if (getData?.IsPaymentComplete === "YES") {
           productsWithQuantity = productsWithQuantity?.filter(
             (product) => product?.order === 1
@@ -84,6 +82,7 @@ const ProductosCarrito = () => {
       console.error("Error fetching product list:", error);
     }
   };
+
   const getTotalPrice = useMemo(() => {
     return (item) => item.price * item.quantity;
   }, []);
@@ -104,7 +103,7 @@ const ProductosCarrito = () => {
         const checkedItemIds = items
           .filter((item) => item.checked)
           .map((item) => item?.id);
-        console.log({ checkedItemIds });
+        
 
         const queryString = `ids=${`${JSON.stringify(checkedItemIds)}`}`;
         console.log("queryString: ", queryString);
@@ -119,11 +118,6 @@ const ProductosCarrito = () => {
     } catch (error) {
       console.error("Error fetching product list:", error);
     }
-    // const checkedItems = items.filter((item) => item.checked);
-    // const totalPrice = checkedItems.reduce((total, item) => {
-    //   return total + item.price * item.quantity;
-    // }, 0);
-    // console.log("totalPrice: ", totalPrice);
   };
 
   const isAnyItemChecked = useMemo(() => {
@@ -150,98 +144,12 @@ const ProductosCarrito = () => {
                 <Grid container spacing={3}>
                   {items?.length > 0 &&
                     items?.map((item) => (
-                      <Grid item xs={12} sm={6} key={item?.id}>
-                        <Paper elevation={3} style={{ padding: 12 }}>
-                          <Grid container spacing={2}>
-                            <Grid item>
-                              <Box position="relative" display="inline-block">
-                                <img
-                                  src={item?.photo}
-                                  alt={item?.name}
-                                  className="product-image"
-                                  style={{ marginTop: "15px" }}
-                                />
-                                {getData?.IsPaymentComplete === "NO" && (
-                                  <Checkbox
-                                    checked={item?.checked || false}
-                                    onChange={() => {
-                                      if (item?.order === 1) {
-                                        return;
-                                      } else {
-                                        handleCheckboxChange(item?.id);
-                                      }
-                                    }}
-                                    style={{
-                                      position: "absolute",
-                                      top: -2,
-                                      left: -12,
-                                    }}
-                                  />
-                                )}
-                              </Box>
-                            </Grid>
-                            <Grid item xs>
-                              <Box
-                                display="flex"
-                                justifyContent="space-between"
-                              >
-                                <Box display="flex" gap={2}>
-                                  <Typography
-                                    sx={{
-                                      fontSize: "20px",
-                                      color: "#141414", // Use numeric value for fontWeight
-                                    }}
-                                  >
-                                    {item?.name}
-                                  </Typography>{" "}
-                                </Box>
-                              </Box>
-                              <Typography
-                                variant="h6"
-                                sx={{
-                                  fontSize: "22px",
-                                }}
-                              >
-                                {item?.price}€
-                              </Typography>
-
-                              {item?.order === 1 && (
-                                <Typography
-                                  sx={{
-                                    fontSize: "15px",
-                                    color: "#636363", // Ensure no overflow
-                                  }}
-                                >
-                                  Expiración: {getData?.Payment_ExpiryDate}
-                                </Typography>
-                              )}
-
-                              {item?.order === 1 && (
-                                <Typography
-                                  sx={{
-                                    fontSize: "15px",
-                                    color: "#636363", // Ensure no overflow
-                                  }}
-                                >
-                                  Renovación:{" "}
-                                  <Button
-                                    size="small"
-                                    variant="contained"
-                                    style={{
-                                      fontSize: "8px",
-                                      padding: "3px 8px",
-                                      backgroundColor: "green",
-                                      color: "white",
-                                    }}
-                                  >
-                                    Activada
-                                  </Button>
-                                </Typography>
-                              )}
-                            </Grid>
-                          </Grid>
-                        </Paper>
-                      </Grid>
+                      <ProductCard
+                        key={item.id}
+                        item={item}
+                        handleCheckboxChange={handleCheckboxChange}
+                        getData={getData}
+                      />
                     ))}
                 </Grid>
               </Grid>
