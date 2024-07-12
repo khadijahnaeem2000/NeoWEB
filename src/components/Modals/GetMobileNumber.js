@@ -157,8 +157,12 @@ const GetMobileNumber = ({ onVerify }) => {
     }
   };
 
-  const handleChangeOtp = (enteredOtp) => {
-    setOtp(enteredOtp);
+  const handleChangeOtp = (e) => {
+    const value = e.target.value;
+    if (/^\d*$/.test(value) && value.length <= 6) {
+      // Only allow numeric input up to 6 digits
+      setOtp(value);
+    }
   };
 
   return (
@@ -209,15 +213,14 @@ const GetMobileNumber = ({ onVerify }) => {
                     position: "relative",
                     width: "100%", // Default width
                     "@media (max-width: 342px)": {
-                      width: "30%", // Width for mobile screens
+                      width: "80%", // Width for mobile screens
                       padding: "50px",
-                      marginLeft: "25%", // Adjust padding for mobile
+                      marginLeft: "10%", // Adjust padding for mobile
                     },
                   }}
                 >
                   <ArrowBackIcon
                     onClick={() => setShowSteps(0)}
-                    y
                     fontSize="large"
                     sx={{
                       color: "white",
@@ -235,13 +238,12 @@ const GetMobileNumber = ({ onVerify }) => {
                     style={{
                       color: "white",
                       fontWeight: "bold",
-
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
                     }}
                     sx={{
                       "@media (max-width: 342px)": {
-                        fontSize: "2px", // Smaller font size for mobile
+                        fontSize: "12px", // Smaller font size for mobile
                       },
                     }}
                   >
@@ -250,53 +252,39 @@ const GetMobileNumber = ({ onVerify }) => {
                   <center
                     style={{
                       color: "white",
-
                       fontWeight: "bold",
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
                     }}
                     sx={{
                       "@media (max-width: 342px)": {
-                        fontSize: "2px",
+                        fontSize: "12px",
                         // Smaller font size for mobile
                       },
                     }}
                   >
                     ENVIADO AL TELEFONO POR SMS
                   </center>
-                  <Button
-                    sx={{
-                      color: "white",
-                    }}
-                    size="small"
-                    variant="text"
-                    onClick={handleSubmit}
-                  >
-                    Nueva OTP
-                  </Button>
 
-                  <OtpInput
+                  {/* Replace OtpInput with a single input field */}
+                  <input
+                    type="text"
+                    maxLength="6"
                     value={otp}
                     onChange={handleChangeOtp}
-                    numInputs={6}
-                    separator={<span>-</span>}
-                    containerStyle={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                    inputStyle={{
-                      width: "60px",
+                    style={{
+                      width: "300px",
                       height: "60px",
-                      backgroundColor: "transparent",
+                      backgroundColor: "white",
                       borderColor: "gray",
-                      color: "white",
+                      color: "black",
                       borderWidth: 1,
-                      borderRadius: 0,
+                      borderRadius: "10px", // Increased border radius for rounded corners
                       textAlign: "center",
+                      fontSize: "24px",
                       marginTop: "10px",
-                      fontSize: 24,
                       "@media (max-width: 342px)": {
-                        width: "40px", // Adjust width for mobile
+                        width: "200px", // Adjust width for mobile
                         height: "40px", // Adjust height for mobile
                         fontSize: "16px", // Adjust font size for mobile
                       },
@@ -310,8 +298,14 @@ const GetMobileNumber = ({ onVerify }) => {
                       mb: 2,
                       mt: 3,
                       background: "transparent",
+                      fontWeight: "bold",
+                      border: "4px solid white",
+                      // Add this line for white border
+                      "&:hover": {
+                        bgcolor: "transparent", // Darker shade for hover effect if needed
+                        border: "4px solid white", // Ensure border stays white on hover
+                      },
                     }}
-                    disabled={!otp}
                     onClick={submitOtp}
                   >
                     ENVIAR
@@ -351,7 +345,7 @@ const GetMobileNumber = ({ onVerify }) => {
                     whiteSpace: "nowrap", // Prevent text wrapping
                   }}
                 >
-                  ¡BIENVENIDO/A AL CURSO DE INGRESO
+                  ¡BIENVENIDO/A AL CURSO DE
                 </center>
                 <center
                   style={{
@@ -361,7 +355,7 @@ const GetMobileNumber = ({ onVerify }) => {
                     whiteSpace: "nowrap", // Prevent text wrapping
                   }}
                 >
-                  A GUARDIA CIVIL!
+                  INGRESO A GUARDIA CIVIL!
                 </center>
                 <center
                   style={{
@@ -382,8 +376,8 @@ const GetMobileNumber = ({ onVerify }) => {
                         marginTop: "-3%",
                       },
                       "& .MuiInputBase-input": {
-                        color: "#ffffff", // Set input text color to white
-                        backgroundColor: "transparent",
+                        color: "black", // Set input text color to white
+                        backgroundColor: "#ffffff",
                         padding: "19px",
                         width: "100%",
                         justifyContent: "center",
@@ -392,7 +386,7 @@ const GetMobileNumber = ({ onVerify }) => {
                         fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                         boxShadow: "0 4px 20px grey",
                         "&::placeholder": {
-                          color: "#FFFFFF", // Set placeholder text color to white
+                          color: "black", // Set placeholder text color to white
                           fontFamily: "serif",
                           fontSize: "16px",
                           fontWeight: 300, // Adjusted to semi-light
@@ -444,7 +438,6 @@ const GetMobileNumber = ({ onVerify }) => {
 
                 <Button
                   type="button"
-                  disabled={!phoneNumber || submitMobileNumberLoading}
                   fullWidth
                   variant="contained"
                   color="primary"
@@ -453,8 +446,12 @@ const GetMobileNumber = ({ onVerify }) => {
                     marginTop: "10%",
                     bgcolor: "transparent",
                     color: "white",
+                    fontWeight: "bold",
+                    border: "4px solid white",
+                    // Add this line for white border
                     "&:hover": {
                       bgcolor: "transparent", // Darker shade for hover effect if needed
+                      border: "4px solid white", // Ensure border stays white on hover
                     },
                   }}
                   onClick={handleSubmit}

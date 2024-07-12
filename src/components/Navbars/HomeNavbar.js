@@ -45,7 +45,6 @@ const HomeNavbar = (props) => {
 
   useEffect(() => {
     let timerInterval;
-    debugger
     const registerData = localStorage.getItem("registerData");
     if (registerData) {
       const parsedData = JSON.parse(registerData);
@@ -105,14 +104,7 @@ const HomeNavbar = (props) => {
             <img src={icon} alt="menu" className={classes.image} />
             Menu
           </WhiteTextTypography>
-          <div className={classes.logoHorizontallyCenter}>
-            <img
-              src={logo}
-              srcSet={iosLogo}
-              className={`${classes.logo} logo`}
-              alt="logo"
-            />
-          </div>
+          <div className={classes.logoHorizontallyCenter}></div>
           <div className={classes.grow} />
 
           {getData?.IsRegistered === "NO" && (

@@ -665,8 +665,11 @@ const ExpiryRegistrationForm = ({
           color: "white",
           fontFamily: '"Montserrat", sans-serif',
           fontWeight: "bold",
+          border: "4px solid white",
+          // Add this line for white border
           "&:hover": {
             bgcolor: "transparent", // Darker shade for hover effect if needed
+            border: "4px solid white", // Ensure border stays white on hover
           },
           "& .MuiButton-endIcon": {
             animation: "pulse 2s infinite",
