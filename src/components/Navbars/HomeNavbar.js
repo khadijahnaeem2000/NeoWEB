@@ -60,9 +60,26 @@ const HomeNavbar = (props) => {
     if (registerData) {
       const parsedData = JSON.parse(registerData);
       if (parsedData.IsRegistered === "NO") {
-        timerInterval = setInterval(checkAndShowPopup, 1000 * 60 * 3);
-        // Run it immediately for the first time
-        checkAndShowPopup();
+        timerInterval = setInterval(() => {
+          const logTime = localStorage.getItem("loginTime");
+          if (logTime) {
+            const currentTime = new Date().getTime();
+            const elapsedTime = currentTime - logTime;
+            const timeToPopup = 3 * 60 * 1000;
+            if (isVerifiedData === null) {
+              handleStorageChange();
+            }
+            if (elapsedTime >= timeToPopup) {
+              if (getData?.IsRegistered === "NO") {
+                setShowRegister(true);
+              }
+            } else {
+              if (getData?.IsRegistered === "NO") {
+                setShowRegister(false);
+              }
+            }
+          }
+        }, 1000 * 60 * 1);
       } else if (parsedData.IsRegistered === "YES") {
         localStorage.removeItem("loginTime");
       }
@@ -71,7 +88,7 @@ const HomeNavbar = (props) => {
     return () => {
       clearInterval(timerInterval);
     };
-  }, [isVerifiedData]);
+  }, []);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -105,14 +122,7 @@ const HomeNavbar = (props) => {
             <img src={icon} alt="menu" className={classes.image} />
             Menu
           </WhiteTextTypography>
-          <div className={classes.logoHorizontallyCenter}>
-            <img
-              src={logo}
-              srcSet={iosLogo}
-              className={`${classes.logo} logo`}
-              alt="logo"
-            />
-          </div>
+          <div className={classes.logoHorizontallyCenter}></div>
           <div className={classes.grow} />
 
           {getData?.IsRegistered === "NO" && (
