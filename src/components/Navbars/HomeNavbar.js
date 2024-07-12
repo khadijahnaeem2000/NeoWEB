@@ -44,7 +44,7 @@ const HomeNavbar = (props) => {
     const registerData = localStorage.getItem("registerData");
     if (registerData) {
       const parsedData = JSON.parse(registerData);
-      if (parsedData.IsRegistered === "NO"){
+      if (parsedData.IsRegistered === "NO") {
         timerInterval = setInterval(() => {
           const logTime = localStorage.getItem("loginTime");
           if (logTime) {
@@ -58,7 +58,6 @@ const HomeNavbar = (props) => {
               if (getData?.IsRegistered === "NO") {
                 setShowRegister(true);
               }
-            
             } else {
               if (getData?.IsRegistered === "NO") {
                 setShowRegister(false);
@@ -66,7 +65,7 @@ const HomeNavbar = (props) => {
             }
           }
         }, 1000 * 60 * 1);
-      }else if (parsedData.IsRegistered === "YES") {
+      } else if (parsedData.IsRegistered === "YES") {
         localStorage.removeItem("loginTime");
       }
     }
@@ -75,23 +74,20 @@ const HomeNavbar = (props) => {
     };
   }, []);
 
-
   const handleLogout = () => {
     localStorage.clear();
     window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
-   
   };
 
   useEffect(() => {
     handleStorageChange();
-    window.addEventListener('beforeunload', handleLogout);
+    window.addEventListener("beforeunload", handleLogout);
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener('beforeunload', handleLogout);
+      window.removeEventListener("beforeunload", handleLogout);
     };
   }, []);
- 
 
   const showRegForm = (show) => {
     handleStorageChange();
@@ -111,14 +107,7 @@ const HomeNavbar = (props) => {
             <img src={icon} alt="menu" className={classes.image} />
             Menu
           </WhiteTextTypography>
-          <div className={classes.logoHorizontallyCenter}>
-            <img
-              src={logo}
-              srcSet={iosLogo}
-              className={`${classes.logo} logo`}
-              alt="logo"
-            />
-          </div>
+          <div className={classes.logoHorizontallyCenter}></div>
           <div className={classes.grow} />
 
           {getData?.IsRegistered === "NO" && (

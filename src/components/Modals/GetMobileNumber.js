@@ -264,26 +264,11 @@ const GetMobileNumber = ({ onVerify }) => {
                   >
                     ENVIADO AL TELEFONO POR SMS
                   </center>
-                  <Button
-                    sx={{
-                      color: "white",
-                    }}
-                    size="small"
-                    variant="text"
-                    onClick={handleSubmit}
-                  >
-                    Nueva OTP
-                  </Button>
 
                   <OtpInput
                     value={otp}
                     onChange={handleChangeOtp}
                     numInputs={6}
-                    separator={<span>-</span>}
-                    containerStyle={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
                     inputStyle={{
                       width: "60px",
                       height: "60px",
@@ -382,8 +367,8 @@ const GetMobileNumber = ({ onVerify }) => {
                         marginTop: "-3%",
                       },
                       "& .MuiInputBase-input": {
-                        color: "#ffffff", // Set input text color to white
-                        backgroundColor: "transparent",
+                        color: "black", // Set input text color to white
+                        backgroundColor: "#ffffff",
                         padding: "19px",
                         width: "100%",
                         justifyContent: "center",
@@ -392,7 +377,7 @@ const GetMobileNumber = ({ onVerify }) => {
                         fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
                         boxShadow: "0 4px 20px grey",
                         "&::placeholder": {
-                          color: "#FFFFFF", // Set placeholder text color to white
+                          color: "black", // Set placeholder text color to white
                           fontFamily: "serif",
                           fontSize: "16px",
                           fontWeight: 300, // Adjusted to semi-light
@@ -453,8 +438,10 @@ const GetMobileNumber = ({ onVerify }) => {
                     marginTop: "10%",
                     bgcolor: "transparent",
                     color: "white",
+                    // Add this line for white border
                     "&:hover": {
                       bgcolor: "transparent", // Darker shade for hover effect if needed
+                      border: "1px solid white", // Ensure border stays white on hover
                     },
                   }}
                   onClick={handleSubmit}
