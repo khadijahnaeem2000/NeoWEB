@@ -1,14 +1,11 @@
-import React from "react";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 import useStyles from "./styles.js";
 import icon from "../../assets/img/images/icons-menu-white.svg";
 import logo from "../../assets/img/images/logo.webp";
 import iosLogo from "../../assets/img/images/logo.png";
-import { withStyles } from "@material-ui/core/styles";
 import ExpiryRegistrationForm from "components/ExpiryRegister/index.js";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Button } from "@mui/material";
 
 const WhiteTextTypography = withStyles({
   root: {
@@ -22,13 +19,13 @@ const WhiteTextTypography = withStyles({
 })(Typography);
 
 const HomeNavbar = (props) => {
+  const classes = useStyles();
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
   const handleStorageChange = () => {
     const regData = localStorage.getItem("registerData");
-
     if (regData && regData !== "undefined") {
       try {
         const parsedData = JSON.parse(regData);
@@ -40,65 +37,62 @@ const HomeNavbar = (props) => {
   };
 
   useEffect(() => {
+    const logTime = localStorage.getItem("loginTime");
+    const checkAndShowPopup = () => {
+      const currentTime = new Date().getTime();
+      const elapsedTime = currentTime - logTime;
+      const timeToPopup = 3 * 60 * 1000; // 3 minutes in milliseconds
+
+      if (isVerifiedData === null) {
+        handleStorageChange();
+      }
+
+      if (elapsedTime >= timeToPopup && getData?.IsRegistered === "NO") {
+        setShowRegister(true);
+      } else {
+        setShowRegister(false);
+      }
+    };
+
     let timerInterval;
+
     const registerData = localStorage.getItem("registerData");
     if (registerData) {
       const parsedData = JSON.parse(registerData);
-      if (parsedData.IsRegistered === "NO"){
-        timerInterval = setInterval(() => {
-          const logTime = localStorage.getItem("loginTime");
-          if (logTime) {
-            const currentTime = new Date().getTime();
-            const elapsedTime = currentTime - logTime;
-            const timeToPopup = 3 * 60 * 1000;
-            if (isVerifiedData === null) {
-              handleStorageChange();
-            }
-            if (elapsedTime >= timeToPopup) {
-              if (getData?.IsRegistered === "NO") {
-                setShowRegister(true);
-              }
-            
-            } else {
-              if (getData?.IsRegistered === "NO") {
-                setShowRegister(false);
-              }
-            }
-          }
-        }, 1000 * 60 * 1);
-      }else if (parsedData.IsRegistered === "YES") {
+      if (parsedData.IsRegistered === "NO") {
+        timerInterval = setInterval(checkAndShowPopup, 1000 * 60 * 3);
+        // Run it immediately for the first time
+        checkAndShowPopup();
+      } else if (parsedData.IsRegistered === "YES") {
         localStorage.removeItem("loginTime");
       }
     }
+
     return () => {
       clearInterval(timerInterval);
     };
-  }, []);
-
+  }, [isVerifiedData]);
 
   const handleLogout = () => {
     localStorage.clear();
     window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
-   
   };
 
   useEffect(() => {
     handleStorageChange();
-    window.addEventListener('beforeunload', handleLogout);
+    window.addEventListener("beforeunload", handleLogout);
     window.addEventListener("storage", handleStorageChange);
     return () => {
       window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener('beforeunload', handleLogout);
+      window.removeEventListener("beforeunload", handleLogout);
     };
   }, []);
- 
 
   const showRegForm = (show) => {
     handleStorageChange();
     setShowRegister(show);
   };
 
-  const classes = useStyles();
   return (
     <>
       <AppBar position="sticky" className={classes.appBar} color="inherit">
@@ -151,4 +145,5 @@ const HomeNavbar = (props) => {
     </>
   );
 };
+
 export default HomeNavbar;
