@@ -14,10 +14,14 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import ReusableModal from "components/Modal";
 import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const ProductCard = ({ item, handleCheckboxChange, getData }) => {
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [status, setStatus] = useState("Activate");
 
   const handleActiveProduct = async () => {
     try {
@@ -45,7 +49,20 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
             SubscriptionActivation: response?.data?.value,
           };
 
+          if (response?.data?.value === "InActive") {
+            setStatus("Activada");
+          } else if (response?.data?.value === "Active") {
+            setStatus("Desactivada");
+          }
+
           localStorage.setItem("neoestudio", JSON.stringify(updatedData));
+          dispatch({
+            type: "User_Register_Success",
+            payload: {
+              ...getData,
+              SubscriptionActivation: response?.data?.value,
+            },
+          });
         } else if (response?.data?.status === "Unsuccessful") {
           toast.error(response?.data?.message);
         }
@@ -67,12 +84,16 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
     setIsModalOpen(false);
   };
 
-  const subscriptionStatus = useMemo(() => {
-    return getData?.SubscriptionActivation === null
-      ? "Activate"
-      : getData?.SubscriptionActivation === "Active"
-      ? "Activada"
-      : "Desactivada";
+  useEffect(() => {
+    if (getData?.SubscriptionActivation === null) {
+      setStatus("Activate");
+    } else {
+      if (getData?.SubscriptionActivation === "InActive") {
+        setStatus("Activada");
+      } else if (getData?.SubscriptionActivation === "Active") {
+        setStatus("Desactivada");
+      }
+    }
   }, [getData?.SubscriptionActivation]);
 
   return (
@@ -159,7 +180,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                     color: "white",
                   }}
                 >
-                  {subscriptionStatus}
+                  {status}
                 </Button>
               </Typography>
             )}

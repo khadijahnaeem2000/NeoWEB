@@ -5,7 +5,14 @@ import LinearProgress from "@mui/material/LinearProgress";
 import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import userServices from "services/httpService/userAuth/userServices";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+import logo from "../../assets/img/images/logo.webp";
+import "./index.css";
+
 const Verification = () => {
+  const [message, setMessage] = useState("");
+  const dispatch = useDispatch();
   const { userId } = useParams();
   const navigate = useNavigate();
 
@@ -25,6 +32,11 @@ const Verification = () => {
           "neoestudio",
           JSON.stringify(response?.data?.data)
         );
+
+        dispatch({
+          type: "User_Register_Success",
+          payload: response.data.data,
+        });
         localStorage.setItem(
           "package",
           JSON.stringify(response?.data?.package)
@@ -34,7 +46,13 @@ const Verification = () => {
         }
 
         navigate("/");
-      } else {
+      } else if (response?.data?.status === "Unsuccessfull") {
+        if (response?.data?.is_deleted) {
+          setMessage("¡Lo siento! el usuario no existe");
+        }
+        if (response?.data?.is_blocked) {
+          setMessage("Estas bloqueada contacta con la administradora");
+        }
       }
     } catch (error) {
       return error;
@@ -49,30 +67,49 @@ const Verification = () => {
   return (
     <Container component="main" maxWidth="sm">
       <CssBaseline />
-      <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          textAlign: "center",
-        }}
-      >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main", width: 80, height: 80 }}>
-          <VerifiedUserIcon sx={{ fontSize: 50 }} />
-        </Avatar>
-        <Box sx={{ width: "100%", mt: 8 }}>
-          <LinearProgress />
+      {message ? (
+        <div className="container">
+          <div>
+            <img src={logo} alt="logo" />
+          </div>
+          <div className="message">
+            <p className="heading">Lo siento!!</p>
+            <p>{message}</p>
+          </div>
+          <div className="animation">
+            <div className="circle"></div>
+            <div className="circle"></div>
+            <div className="circle"></div>
+          </div>
+        </div>
+      ) : (
+        <Box
+          sx={{
+            marginTop: 8,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            textAlign: "center",
+          }}
+        >
+          <Avatar
+            sx={{ m: 1, bgcolor: "secondary.main", width: 80, height: 80 }}
+          >
+            <VerifiedUserIcon sx={{ fontSize: 50 }} />
+          </Avatar>
+          <Box sx={{ width: "100%", mt: 8 }}>
+            <LinearProgress />
+          </Box>
+          <Typography component="h1" variant="h4" sx={{ mt: 2 }}>
+            Verificación de usuario
+          </Typography>
+          <Typography variant="body1" sx={{ mt: 2 }}>
+            Su cuenta ha sido verificada exitosamente. Ahora puedes acceder a
+            todos las características de nuestro servicio. Gracias por verificar
+            tu e-mail DIRECCIÓN.
+          </Typography>
         </Box>
-        <Typography component="h1" variant="h4" sx={{ mt: 2 }}>
-          Verificación de usuario
-        </Typography>
-        <Typography variant="body1" sx={{ mt: 2 }}>
-          Su cuenta ha sido verificada exitosamente. Ahora puedes acceder a
-          todos las características de nuestro servicio. Gracias por verificar
-          tu e-mail DIRECCIÓN.
-        </Typography>
-      </Box>
+      )}
     </Container>
   );
 };
