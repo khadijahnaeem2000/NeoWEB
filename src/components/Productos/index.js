@@ -26,7 +26,6 @@ import "./style.css";
 import { toast } from "react-toastify";
 import ProductCard from "../ProductCard";
 
-
 const ProductosCarrito = () => {
   const [loading, setLoading] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
@@ -103,7 +102,6 @@ const ProductosCarrito = () => {
         const checkedItemIds = items
           .filter((item) => item.checked)
           .map((item) => item?.id);
-        
 
         const queryString = `ids=${`${JSON.stringify(checkedItemIds)}`}`;
         console.log("queryString: ", queryString);
@@ -170,7 +168,7 @@ const ProductosCarrito = () => {
                             Cantidad
                           </TableCell>
                           <TableCell align="right" style={{ width: "10%" }}>
-                            Precio total
+                            Precio
                           </TableCell>
                         </TableRow>
                       </TableHead>
