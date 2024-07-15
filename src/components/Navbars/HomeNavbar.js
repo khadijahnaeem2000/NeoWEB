@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { AppBar, Toolbar, Typography, Button } from "@material-ui/core";
-import { withStyles } from "@material-ui/core/styles";
+import React from "react";
+import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import useStyles from "./styles.js";
 import icon from "../../assets/img/images/icons-menu-white.svg";
 import logo from "../../assets/img/images/logo.webp";
 import iosLogo from "../../assets/img/images/logo.png";
+import { withStyles } from "@material-ui/core/styles";
 import ExpiryRegistrationForm from "components/ExpiryRegister/index.js";
+import { useState } from "react";
+import { useEffect } from "react";
+import { Button } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const WhiteTextTypography = withStyles({
   root: {
@@ -19,43 +23,28 @@ const WhiteTextTypography = withStyles({
 })(Typography);
 
 const HomeNavbar = (props) => {
-  const classes = useStyles();
+  const data = useSelector((state) => state.userInfo.userRegister.success);
+  console.log('data: ', data);
+
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
-  const handleStorageChange = () => {
-    const regData = localStorage.getItem("registerData");
-    if (regData && regData !== "undefined") {
-      try {
-        const parsedData = JSON.parse(regData);
-        setIsVerifiedData(parsedData);
-      } catch (e) {
-        console.error("Failed to parse registerData:", e);
-      }
-    }
-  };
+  // const handleStorageChange = () => {
+  //   const regData = localStorage.getItem("registerData");
+
+  //   if (regData && regData !== "undefined") {
+  //     try {
+  //       const parsedData = JSON.parse(regData);
+  //       setIsVerifiedData(parsedData);
+  //     } catch (e) {
+  //       console.error("Failed to parse registerData:", e);
+  //     }
+  //   }
+  // };
 
   useEffect(() => {
-    const logTime = localStorage.getItem("loginTime");
-    const checkAndShowPopup = () => {
-      const currentTime = new Date().getTime();
-      const elapsedTime = currentTime - logTime;
-      const timeToPopup = 3 * 60 * 1000; // 3 minutes in milliseconds
-
-      if (isVerifiedData === null) {
-        handleStorageChange();
-      }
-
-      if (elapsedTime >= timeToPopup && getData?.IsRegistered === "NO") {
-        setShowRegister(true);
-      } else {
-        setShowRegister(false);
-      }
-    };
-
     let timerInterval;
-
     const registerData = localStorage.getItem("registerData");
     if (registerData) {
       const parsedData = JSON.parse(registerData);
@@ -66,9 +55,7 @@ const HomeNavbar = (props) => {
             const currentTime = new Date().getTime();
             const elapsedTime = currentTime - logTime;
             const timeToPopup = 3 * 60 * 1000;
-            if (isVerifiedData === null) {
-              handleStorageChange();
-            }
+           
             if (elapsedTime >= timeToPopup) {
               if (getData?.IsRegistered === "NO") {
                 setShowRegister(true);
@@ -84,11 +71,10 @@ const HomeNavbar = (props) => {
         localStorage.removeItem("loginTime");
       }
     }
-
     return () => {
       clearInterval(timerInterval);
     };
-  }, []);
+  }, [isVerifiedData , getData]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -96,20 +82,16 @@ const HomeNavbar = (props) => {
   };
 
   useEffect(() => {
-    handleStorageChange();
-    window.addEventListener("beforeunload", handleLogout);
-    window.addEventListener("storage", handleStorageChange);
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("beforeunload", handleLogout);
-    };
-  }, []);
+    if (!isVerifiedData) {
+      setIsVerifiedData(data);
+    }
+  }, [data]);
 
   const showRegForm = (show) => {
-    handleStorageChange();
     setShowRegister(show);
   };
 
+  const classes = useStyles();
   return (
     <>
       <AppBar position="sticky" className={classes.appBar} color="inherit">
@@ -155,5 +137,4 @@ const HomeNavbar = (props) => {
     </>
   );
 };
-
 export default HomeNavbar;

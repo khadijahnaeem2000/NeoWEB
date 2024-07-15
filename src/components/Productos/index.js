@@ -28,26 +28,11 @@ import ProductCard from "../ProductCard";
 
 const ProductosCarrito = () => {
   const [loading, setLoading] = useState(false);
+  const [applyCouponLoading, setApplyCouponLoading] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
   const [items, setItems] = useState([]);
-
-  const handleIncrement = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id ? { ...item, quantity: item.quantity + 1 } : item
-      )
-    );
-  };
-
-  const handleDecrement = (id) => {
-    setItems(
-      items.map((item) =>
-        item.id === id && item.quantity > 0
-          ? { ...item, quantity: item.quantity - 1 }
-          : item
-      )
-    );
-  };
+  const [coupon, setCoupon] = useState("");
+  const [couponPercent, setCouponPercent] = useState(0);
 
   const handleCheckboxChange = (id) => {
     setItems(
@@ -82,15 +67,26 @@ const ProductosCarrito = () => {
     }
   };
 
+  const applyCouponPercentage = (item, price) => {
+    if (item?.order === 1 && couponPercent > 0) {
+      const disAmount = price * (couponPercent / 100);
+      return price - disAmount;
+    } else {
+      return price;
+    }
+  };
+
   const getTotalPrice = useMemo(() => {
-    return (item) => item.price * item.quantity;
-  }, []);
+    return (item) => {
+      return applyCouponPercentage(item, item.price * item.quantity);
+    };
+  }, [couponPercent]);
 
   const totalSum = useMemo(() => {
     return items
       ?.filter((item) => item?.checked)
       .reduce((total, item) => total + getTotalPrice(item), 0);
-  }, [items]);
+  }, [items, getTotalPrice]);
 
   useEffect(() => {
     getProductLists();
@@ -104,9 +100,8 @@ const ProductosCarrito = () => {
           .map((item) => item?.id);
 
         const queryString = `ids=${`${JSON.stringify(checkedItemIds)}`}`;
-        console.log("queryString: ", queryString);
         const response = await productosService.buyProducts(
-          `/paymentsubscriptionplan2024?email=${getData?.email}&${queryString}`
+          `/paymentsubscriptionplan2024?email=${getData?.email}&${queryString}&coupon=${coupon}`
         );
 
         if (response?.data?.status === "Successfull") {
@@ -121,6 +116,28 @@ const ProductosCarrito = () => {
   const isAnyItemChecked = useMemo(() => {
     return items.some((item) => item.checked);
   }, [items]);
+
+  const applyCoupon = async () => {
+    try {
+      setApplyCouponLoading(true);
+      const response = await productosService.applyCoupon("CheckCoupon", {
+        coupon: coupon,
+        userid: getData?.id,
+      });
+      if (response.data?.status === "Succesfull") {
+        setCouponPercent(Number(response.data?.percentage));
+        toast.success("¡Éxito! Cupón aplicado");
+      } else if (response.data?.status === "Unsuccesfull") {
+        toast.error(response.data?.error);
+      }
+
+      setApplyCouponLoading(false);
+    } catch (error) {
+      setApplyCouponLoading(false);
+      console.log("error: ", error);
+      return error;
+    }
+  };
 
   return (
     <div className="flex flex-col">
@@ -184,7 +201,45 @@ const ProductosCarrito = () => {
                                 {item?.quantity}
                               </TableCell>
                               <TableCell align="right">
-                                {getTotalPrice(item)}€
+                                <Box
+                                  sx={{
+                                    display: "flex",
+                                    flexDirection: "column",
+                                  }}
+                                >
+                                  <Typography
+                                    sx={{
+                                      textDecoration:
+                                        couponPercent > 0 && item?.order === 1
+                                          ? "line-through"
+                                          : "",
+                                      textDecorationColor:
+                                        couponPercent > 0 && item?.order === 1
+                                          ? "red"
+                                          : "",
+                                    }}
+                                    variant="body2"
+                                  >
+                                    {item?.price * item?.quantity} €
+                                  </Typography>
+                                  {couponPercent > 0 && item?.order === 1 && (
+                                    <Typography
+                                      style={{
+                                        whiteSpace: "nowrap",
+                                        overflow: "hidden",
+                                        textOverflow: "ellipsis",
+                                      }}
+                                      variant="body2"
+                                      gutterBottom
+                                    >
+                                      {applyCouponPercentage(
+                                        item,
+                                        item.price * item.quantity
+                                      )}{" "}
+                                      €
+                                    </Typography>
+                                  )}
+                                </Box>
                               </TableCell>
                             </TableRow>
                           ))}
@@ -198,24 +253,80 @@ const ProductosCarrito = () => {
                         </TableRow>
                         <TableRow>
                           <TableCell colSpan={3} align="center">
-                            <TextField
-                              fullWidth
-                              label="Código descuento"
-                              variant="outlined"
-                              InputLabelProps={{
-                                style: {
-                                  fontSize: "15px",
-                                  width: "100%",
-                                  top: "50%",
-                                  transform: "translateY(-50%)",
-                                  marginLeft: "7px",
-                                },
-                              }}
-                              sx={{
-                                width: "70%",
-                                // Adjust the width as per your requirement
-                              }}
-                            />
+                            {couponPercent > 0 ? (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: "row",
+                                  gap: 2,
+                                  justifyContent: "start",
+                                  alignItems: "flex-start",
+                                }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontWeight: "bold",
+                                  }}
+                                  variant="subtitle1"
+                                >
+                                  Cupón aplicado:
+                                </Typography>
+                                <Chip
+                                  color="success"
+                                  label={coupon}
+                                  variant="outlined"
+                                  onDelete={() => {
+                                    setCoupon('')
+                                    setCouponPercent(0)
+                                  }}
+                                />
+                              </Box>
+                            ) : (
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: { xs: "column", md: "row" },
+                                  alignItems: "center",
+                                  gap: 2,
+                                }}
+                              >
+                                <TextField
+                                  fullWidth
+                                  placeholder="Código descuento"
+                                  value={coupon}
+                                  onChange={(event) => {
+                                    setCoupon(event.target.value);
+                                  }}
+                                  variant="outlined"
+                                  InputLabelProps={{
+                                    style: {
+                                      fontSize: "15px",
+                                      width: "100%",
+                                      top: "50%",
+                                      transform: "translateY(-50%)",
+                                      marginLeft: "7px",
+                                    },
+                                  }}
+                                  sx={{
+                                    width: "70%",
+                                    // Adjust the width as per your requirement
+                                  }}
+                                />
+
+                                {coupon && (
+                                  <Button
+                                    disabled={applyCouponLoading}
+                                    style={{ marginLeft: 10 }}
+                                    variant="contained"
+                                    color="info"
+                                    onClick={applyCoupon}
+                                    size="small"
+                                  >
+                                    {applyCouponLoading ? "Espera..." : "Aplicar cupón"}
+                                  </Button>
+                                )}
+                              </Box>
+                            )}
                           </TableCell>
                         </TableRow>
                       </TableBody>
@@ -228,7 +339,7 @@ const ProductosCarrito = () => {
                     color="primary"
                     onClick={handleCheckout}
                   >
-                    Pagar
+                    COMPRAR
                   </Button>
                 </Grid>
               )}

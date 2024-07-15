@@ -1,5 +1,5 @@
 // src/ProductCard.js
-import React, { useState, useMemo } from "react";
+import React from "react";
 import {
   Paper,
   Grid,
@@ -7,15 +7,21 @@ import {
   Typography,
   Checkbox,
   Button,
+  Modal,
 } from "@mui/material";
 import productosService from "services/httpService/Productos/productServices";
 import { toast } from "react-toastify";
+import { useState } from "react";
 import ReusableModal from "components/Modal";
+import { useMemo } from "react";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 const ProductCard = ({ item, handleCheckboxChange, getData }) => {
+  const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [subscriptionStatus, setSubscriptionStatus] = useState(getData?.SubscriptionActivation || '');
+  const [status, setStatus] = useState("Activate");
 
   const handleActiveProduct = async () => {
     try {
@@ -43,9 +49,20 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
             SubscriptionActivation: response?.data?.value,
           };
 
+          if (response?.data?.value === "InActive") {
+            setStatus("Desactivada");
+          } else if (response?.data?.value === "Active") {
+            setStatus("Activada");
+          }
+
           localStorage.setItem("neoestudio", JSON.stringify(updatedData));
-          setSubscriptionStatus(response?.data?.value); // Update subscription status
-          console.log('Subscription status updated:', response?.data?.value); // Log to verify
+          dispatch({
+            type: "User_Register_Success",
+            payload: {
+              ...getData,
+              SubscriptionActivation: response?.data?.value,
+            },
+          });
         } else if (response?.data?.status === "Unsuccessful") {
           toast.error(response?.data?.message);
         }
@@ -53,7 +70,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
         setLoading(false);
       }
     } catch (error) {
-      console.error("Error in Inactive and active:", error);
+      console.error("Error in Inactie and active:", error);
       setLoading(false);
       handleCloseModal();
     }
@@ -67,13 +84,18 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
     setIsModalOpen(false);
   };
 
-  const subscriptionStatusText = useMemo(() => {
-    return subscriptionStatus === null
-      ? "Activate"
-      : subscriptionStatus === "Active"
-      ? "Activada"
-      : "Desactivada";
-  }, [subscriptionStatus]);
+  useEffect(() => {
+    if (getData?.SubscriptionActivation === null) {
+      setStatus("Activate");
+    } else {
+      if (getData?.SubscriptionActivation === "InActive") {
+        setStatus("Desactivada");
+     
+      } else if (getData?.SubscriptionActivation === "Active") {
+        setStatus("Activada");
+      }
+    }
+  }, [getData?.SubscriptionActivation]);
 
   return (
     <Grid item xs={12} sm={6} key={item?.id}>
@@ -85,7 +107,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 src={item?.photo}
                 alt={item?.name}
                 className="product-image"
-                style={{ marginTop: "15px",marginLeft: "12px" }}
+                style={{ marginTop: "15px",marginLeft:"15px" }}
               />
               {getData?.IsPaymentComplete === "NO" && (
                 <Checkbox
@@ -100,7 +122,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                   style={{
                     position: "absolute",
                     top: -2,
-                    left: -15,
+                    left: -12,
                   }}
                 />
               )}
@@ -120,10 +142,9 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
               </Box>
             </Box>
             <Typography
-              variant="h5"
+              variant="h6"
               sx={{
                 fontSize: "22px",
-                fontFamily: 'Montserrat-bold',
               }}
             >
               {item?.price}€
@@ -132,11 +153,12 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
             {item?.order === 1 && (
               <Typography
                 sx={{
-                  fontSize: "15px",
+                  fontSize: "12px",
                   color: "#636363", // Ensure no overflow
+                 
                 }}
               >
-                Expiración: {getData?.Payment_ExpiryDate} (Faltan {getData?.dias} días)
+                Expiración: {getData?.Payment_ExpiryDate} (Faltan {getData?.dias} días)
               </Typography>
             )}
 
@@ -147,19 +169,20 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                   color: "#636363", // Ensure no overflow
                 }}
               >
-                Renovación:{" "}
+                Renovación:  {" "}
                 <Button
                   onClick={handleOpenModal}
+                  // onClick={handleActiveProduct}
                   size="small"
                   variant="contained"
                   style={{
                     fontSize: "8px",
                     padding: "3px 8px",
-                    backgroundColor: subscriptionStatusText === 'Desactivada' ? 'red' : 'green',
+                    backgroundColor: status === "Desactivada" ? "red" : "green",
                     color: "white",
                   }}
                 >
-                  {subscriptionStatusText}
+                  {status}
                 </Button>
               </Typography>
             )}
@@ -170,10 +193,10 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
       <ReusableModal
         open={isModalOpen}
         onClose={handleCloseModal}
-        title={`Confirm ${
-          subscriptionStatus === "Active"
-            ? "De Activar"
-            : "Activar"
+        title={`CONFIRMACIÓN DE ${
+          getData?.SubscriptionActivation === "Active"
+            ? "BAJA"
+            : "ACTIVAR"
         }`}
         footer={
           <Box display="flex" justifyContent="flex-end" gap={2}>
@@ -186,7 +209,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 "&:hover": { backgroundColor: "darkred" },
               }}
             >
-              NO
+             NO, salir
             </Button>
             <Button
               disabled={loading}
@@ -198,17 +221,18 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 "&:hover": { backgroundColor: "darkgreen" },
               }}
             >
-              {loading ? "espere por favor..." : "YES"}
+              {loading ? "espere por favor..." : "Sí"}
             </Button>
           </Box>
         }
       >
         <Typography variant="body1">
-          {`Está seguro? tú quieres ${
-            subscriptionStatus === "Active"
-              ? "De Activar"
-              : "Activar"
-          }`}
+          {`¿Estás seguro/a que deseas ${
+            getData?.SubscriptionActivation === "Active"
+              ? "desactivar"
+              : "activar"
+          } el cobro
+automático?`}
         </Typography>
       </ReusableModal>
     </Grid>

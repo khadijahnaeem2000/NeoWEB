@@ -203,6 +203,7 @@ const GetMobileNumber = ({ onVerify }) => {
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     padding: "100px",
+                    paddingTop:"40px",
                   }}
                   sx={{
                     display: "flex",
@@ -235,34 +236,42 @@ const GetMobileNumber = ({ onVerify }) => {
                       
                     }}
                   />
-                  <center
+                   <center
                     style={{
                       color: "white",
                       fontWeight: "bold",
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
+                      fontSize: "150%",
+                      MarginTop:"1px",
                     }}
                     sx={{
                       "@media (max-width: 342px)": {
-                        fontSize: "12px", // Smaller font size for mobile
+                        fontSize: "15px", // Smaller font size for mobile
                       },
                     }}
+                  >
+                    PRUEBA 30 DÍAS GRATIS
+                  </center>
+                  <center
+                    style={{
+                      color: "white",
+                   
+                      fontFamily: '"Montserrat", sans-serif',
+                      whiteSpace: "nowrap", // Prevent text wrapping
+                    }}
+                   
                   >
                     INTRODUCE EL CÓDIGO DE VERIFICACIÓN
                   </center>
                   <center
                     style={{
                       color: "white",
-                      fontWeight: "bold",
+                     
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
                     }}
-                    sx={{
-                      "@media (max-width: 342px)": {
-                        fontSize: "12px",
-                        // Smaller font size for mobile
-                      },
-                    }}
+                    
                   >
                     ENVIADO AL TELEFONO POR SMS
                   </center>
@@ -445,23 +454,21 @@ const GetMobileNumber = ({ onVerify }) => {
                 </center>
 
                 <Button
-                  type="button"
-                  fullWidth
-                  variant="contained"
-                  color="primary"
-                  sx={{
-                    mb: 2,
-                    marginTop: "10%",
-                    bgcolor: "transparent",
-                    color: "white",
-                    fontWeight: "bold",
-                    border: "4px solid white",
-                    // Add this line for white border
-                    "&:hover": {
-                      bgcolor: "transparent", // Darker shade for hover effect if needed
-                      border: "4px solid white", // Ensure border stays white on hover
-                    },
-                  }}
+                 type="button"
+                 fullWidth
+                 variant="contained"
+                 sx={{
+                   mb: 2,
+                   mt: 3,
+                   background: "transparent",
+                   fontWeight: "bold",
+                   border: "4px solid white",
+                   // Add this line for white border
+                   "&:hover": {
+                     bgcolor: "transparent", // Darker shade for hover effect if needed
+                     border: "4px solid white", // Ensure border stays white on hover
+                   },
+                 }}
                   onClick={handleSubmit}
                 >
                   Enviar

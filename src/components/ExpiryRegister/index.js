@@ -17,12 +17,14 @@ import { getLocalUserdata } from "services/auth/localStorageData";
 import logo from "../../assets/img/images/logo.webp";
 import iosLogo from "../../assets/img/images/logo.png";
 import backgroundImage from "../../assets/img/expirybg.png";
+import { useDispatch } from "react-redux";
 
 const ExpiryRegistrationForm = ({
   isVerifiedData,
   setIsVerifiedData,
   onVerify,
 }) => {
+  const dispatch = useDispatch();
   const data = getLocalUserdata();
   const [formData, setFormData] = useState({
     id: data?.id,
@@ -91,6 +93,14 @@ const ExpiryRegistrationForm = ({
               ...prevState,
               IsRegistered: "YES",
             }));
+
+            dispatch({
+              type: "User_Register_Success",
+              payload: {
+                ...isVerifiedData,
+                IsRegistered: "YES",
+              },
+            });
           }
           localStorage.removeItem("loginTime");
           toast.success("Registro exitoso");

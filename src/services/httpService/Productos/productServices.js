@@ -10,6 +10,9 @@ class productosService {
   activeAndInactiveProduct(route, data) {
     return http.post(route, data);
   }
+  applyCoupon(route, data) {
+    return http.post(route, data);
+  }
 }
 
 export default new productosService();
