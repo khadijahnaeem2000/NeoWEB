@@ -34,6 +34,7 @@ const ProductosCarrito = () => {
   const [coupon, setCoupon] = useState("");
   const [couponPercent, setCouponPercent] = useState(0);
 
+
   const handleCheckboxChange = (id) => {
     setItems(
       items.map((item) =>
@@ -146,6 +147,7 @@ const ProductosCarrito = () => {
           <Typography variant="h4" gutterBottom>
             Tienda
           </Typography>
+         
         </center>
         {loading === true ? (
           <Box sx={{ display: "flex", justifyContent: "center" }} width="100%">
@@ -172,14 +174,14 @@ const ProductosCarrito = () => {
               {items?.length > 0 && getData?.IsPaymentComplete === "NO" && (
                 <Grid item xs={12} sm={4}>
                   <TableContainer
-                    style={{ marginBlock: "20px" }}
+                    style={{ marginBlock: "20px",marginTop:"2px" }}
                     component={Paper}
                   >
                     <Table>
                       <TableHead>
                         <TableRow>
                           <TableCell style={{ width: "80%" }}>
-                          Nombre del producto o servicio
+                          Nombre del producto
                           </TableCell>
                           <TableCell align="center" style={{ width: "10%" }}>
                             Cantidad
@@ -290,6 +292,7 @@ const ProductosCarrito = () => {
                                   gap: 2,
                                 }}
                               >
+                                
                                 <TextField
                                   fullWidth
                                   placeholder="Código descuento"
