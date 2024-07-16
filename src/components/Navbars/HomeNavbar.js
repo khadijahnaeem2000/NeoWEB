@@ -78,7 +78,7 @@ const HomeNavbar = (props) => {
 
   const handleLogout = () => {
     localStorage.clear();
-    window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
+    window.location.replace("https://neoestudio.net/aula_virtual");
   };
 
   useEffect(() => {
