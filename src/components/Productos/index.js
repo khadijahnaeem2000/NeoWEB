@@ -160,15 +160,22 @@ const ProductosCarrito = () => {
   return (
     <div className="flex flex-col">
       <div style={{ marginTop: "1%", marginLeft: "2%", marginRight: "2%" }}>
-        <Box sx={{
-          display : "flex",
-          justifyContent : getData?.IsRegistered === "NO" ? "space-between" : "center" ,
-          alignItems : "center"
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent:
+              getData?.IsRegistered === "NO" ? "space-between" : "center",
+            alignItems: "center",
+          }}
+        >
           {getData?.IsRegistered === "NO" && <div className="empty-div"></div>}
-          <Typography sx={{
-            marginBottom : 0
-          }} variant="h4" gutterBottom>
+          <Typography
+         style={{
+          margin : '0px'
+         }}
+            variant="h4"
+            gutterBottom
+          >
             Tienda
           </Typography>
 
@@ -218,7 +225,7 @@ const ProductosCarrito = () => {
                       <TableHead>
                         <TableRow>
                           <TableCell style={{ width: "80%" }}>
-                          Nombre del producto o servicio
+                            Nombre del producto o servicio
                           </TableCell>
                           <TableCell align="center" style={{ width: "10%" }}>
                             Cantidad
@@ -324,11 +331,19 @@ const ProductosCarrito = () => {
                               <Box
                                 sx={{
                                   display: "flex",
-                                  flexDirection: { xs: "column", md: "row" },
+                                  flexDirection: { md: "row" },
                                   alignItems: "center",
                                   gap: 2,
                                 }}
                               >
+                                <Typography
+                                  sx={{
+                                    fontWeight: "bold",
+                                  }}
+                                  variant="subtitle2"
+                                >
+                                  Cupón:&nbsp;&nbsp;
+                                </Typography>
                                 <TextField
                                   fullWidth
                                   placeholder="Código descuento"
@@ -361,7 +376,9 @@ const ProductosCarrito = () => {
                                     onClick={applyCoupon}
                                     size="small"
                                   >
-                                    {applyCouponLoading ? "Espera..." : "Aplicar cupón"}
+                                    {applyCouponLoading
+                                      ? "Espera..."
+                                      : "Aplicar"}
                                   </Button>
                                 )}
                               </Box>

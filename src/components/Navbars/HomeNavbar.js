@@ -24,17 +24,22 @@ const WhiteTextTypography = withStyles({
 
 const HomeNavbar = (props) => {
   const data = useSelector((state) => state.userInfo.userRegister.success);
- 
+
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
+  useEffect(() => {
+    if (!isVerifiedData) {
+      setIsVerifiedData(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     let timerInterval;
-    const registerData = localStorage.getItem("registerData");
-    if (registerData) {
-      const parsedData = JSON.parse(registerData);
+    const regData = localStorage.getItem("registerData");
+    if (regData) {
+      const parsedData = JSON.parse(regData);
       if (parsedData.IsRegistered === "NO") {
         timerInterval = setInterval(() => {
           const logTime = localStorage.getItem("loginTime");
@@ -42,7 +47,7 @@ const HomeNavbar = (props) => {
             const currentTime = new Date().getTime();
             const elapsedTime = currentTime - logTime;
             const timeToPopup = 3 * 60 * 1000;
-           
+
             if (elapsedTime >= timeToPopup) {
               if (getData?.IsRegistered === "NO") {
                 setShowRegister(true);
@@ -61,14 +66,7 @@ const HomeNavbar = (props) => {
     return () => {
       clearInterval(timerInterval);
     };
-  }, [isVerifiedData , getData]);
-
- 
-  useEffect(() => {
-    if (!isVerifiedData) {
-      setIsVerifiedData(data);
-    }
-  }, [data]);
+  }, [isVerifiedData, getData, data]);
 
   const showRegForm = (show) => {
     setShowRegister(show);
@@ -89,10 +87,6 @@ const HomeNavbar = (props) => {
           </WhiteTextTypography>
           <div className={classes.logoHorizontallyCenter}></div>
           <div className={classes.grow} />
-
-          
-
-          
         </Toolbar>
       </AppBar>
     </>

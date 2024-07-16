@@ -90,7 +90,6 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
     } else {
       if (getData?.SubscriptionActivation === "InActive") {
         setStatus("Desactivada");
-     
       } else if (getData?.SubscriptionActivation === "Active") {
         setStatus("Activada");
       }
@@ -107,7 +106,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 src={item?.photo}
                 alt={item?.name}
                 className="product-image"
-                style={{ marginTop: "15px",marginLeft:"15px" }}
+                style={{ marginTop: "15px", marginLeft: "15px" }}
               />
               {getData?.IsPaymentComplete === "NO" && (
                 <Checkbox
@@ -155,10 +154,10 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 sx={{
                   fontSize: "12px",
                   color: "#636363", // Ensure no overflow
-                 
                 }}
               >
-                Expiración: {getData?.Payment_ExpiryDate} (Faltan {getData?.dias} días)
+                Expiración: {getData?.Payment_ExpiryDate} (Faltan{" "}
+                {getData?.dias} días)
               </Typography>
             )}
 
@@ -194,9 +193,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
         open={isModalOpen}
         onClose={handleCloseModal}
         title={`CONFIRMACIÓN DE ${
-          getData?.SubscriptionActivation === "Active"
-            ? "BAJA"
-            : "ACTIVAR"
+          getData?.SubscriptionActivation === "Active" ? "BAJA" : "ACTIVAR"
         }`}
         footer={
           <Box display="flex" justifyContent="flex-end" gap={2}>
@@ -209,7 +206,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 "&:hover": { backgroundColor: "darkred" },
               }}
             >
-             NO, salir
+              NO, salir
             </Button>
             <Button
               disabled={loading}
