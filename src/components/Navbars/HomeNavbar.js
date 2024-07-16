@@ -24,24 +24,11 @@ const WhiteTextTypography = withStyles({
 
 const HomeNavbar = (props) => {
   const data = useSelector((state) => state.userInfo.userRegister.success);
-  console.log('data: ', data);
-
+ 
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
-  // const handleStorageChange = () => {
-  //   const regData = localStorage.getItem("registerData");
-
-  //   if (regData && regData !== "undefined") {
-  //     try {
-  //       const parsedData = JSON.parse(regData);
-  //       setIsVerifiedData(parsedData);
-  //     } catch (e) {
-  //       console.error("Failed to parse registerData:", e);
-  //     }
-  //   }
-  // };
 
   useEffect(() => {
     let timerInterval;
@@ -76,11 +63,7 @@ const HomeNavbar = (props) => {
     };
   }, [isVerifiedData , getData]);
 
-  const handleLogout = () => {
-    localStorage.clear();
-    window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
-  };
-
+ 
   useEffect(() => {
     if (!isVerifiedData) {
       setIsVerifiedData(data);
@@ -107,31 +90,9 @@ const HomeNavbar = (props) => {
           <div className={classes.logoHorizontallyCenter}></div>
           <div className={classes.grow} />
 
-          {getData?.IsRegistered === "NO" && (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              sx={{ marginBlock: 2 }}
-              onClick={() => {
-                setShowRegister(true);
-              }}
-            >
-              Registrarse
-            </Button>
-          )}
+          
 
-          {isVerifiedData && showRegister && (
-            <div className="overlay">
-              <div className="popup">
-                <ExpiryRegistrationForm
-                  isVerifiedData={isVerifiedData}
-                  setIsVerifiedData={setIsVerifiedData}
-                  onVerify={showRegForm}
-                />
-              </div>
-            </div>
-          )}
+          
         </Toolbar>
       </AppBar>
     </>

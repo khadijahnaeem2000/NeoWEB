@@ -25,14 +25,22 @@ import productosService from "services/httpService/Productos/productServices";
 import "./style.css";
 import { toast } from "react-toastify";
 import ProductCard from "../ProductCard";
+import { useSelector } from "react-redux";
+import ExpiryRegistrationForm from "components/ExpiryRegister";
 
 const ProductosCarrito = () => {
+  const data = useSelector((state) => state.userInfo.userRegister.success);
+  const getData = JSON.parse(localStorage.getItem("neoestudio"));
+
   const [loading, setLoading] = useState(false);
   const [applyCouponLoading, setApplyCouponLoading] = useState(false);
-  const getData = JSON.parse(localStorage.getItem("neoestudio"));
+
   const [items, setItems] = useState([]);
   const [coupon, setCoupon] = useState("");
   const [couponPercent, setCouponPercent] = useState(0);
+
+  const [isVerifiedData, setIsVerifiedData] = useState(null);
+  const [showRegister, setShowRegister] = useState(false);
 
   const handleCheckboxChange = (id) => {
     setItems(
@@ -139,14 +147,45 @@ const ProductosCarrito = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isVerifiedData) {
+      setIsVerifiedData(data);
+    }
+  }, [data]);
+
+  const showRegForm = (show) => {
+    setShowRegister(show);
+  };
+
   return (
     <div className="flex flex-col">
-      <div style={{ marginTop: "3%", marginLeft: "2%", marginRight: "2%" }}>
-        <center>
-          <Typography variant="h4" gutterBottom>
+      <div style={{ marginTop: "1%", marginLeft: "2%", marginRight: "2%" }}>
+        <Box sx={{
+          display : "flex",
+          justifyContent : getData?.IsRegistered === "NO" ? "space-between" : "center" ,
+          alignItems : "center"
+        }}>
+          {getData?.IsRegistered === "NO" && <div className="empty-div"></div>}
+          <Typography sx={{
+            marginBottom : 0
+          }} variant="h4" gutterBottom>
             Tienda
           </Typography>
-        </center>
+
+          {getData?.IsRegistered === "NO" && (
+            <Button
+              type="button"
+              variant="contained"
+              color="primary"
+              sx={{ marginBlock: 2 }}
+              onClick={() => {
+                setShowRegister(true);
+              }}
+            >
+              Registrarse
+            </Button>
+          )}
+        </Box>
         {loading === true ? (
           <Box sx={{ display: "flex", justifyContent: "center" }} width="100%">
             <CircularProgress />
@@ -276,8 +315,8 @@ const ProductosCarrito = () => {
                                   label={coupon}
                                   variant="outlined"
                                   onDelete={() => {
-                                    setCoupon('')
-                                    setCouponPercent(0)
+                                    setCoupon("");
+                                    setCouponPercent(0);
                                   }}
                                 />
                               </Box>
@@ -345,6 +384,18 @@ const ProductosCarrito = () => {
               )}
             </Grid>
           </>
+        )}
+
+        {isVerifiedData && showRegister && (
+          <div className="overlay">
+            <div className="popup">
+              <ExpiryRegistrationForm
+                isVerifiedData={isVerifiedData}
+                setIsVerifiedData={setIsVerifiedData}
+                onVerify={showRegForm}
+              />
+            </div>
+          </div>
         )}
       </div>
     </div>

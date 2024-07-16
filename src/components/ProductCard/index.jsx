@@ -169,7 +169,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                   color: "#636363", // Ensure no overflow
                 }}
               >
-                Renovación:  {" "}
+                Renovación:&nbsp;&nbsp;&nbsp;
                 <Button
                   onClick={handleOpenModal}
                   // onClick={handleActiveProduct}
