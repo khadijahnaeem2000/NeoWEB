@@ -218,7 +218,7 @@ const ProductosCarrito = () => {
               {items?.length > 0 && getData?.IsPaymentComplete === "NO" && (
                 <Grid item xs={12} sm={4}>
                   <TableContainer
-                    style={{ marginBlock: "20px" }}
+                    style={{ marginBlock: "20px",marginTop:"2px" }}
                     component={Paper}
                   >
                     <Table>

@@ -179,6 +179,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                     padding: "3px 8px",
                     backgroundColor: status === "Desactivada" ? "red" : "green",
                     color: "white",
+                    marginLeft:"6px"
                   }}
                 >
                   {status}

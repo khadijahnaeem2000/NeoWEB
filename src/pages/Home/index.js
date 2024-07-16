@@ -124,7 +124,7 @@ function Home() {
     else if (currentPage === "Repaso") return <Repaso />;
     else if (currentPage === "Salir") {
       localStorage.clear();
-      window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
+      window.location.replace("https://neoestudio.net/aula_virtual");
       return;
     } else if (currentPage === "Videos")
       return <Video folderToggle={folderToggle} />;
