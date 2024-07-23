@@ -68,9 +68,18 @@ const HomeNavbar = (props) => {
     };
   }, [isVerifiedData, getData, data]);
 
-  const showRegForm = (show) => {
-    setShowRegister(show);
-  };
+  function triggerOnClose(event) {
+    event.preventDefault();
+    localStorage.clear();
+  }
+
+  useEffect(() => {
+    window.addEventListener("beforeunload", triggerOnClose);
+
+    return () => {
+      window.removeEventListener("beforeunload", triggerOnClose);
+    };
+  }, []);
 
   const classes = useStyles();
   return (
