@@ -30,8 +30,17 @@ const HomeNavbar = (props) => {
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
   useEffect(() => {
-    if (!isVerifiedData) {
-      setIsVerifiedData(data);
+    try {
+      let localRegData = localStorage.getItem("registerData");
+      const parseData = localRegData ? JSON.parse(localRegData) : null;
+      if (data) {
+        setIsVerifiedData(data);
+      } else if (!parseData && !data) {
+        localStorage.clear();
+        window.location.replace("https://neoestudio.net/aula_virtual");
+      }
+    } catch (error) {
+      console.log("error: ", error);
     }
   }, [data]);
 
@@ -39,28 +48,32 @@ const HomeNavbar = (props) => {
     let timerInterval;
     const regData = localStorage.getItem("registerData");
     if (regData) {
-      const parsedData = JSON.parse(regData);
-      if (parsedData.IsRegistered === "NO") {
-        timerInterval = setInterval(() => {
-          const logTime = localStorage.getItem("loginTime");
-          if (logTime) {
-            const currentTime = new Date().getTime();
-            const elapsedTime = currentTime - logTime;
-            const timeToPopup = 3 * 60 * 1000;
+      try {
+        const parsedData = JSON.parse(regData);
+        if (parsedData.IsRegistered === "NO") {
+          timerInterval = setInterval(() => {
+            const logTime = localStorage.getItem("loginTime");
+            if (logTime) {
+              const currentTime = new Date().getTime();
+              const elapsedTime = currentTime - logTime;
+              const timeToPopup = 3 * 60 * 1000;
 
-            if (elapsedTime >= timeToPopup) {
-              if (getData?.IsRegistered === "NO") {
-                setShowRegister(true);
-              }
-            } else {
-              if (getData?.IsRegistered === "NO") {
-                setShowRegister(false);
+              if (elapsedTime >= timeToPopup) {
+                if (getData?.IsRegistered === "NO") {
+                  setShowRegister(true);
+                }
+              } else {
+                if (getData?.IsRegistered === "NO") {
+                  setShowRegister(false);
+                }
               }
             }
-          }
-        }, 1000 * 60 * 1);
-      } else if (parsedData.IsRegistered === "YES") {
-        localStorage.removeItem("loginTime");
+          }, 1000 * 60 * 1);
+        } else if (parsedData.IsRegistered === "YES") {
+          localStorage.removeItem("loginTime");
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
     return () => {

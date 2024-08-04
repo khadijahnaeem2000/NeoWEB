@@ -179,6 +179,7 @@ const GetMobileNumber = ({ onVerify }) => {
             justifyContent: "center",
             alignItems: "center",
             marginInline: "50px",
+            borderRadius: "7px",
           }}
         >
           <CircularProgress color="primary" />
@@ -203,7 +204,7 @@ const GetMobileNumber = ({ onVerify }) => {
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     padding: "100px",
-                    paddingTop:"40px",
+                    paddingTop: "40px",
                   }}
                   sx={{
                     display: "flex",
@@ -231,19 +232,18 @@ const GetMobileNumber = ({ onVerify }) => {
                       margin: "10px",
                       "@media (max-width: 360px)": {
                         left: 2,
-                    },
+                      },
                       // Add some margin if needed
-                      
                     }}
                   />
-                   <center
+                  <center
                     style={{
                       color: "white",
                       fontWeight: "bold",
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
                       fontSize: "150%",
-                      MarginTop:"1px",
+                      MarginTop: "1px",
                     }}
                     sx={{
                       "@media (max-width: 342px)": {
@@ -256,22 +256,20 @@ const GetMobileNumber = ({ onVerify }) => {
                   <center
                     style={{
                       color: "white",
-                   
+
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
                     }}
-                   
                   >
                     INTRODUCE EL CÓDIGO DE VERIFICACIÓN
                   </center>
                   <center
                     style={{
                       color: "white",
-                     
+
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
                     }}
-                    
                   >
                     ENVIADO AL TELEFONO POR SMS
                   </center>
@@ -373,9 +371,7 @@ const GetMobileNumber = ({ onVerify }) => {
                     color: "white",
                     marginTop: "1px",
                     fontFamily: '"Montserrat", sans-serif',
-                   
-                    
-                  
+
                     whiteSpace: "nowrap", // Prevent text wrapping
                   }}
                 >
@@ -454,21 +450,21 @@ const GetMobileNumber = ({ onVerify }) => {
                 </center>
 
                 <Button
-                 type="button"
-                 fullWidth
-                 variant="contained"
-                 sx={{
-                   mb: 2,
-                   mt: 3,
-                   background: "transparent",
-                   fontWeight: "bold",
-                   border: "4px solid white",
-                   // Add this line for white border
-                   "&:hover": {
-                     bgcolor: "transparent", // Darker shade for hover effect if needed
-                     border: "4px solid white", // Ensure border stays white on hover
-                   },
-                 }}
+                  type="button"
+                  fullWidth
+                  variant="contained"
+                  sx={{
+                    mb: 2,
+                    mt: 3,
+                    background: "transparent",
+                    fontWeight: "bold",
+                    border: "4px solid white",
+                    // Add this line for white border
+                    "&:hover": {
+                      bgcolor: "transparent", // Darker shade for hover effect if needed
+                      border: "4px solid white", // Ensure border stays white on hover
+                    },
+                  }}
                   onClick={handleSubmit}
                 >
                   Enviar
