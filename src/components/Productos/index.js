@@ -58,13 +58,13 @@ const ProductosCarrito = () => {
         let productsWithQuantity = response?.data?.data.map((product) => ({
           ...product,
           quantity: 1,
-          checked: product?.order === 1 ? true : false,
+          checked: false,
         }));
-        if (getData?.IsPaymentComplete === "YES") {
-          productsWithQuantity = productsWithQuantity?.filter(
-            (product) => product?.order === 1
-          );
-        }
+        // if (getData?.IsPaymentComplete === "YES") {
+        //   productsWithQuantity = productsWithQuantity?.filter(
+        //     (product) => product?.order === 1
+        //   );
+        // }
         setLoading(false);
         setItems(productsWithQuantity);
       }
@@ -170,9 +170,9 @@ const ProductosCarrito = () => {
         >
           {getData?.IsRegistered === "NO" && <div className="empty-div"></div>}
           <Typography
-         style={{
-          margin : '0px'
-         }}
+            style={{
+              margin: "0px",
+            }}
             variant="h4"
             gutterBottom
           >
@@ -215,10 +215,10 @@ const ProductosCarrito = () => {
                 </Grid>
               </Grid>
 
-              {items?.length > 0 && getData?.IsPaymentComplete === "NO" && (
+              {items?.length > 0 && (
                 <Grid item xs={12} sm={4}>
                   <TableContainer
-                    style={{ marginBlock: "20px",marginTop:"2px" }}
+                    style={{ marginBlock: "20px", marginTop: "2px" }}
                     component={Paper}
                   >
                     <Table>

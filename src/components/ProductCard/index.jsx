@@ -108,15 +108,22 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 className="product-image"
                 style={{ marginTop: "15px", marginLeft: "15px" }}
               />
-              {getData?.IsPaymentComplete === "NO" && (
+              {item?.order === 1 && getData?.IsPaymentComplete === "YES" ? (
                 <Checkbox
-                  checked={item?.checked || false}
+                  checked={true}
                   onChange={() => {
-                    if (item?.order === 1) {
-                      return;
-                    } else {
-                      handleCheckboxChange(item?.id);
-                    }
+                    return toast.info("ya he comprado");
+                  }}
+                  style={{
+                    position: "absolute",
+                    top: -2,
+                    left: -12,
+                  }}
+                />
+              ) : (
+                <Checkbox
+                  onChange={() => {
+                    handleCheckboxChange(item?.id);
                   }}
                   style={{
                     position: "absolute",
@@ -179,7 +186,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                     padding: "3px 8px",
                     backgroundColor: status === "Desactivada" ? "red" : "green",
                     color: "white",
-                    marginLeft:"6px"
+                    marginLeft: "6px",
                   }}
                 >
                   {status}
