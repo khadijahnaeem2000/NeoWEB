@@ -9,6 +9,7 @@ import ExpiryRegistrationForm from "components/ExpiryRegister/index.js";
 import { useState } from "react";
 import { useEffect } from "react";
 import { Button } from "@mui/material";
+import { useSelector } from "react-redux";
 
 const WhiteTextTypography = withStyles({
   root: {
@@ -22,77 +23,76 @@ const WhiteTextTypography = withStyles({
 })(Typography);
 
 const HomeNavbar = (props) => {
+  const data = useSelector((state) => state.userInfo.userRegister.success);
+
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
 
-  const handleStorageChange = () => {
-    const regData = localStorage.getItem("registerData");
-
-    if (regData && regData !== "undefined") {
-      try {
-        const parsedData = JSON.parse(regData);
-        setIsVerifiedData(parsedData);
-      } catch (e) {
-        console.error("Failed to parse registerData:", e);
+  useEffect(() => {
+    try {
+      let localRegData = localStorage.getItem("registerData");
+      const parseData = localRegData ? JSON.parse(localRegData) : null;
+      if (data) {
+        setIsVerifiedData(data);
+      } else if (!parseData && !data) {
+        localStorage.clear();
+        window.location.replace("https://neoestudio.net/aula_virtual");
       }
+    } catch (error) {
+      console.log("error: ", error);
     }
-  };
+  }, [data]);
 
   useEffect(() => {
     let timerInterval;
-    const registerData = localStorage.getItem("registerData");
-    if (registerData) {
-      const parsedData = JSON.parse(registerData);
-      if (parsedData.IsRegistered === "NO") {
-        timerInterval = setInterval(() => {
-          const logTime = localStorage.getItem("loginTime");
-          if (logTime) {
-            const currentTime = new Date().getTime();
-            const elapsedTime = currentTime - logTime;
-            const timeToPopup = 3 * 60 * 1000;
-            if (isVerifiedData === null) {
-              handleStorageChange();
-            }
-            if (elapsedTime >= timeToPopup) {
-              if (getData?.IsRegistered === "NO") {
-                setShowRegister(true);
+    const regData = localStorage.getItem("registerData");
+    if (regData) {
+      try {
+        const parsedData = JSON.parse(regData);
+        if (parsedData.IsRegistered === "NO") {
+          timerInterval = setInterval(() => {
+            const logTime = localStorage.getItem("loginTime");
+            if (logTime) {
+              const currentTime = new Date().getTime();
+              const elapsedTime = currentTime - logTime;
+              const timeToPopup = 3 * 60 * 1000;
+
+              if (elapsedTime >= timeToPopup) {
+                if (getData?.IsRegistered === "NO") {
+                  setShowRegister(true);
+                }
+              } else {
+                if (getData?.IsRegistered === "NO") {
+                  setShowRegister(false);
+                }
               }
-            } else {
-              if (getData?.IsRegistered === "NO") {
-                setShowRegister(true);
-              }
             }
-          }
-        }, 1000 * 60 * 1);
-      } else if (parsedData.IsRegistered === "YES") {
-        localStorage.removeItem("loginTime");
+          }, 1000 * 60 * 1);
+        } else if (parsedData.IsRegistered === "YES") {
+          localStorage.removeItem("loginTime");
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
     return () => {
       clearInterval(timerInterval);
     };
-  }, []);
+  }, [isVerifiedData, getData, data]);
 
-  const handleLogout = () => {
+  function triggerOnClose(event) {
+    event.preventDefault();
     localStorage.clear();
-    window.location.replace("https://neoestudio.net/AULA-VIRTUAL");
-  };
+  }
 
   useEffect(() => {
-    handleStorageChange();
-    window.addEventListener("beforeunload", handleLogout);
-    window.addEventListener("storage", handleStorageChange);
+    window.addEventListener("beforeunload", triggerOnClose);
+
     return () => {
-      window.removeEventListener("storage", handleStorageChange);
-      window.removeEventListener("beforeunload", handleLogout);
+      window.removeEventListener("beforeunload", triggerOnClose);
     };
   }, []);
-
-  const showRegForm = (show) => {
-    handleStorageChange();
-    setShowRegister(show);
-  };
 
   const classes = useStyles();
   return (
@@ -109,32 +109,6 @@ const HomeNavbar = (props) => {
           </WhiteTextTypography>
           <div className={classes.logoHorizontallyCenter}></div>
           <div className={classes.grow} />
-
-          {getData?.IsRegistered === "NO" && (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              sx={{ marginBlock: 2 }}
-              onClick={() => {
-                setShowRegister(true);
-              }}
-            >
-              Registrarse
-            </Button>
-          )}
-
-          {isVerifiedData && showRegister && (
-            <div className="overlay">
-              <div className="popup">
-                <ExpiryRegistrationForm
-                  isVerifiedData={isVerifiedData}
-                  setIsVerifiedData={setIsVerifiedData}
-                  onVerify={showRegForm}
-                />
-              </div>
-            </div>
-          )}
         </Toolbar>
       </AppBar>
     </>

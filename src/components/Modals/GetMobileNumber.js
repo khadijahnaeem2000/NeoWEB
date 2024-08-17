@@ -179,6 +179,7 @@ const GetMobileNumber = ({ onVerify }) => {
             justifyContent: "center",
             alignItems: "center",
             marginInline: "50px",
+            borderRadius: "7px",
           }}
         >
           <CircularProgress color="primary" />
@@ -203,6 +204,7 @@ const GetMobileNumber = ({ onVerify }) => {
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     padding: "100px",
+                    paddingTop: "40px",
                   }}
                   sx={{
                     display: "flex",
@@ -212,10 +214,9 @@ const GetMobileNumber = ({ onVerify }) => {
                     gap: "10px",
                     position: "relative",
                     width: "100%", // Default width
-                    "@media (max-width: 342px)": {
-                      width: "80%", // Width for mobile screens
-                      padding: "50px",
-                      marginLeft: "10%", // Adjust padding for mobile
+                    "@media (max-width: 360px)": {
+                      width: "70%", // Width for mobile screens
+                      margin: "15%", // Adjust padding for mobile
                     },
                   }}
                 >
@@ -226,12 +227,13 @@ const GetMobileNumber = ({ onVerify }) => {
                       color: "white",
                       cursor: "pointer",
                       position: "absolute",
-                      left: 0, // Move it to the left
+                      left: 1, // Move it to the left
                       top: 0, // Adjust top position as needed
                       margin: "10px",
-                      "@media (max-width: 342px)": {
-                        marginLeft: "125%", // Adjust padding for mobile
-                      }, // Add some margin if needed
+                      "@media (max-width: 360px)": {
+                        left: 2,
+                      },
+                      // Add some margin if needed
                     }}
                   />
                   <center
@@ -240,11 +242,23 @@ const GetMobileNumber = ({ onVerify }) => {
                       fontWeight: "bold",
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
+                      fontSize: "150%",
+                      MarginTop: "1px",
                     }}
                     sx={{
                       "@media (max-width: 342px)": {
-                        fontSize: "12px", // Smaller font size for mobile
+                        fontSize: "15px", // Smaller font size for mobile
                       },
+                    }}
+                  >
+                    PRUEBA 30 DÍAS GRATIS
+                  </center>
+                  <center
+                    style={{
+                      color: "white",
+
+                      fontFamily: '"Montserrat", sans-serif',
+                      whiteSpace: "nowrap", // Prevent text wrapping
                     }}
                   >
                     INTRODUCE EL CÓDIGO DE VERIFICACIÓN
@@ -252,15 +266,9 @@ const GetMobileNumber = ({ onVerify }) => {
                   <center
                     style={{
                       color: "white",
-                      fontWeight: "bold",
+
                       fontFamily: '"Montserrat", sans-serif',
                       whiteSpace: "nowrap", // Prevent text wrapping
-                    }}
-                    sx={{
-                      "@media (max-width: 342px)": {
-                        fontSize: "12px",
-                        // Smaller font size for mobile
-                      },
                     }}
                   >
                     ENVIADO AL TELEFONO POR SMS
@@ -330,18 +338,18 @@ const GetMobileNumber = ({ onVerify }) => {
                   gap: "10px",
                   position: "relative",
                   width: "100%", // Default width
-                  "@media (max-width: 342px)": {
-                    width: "30%", // Width for mobile screens
-                    padding: "50px",
-                    marginLeft: "25%", // Adjust padding for mobile
+                  "@media (max-width: 360px)": {
+                    width: "70%", // Width for mobile screens
+                    margin: "15%", // Adjust padding for mobile
                   },
                 }}
               >
                 <center
                   style={{
                     color: "white",
-                    fontWeight: "bold",
-                    fontFamily: '"Montserrat", sans-serif',
+                    fontSize: "150%",
+                    fontFamily: '"Anton"',
+                    marginBottom: "0",
                     whiteSpace: "nowrap", // Prevent text wrapping
                   }}
                 >
@@ -350,9 +358,10 @@ const GetMobileNumber = ({ onVerify }) => {
                 <center
                   style={{
                     color: "white",
-                    fontWeight: "bold",
-                    fontFamily: '"Montserrat", sans-serif',
+                    fontSize: "150%",
+                    fontFamily: '"Anton", sans-serif',
                     whiteSpace: "nowrap", // Prevent text wrapping
+                    marginTop: "-15px",
                   }}
                 >
                   INGRESO A GUARDIA CIVIL!
@@ -360,8 +369,9 @@ const GetMobileNumber = ({ onVerify }) => {
                 <center
                   style={{
                     color: "white",
-                    fontWeight: "bold",
+                    marginTop: "1px",
                     fontFamily: '"Montserrat", sans-serif',
+
                     whiteSpace: "nowrap", // Prevent text wrapping
                   }}
                 >
@@ -379,7 +389,7 @@ const GetMobileNumber = ({ onVerify }) => {
                         color: "black", // Set input text color to white
                         backgroundColor: "#ffffff",
                         padding: "19px",
-                        width: "100%",
+                        width: "150%",
                         justifyContent: "center",
                         textAlign: "center",
                         borderRadius: "2px",
@@ -390,6 +400,9 @@ const GetMobileNumber = ({ onVerify }) => {
                           fontFamily: "serif",
                           fontSize: "16px",
                           fontWeight: 300, // Adjusted to semi-light
+                        },
+                        "@media (max-width: 360px)": {
+                          width: "180%",
                         },
                       },
                       "& .MuiInputBase-root": {
@@ -440,12 +453,10 @@ const GetMobileNumber = ({ onVerify }) => {
                   type="button"
                   fullWidth
                   variant="contained"
-                  color="primary"
                   sx={{
                     mb: 2,
-                    marginTop: "10%",
-                    bgcolor: "transparent",
-                    color: "white",
+                    mt: 3,
+                    background: "transparent",
                     fontWeight: "bold",
                     border: "4px solid white",
                     // Add this line for white border

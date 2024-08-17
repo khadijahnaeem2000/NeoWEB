@@ -3,17 +3,23 @@ import background from "../../assets/img/banner.jpeg";
 const drawerWidth = 0;
 
 export default makeStyles((theme) => ({
-  appBar: {
+appBar: {
     backgroundImage: `url(${background})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     boxShadow: "10",
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-    height: "86px", // or any height you prefer
-    [theme.breakpoints.up("sm")]: {
-      width: `calc(100% - ${drawerWidth}px)`,
-      marginLeft: drawerWidth,
-    },
+    // height: "86px", // default height for small screens
+    // [theme.breakpoints.up("md")]: {
+    //   height: "70px", // height for medium screens and up
+    // },
+    // [theme.breakpoints.up("lg")]: {
+    //   height: "60px", // height for large screens and up
+    // },
+    // [theme.breakpoints.up("sm")]: {
+    //   width: `calc(100% - ${drawerWidth}px)`,
+    //   marginLeft: drawerWidth,
+    // },
     display: "flex",
   },
 
