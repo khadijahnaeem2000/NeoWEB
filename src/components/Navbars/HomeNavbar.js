@@ -60,7 +60,7 @@ const HomeNavbar = (props) => {
               }
             } else {
               if (getData?.IsRegistered === "NO") {
-                setShowRegister(false);
+                setShowRegister(true);
               }
             }
           }
