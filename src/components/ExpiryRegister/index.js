@@ -152,7 +152,9 @@ const ExpiryRegistrationForm = ({
         gap: 2,
         maxWidth: { xs: "90vw", sm: "70vw", md: "50vw", lg: "30vw" },
         width: { xs: "90vw", sm: "70vw", md: "50vw", lg: "25vw" },
-        maxHeight: "85vh", // Limiting the height
+        maxHeight: "85vh",
+        height: "auto",
+        minHeight: "400px", // Limiting the height
         margin: "auto",
         marginTop: "-10px",
         position: "relative",
@@ -162,8 +164,18 @@ const ExpiryRegistrationForm = ({
         padding: "20px",
         borderRadius: "15px",
         boxShadow: "0 4px 20px rgba(0,0,0,0.1)",
-        overflowX: "auto", // Horizontal scrolling if needed
-        overflowY: "auto", // Vertical scrolling if needed
+        overflowY: "auto",
+        "&::-webkit-scrollbar": {
+          width: "8px",
+          height: "8px", // width of the scrollbar
+        },
+        "&::-webkit-scrollbar-thumb": {
+          backgroundColor: "rgba(255, 255, 255, 0.7)", // white color with some transparency
+          borderRadius: "10px", // curve the scrollbar
+        },
+        "&::-webkit-scrollbar-track": {
+          backgroundColor: "transparent", // transparent track background
+        }, // Ensures vertical scrolling
       }}
     >
       <Stack style={{ position: "absolute", right: 10, top: 10 }}>
@@ -201,7 +213,6 @@ const ExpiryRegistrationForm = ({
           display: "flex",
           flexDirection: "column",
           gap: 1,
-          overflow: "auto",
         }}
         className="expiry__reg__form__wrapper"
       >
@@ -226,7 +237,7 @@ const ExpiryRegistrationForm = ({
           PRUEBA DE 30 DÍAS GRATIS!
         </center>
         <br></br>
-      
+
         <center>
           <TextField
             variant="standard"
@@ -254,7 +265,7 @@ const ExpiryRegistrationForm = ({
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
                   color: "#FFFFFF",
-                  fontFamily:'Montserrat-regular',
+                  fontFamily: "Montserrat-regular",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
                 },
@@ -298,7 +309,7 @@ const ExpiryRegistrationForm = ({
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
                   color: "#FFFFFF",
-                  fontFamily:'Montserrat-regular',
+                  fontFamily: "Montserrat-regular",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
                 },
@@ -341,7 +352,7 @@ const ExpiryRegistrationForm = ({
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
                   color: "#FFFFFF",
-                  fontFamily:'Montserrat-regular',
+                  fontFamily: "Montserrat-regular",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
                 },
@@ -384,7 +395,7 @@ const ExpiryRegistrationForm = ({
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
                   color: "#FFFFFF",
-                  fontFamily:'Montserrat-regular',
+                  fontFamily: "Montserrat-regular",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
                 },
@@ -428,7 +439,7 @@ const ExpiryRegistrationForm = ({
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
                   color: "#FFFFFF",
-                  fontFamily:'Montserrat-regular',
+                  fontFamily: "Montserrat-regular",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
                 },
@@ -471,7 +482,7 @@ const ExpiryRegistrationForm = ({
                 boxShadow: "0 4px 20px grey",
                 "&::placeholder": {
                   color: "#FFFFFF",
-                  fontFamily:'Montserrat-regular',
+                  fontFamily: "Montserrat-regular",
                   fontSize: "16px",
                   fontWeight: 300, // Adjusted to semi-light
                 },
@@ -520,7 +531,7 @@ const ExpiryRegistrationForm = ({
                     <span
                       style={{
                         color: "#999999",
-                        fontFamily:'Montserrat-regular',
+                        fontFamily: "Montserrat-regular",
                         fontSize: "16px",
                         fontWeight: 300,
                       }}
@@ -576,7 +587,7 @@ const ExpiryRegistrationForm = ({
                     <span
                       style={{
                         color: "#999999",
-                        fontFamily:'Montserrat-regular',
+                        fontFamily: "Montserrat-regular",
                         fontSize: "16px",
                         fontWeight: 300,
                       }}
@@ -611,7 +622,7 @@ const ExpiryRegistrationForm = ({
           mt: 2,
           bgcolor: "transparent", // Set the background color here
           color: "white",
-          fontFamily:'Montserrat-bold',
+          fontFamily: "Montserrat-bold",
           fontWeight: "bold",
           border: "4px solid white",
           // Add this line for white border

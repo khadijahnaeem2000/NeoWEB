@@ -86,7 +86,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
 
   useEffect(() => {
     if (getData?.SubscriptionActivation === null) {
-      setStatus("Activate");
+      setStatus("Activar ahora");
     } else {
       if (getData?.SubscriptionActivation === "InActive") {
         setStatus("Desactivada");
@@ -109,17 +109,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 style={{ marginTop: "15px", marginLeft: "15px" }}
               />
               {item?.order === 1 && getData?.IsPaymentComplete === "YES" ? (
-                <Checkbox
-                  checked={true}
-                  onChange={() => {
-                    return toast.info("ya he comprado");
-                  }}
-                  style={{
-                    position: "absolute",
-                    top: -2,
-                    left: -12,
-                  }}
-                />
+                ""
               ) : (
                 <Checkbox
                   onChange={() => {
@@ -163,7 +153,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                   color: "#636363", // Ensure no overflow
                 }}
               >
-                Expiración: {getData?.Payment_ExpiryDate} (Faltan{" "}
+                Expiración: {getData?.Payment_ExpiryDate} (Faltan{"30"}
                 {getData?.dias} días)
               </Typography>
             )}

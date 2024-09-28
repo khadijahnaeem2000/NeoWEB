@@ -36,7 +36,7 @@ const HomeNavbar = (props) => {
       if (data) {
         setIsVerifiedData(data);
       } else if (!parseData && !data) {
-        localStorage.clear();
+        // localStorage.clear();
         window.location.replace("https://neoestudio.net/aula_virtual");
       }
     } catch (error) {
@@ -83,7 +83,7 @@ const HomeNavbar = (props) => {
 
   function triggerOnClose(event) {
     event.preventDefault();
-    localStorage.clear();
+    ///localStorage.clear();
   }
 
   useEffect(() => {

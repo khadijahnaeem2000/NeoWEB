@@ -19,6 +19,9 @@ import {
   TableHead,
   TableRow,
   CircularProgress,
+  MenuItem,
+  Select,
+  InputLabel,
 } from "@mui/material";
 import { Add, Remove } from "@mui/icons-material";
 import productosService from "services/httpService/Productos/productServices";
@@ -41,6 +44,39 @@ const ProductosCarrito = () => {
 
   const [isVerifiedData, setIsVerifiedData] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
+
+  const [selectedCity, setSelectedCity] = useState(""); // State for selected city
+  const [cityCost, setCityCost] = useState(0); // State for city cost
+  const [cities, setCities] = useState([]);
+
+  const fetchCities = async () => {
+    try {
+      const cityResponse = await fetch(
+        "https://neoestudio.net/api/getAllProductShipping"
+      );
+      const cityData = await cityResponse.json();
+      console.log("Fetched city data:", cityData); // Debugging line
+
+      if (cityData?.status === "success") {
+        setCities(cityData.data);
+
+        // Automatically select the last city by default
+        const lastCity = cityData.data[cityData.data.length - 1];
+        setSelectedCity(lastCity.CityName);
+        setCityCost(lastCity.Cost);
+      } else {
+        console.log("Error in fetched city data:", cityData);
+      }
+    } catch (error) {
+      toast.error(error);
+      console.error("Error fetching cities:", error);
+    }
+  };
+
+  // Fetch city data and select the last city by default
+  useEffect(() => {
+    fetchCities();
+  }, []);
 
   const handleCheckboxChange = (id) => {
     setItems(
@@ -91,10 +127,12 @@ const ProductosCarrito = () => {
   }, [couponPercent]);
 
   const totalSum = useMemo(() => {
-    return items
-      ?.filter((item) => item?.checked)
-      .reduce((total, item) => total + getTotalPrice(item), 0);
-  }, [items, getTotalPrice]);
+    return (
+      items
+        ?.filter((item) => item?.checked)
+        .reduce((total, item) => total + getTotalPrice(item), 0) + cityCost
+    ); // Add city cost
+  }, [items, getTotalPrice, cityCost]);
 
   useEffect(() => {
     getProductLists();
@@ -107,9 +145,12 @@ const ProductosCarrito = () => {
           .filter((item) => item.checked)
           .map((item) => item?.id);
 
-        const queryString = `ids=${`${JSON.stringify(checkedItemIds)}`}`;
+        const queryString = `ids=${`${JSON.stringify(
+          checkedItemIds
+        )}`}&cityCost=${cityCost}&coupon=${coupon}`;
+
         const response = await productosService.buyProducts(
-          `/paymentsubscriptionplan2024?email=${getData?.email}&${queryString}&coupon=${coupon}`
+          `/paymentsubscriptionplan2024?email=${getData?.email}&${queryString}`
         );
 
         if (response?.data?.status === "Successfull") {
@@ -156,6 +197,23 @@ const ProductosCarrito = () => {
   const showRegForm = (show) => {
     setShowRegister(show);
   };
+
+  const handleCityChange = (event) => {
+    const selectedCityName = event.target.value;
+    console.log("Selected city:", selectedCityName); // Debugging line
+    setSelectedCity(selectedCityName);
+
+    const city = cities.find((city) => city.CityName === selectedCityName);
+    console.log("Selected city data:", city); // Debugging line
+    setCityCost(city ? city.Cost : 0);
+  };
+
+  const shouldShowCityDropdown = useMemo(() => {
+    const firstItemSelected = items[0]?.checked;
+    const anyOtherItemSelected = items.slice(1).some((item) => item.checked);
+
+    return (firstItemSelected && anyOtherItemSelected) || anyOtherItemSelected;
+  }, [items]);
 
   return (
     <div className="flex flex-col">
@@ -289,6 +347,18 @@ const ProductosCarrito = () => {
                               </TableCell>
                             </TableRow>
                           ))}
+                        {selectedCity && (
+                          <>
+                            <TableRow>
+                              <TableCell colSpan={2} align="right">
+                                Coste de envío ({selectedCity})
+                              </TableCell>
+                              <TableCell align="right">
+                                {cityCost.toFixed(2)} €
+                              </TableCell>
+                            </TableRow>
+                          </>
+                        )}
                         <TableRow>
                           <TableCell colSpan={2} align="right">
                             Suma total
@@ -297,6 +367,7 @@ const ProductosCarrito = () => {
                             {totalSum.toFixed(2)}€
                           </TableCell>
                         </TableRow>
+
                         <TableRow>
                           <TableCell colSpan={3} align="center">
                             {couponPercent > 0 ? (
@@ -355,7 +426,7 @@ const ProductosCarrito = () => {
                                   InputLabelProps={{
                                     style: {
                                       fontSize: "15px",
-                                      width: "100%",
+                                      width: "200px",
                                       top: "50%",
                                       transform: "translateY(-50%)",
                                       marginLeft: "7px",
@@ -385,6 +456,57 @@ const ProductosCarrito = () => {
                             )}
                           </TableCell>
                         </TableRow>
+                        {shouldShowCityDropdown && (
+                          <TableRow>
+                            <Box
+                              sx={{
+                                display: "flex",
+                                flexDirection: { md: "row" },
+                                alignItems: "center",
+                                gap: 2,
+                              }}
+                            >
+                              <Typography
+                                sx={{
+                                  fontWeight: "bold",
+                                  marginLeft: "5px",
+                                }}
+                                variant="subtitle2"
+                              >
+                                &nbsp;&nbsp;&nbsp; Ciudad:
+                              </Typography>
+                              <TableCell colSpan={3} align="center">
+                                <Select
+                                  value={selectedCity}
+                                  onChange={handleCityChange}
+                                  fullWidth
+                                  variant="outlined"
+                                  sx={{
+                                    fontSize: "15px",
+                                    width: "200px",
+                                    height: "35px",
+                                    color: "#818589",
+                                  }}
+                                >
+                                  {cities.length > 0 ? (
+                                    cities.map((city) => (
+                                      <MenuItem
+                                        key={city.CityName}
+                                        value={city.CityName}
+                                      >
+                                        {city.CityName}
+                                      </MenuItem>
+                                    ))
+                                  ) : (
+                                    <MenuItem disabled>
+                                      No cities available
+                                    </MenuItem>
+                                  )}
+                                </Select>
+                              </TableCell>
+                            </Box>
+                          </TableRow>
+                        )}
                       </TableBody>
                     </Table>
                   </TableContainer>

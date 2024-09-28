@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import axios from "axios";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
@@ -12,7 +12,7 @@ import AccordionSummary from "@mui/material/AccordionSummary";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import CircularProgress from "@mui/material/CircularProgress";
 import Box from "@mui/material/Box";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import ansSelectImg from "../../assets/img/images/Flecha.webp";
 import Revisar from "../../assets/img/images/revisar.webp";
@@ -27,7 +27,7 @@ import ortoImg from "../../assets/img/images/ortografia.webp";
 import correctImg from "../../assets/img/images/green.webp";
 import wrongImg from "../../assets/img/images/red.webp";
 import nullImg from "../../assets/img/images/grey.webp";
-import iosAtras from "../../assets/img/images/atras.png"
+import iosAtras from "../../assets/img/images/atras.png";
 import atras from "../../assets/img/images/atras.webp";
 import sigiuiente from "../../assets/img/images/siguiente.webp";
 import iosSiguiente from "../../assets/img/images/siguiente.png";
@@ -75,8 +75,8 @@ function Examenes1(props) {
   let triggerTime;
 
   const Styles = useStyles();
-  const [reason, setReason] = useState('');
-  const [scheduleData, setScheduleData] = useState(""); 
+  const [reason, setReason] = useState("");
+  const [scheduleData, setScheduleData] = useState("");
   const [rejectQuestion, setRejectQuestion] = useState(false);
   const [rejectionData, setRejectionData] = useState([]);
   const [rejectionOption, setRejectionOption] = useState("");
@@ -177,6 +177,11 @@ function Examenes1(props) {
     }
     rejectOptions();
   }, []);
+  const handleRedirect = () => {
+    // Reset your form or state here
+    setShowScreen(false); // or any state that you want to reset
+    window.location.href = "https://neoestudio.net/pago-blocked";
+  };
 
   useEffect(() => {
     if (props.showScreen === "true") {
@@ -190,7 +195,7 @@ function Examenes1(props) {
         .catch((error) => {
           console.log(error);
           setLoading(false);
-          alert("Exams List Not Available, Please Refresh The Page");
+          handleRedirect(); // Call the redirect function
         });
     }
   }, [stateRend]);
@@ -212,14 +217,15 @@ function Examenes1(props) {
   }, [stateRend]);
 
   const rejectOptions = () => {
-    axios.get(`https://neoestudio.net/api/rejectionoptions`)
-      .then(res => {
+    axios
+      .get(`https://neoestudio.net/api/rejectionoptions`)
+      .then((res) => {
         setRejectionData(res.data.data[0]);
       })
       .catch((error) => {
         console.log(error);
-      })
-  }
+      });
+  };
 
   // GET ALL EXAM FILES API
   const handleExamId = (id) => {
@@ -277,16 +283,16 @@ function Examenes1(props) {
   // START EXAM API CALL
 
   const startExams = (e, Conocimientos, Inglés, Ortografía, Psicotécnicos) => {
-    const examStatus =  Conocimientos
-    ? Conocimientos.studentExamStatus
-    : Inglés
-    ? Inglés.studentExamStatus
-    : Ortografía
-    ? Ortografía.studentExamStatus
-    : Psicotécnicos.studentExamStatus;
+    const examStatus = Conocimientos
+      ? Conocimientos.studentExamStatus
+      : Inglés
+      ? Inglés.studentExamStatus
+      : Ortografía
+      ? Ortografía.studentExamStatus
+      : Psicotécnicos.studentExamStatus;
     let isReset;
-    if(examStatus==="started") {
-      isReset=true;
+    if (examStatus === "started") {
+      isReset = true;
     }
     const ExamNO = Conocimientos
       ? Conocimientos.id
@@ -302,7 +308,7 @@ function Examenes1(props) {
       : Ortografía
       ? Ortografía.folderId
       : Psicotécnicos.folderId;
-    setScheduleData({folderId:folderId,sub_Id:ExamNO});
+    setScheduleData({ folderId: folderId, sub_Id: ExamNO });
     localStorage.setItem("examID", ExamNO);
     setLoading(true);
     const startData = {
@@ -349,7 +355,7 @@ function Examenes1(props) {
     axios
       .post(`https://neoestudio.net/api/startExam`, startData)
       .then((response) => {
-        console.log('start exam', response);
+        console.log("start exam", response);
         setAnsArry([]);
         for (let i = 0; i < response.data.data.length; i++) {
           setAnsArry((prevState) => [
@@ -385,16 +391,22 @@ function Examenes1(props) {
         setEndExam(response.data);
         setShowScore(true);
         axios
-          .post(`https://neoestudio.net/api/SendSchedule`,{"studentId":data.id,"task":`Examen: ${response.data.examName}`,"type":"exam","folderId":scheduleData.folderId,"sub_Id":scheduleData.sub_Id})
+          .post(`https://neoestudio.net/api/SendSchedule`, {
+            studentId: data.id,
+            task: `Examen: ${response.data.examName}`,
+            type: "exam",
+            folderId: scheduleData.folderId,
+            sub_Id: scheduleData.sub_Id,
+          })
           .then((response) => {
-            console.log('schedule reponse', response);
-            if(response.data.status==='Successfull') {
-              console.log('added to schedule');
+            console.log("schedule reponse", response);
+            if (response.data.status === "Successfull") {
+              console.log("added to schedule");
+            } else {
+              console.log("Could not add to schedule");
             }
-            else {
-              console.log('Could not add to schedule');
-            }
-          }).catch((err) => {
+          })
+          .catch((err) => {
             console.log(err);
           });
       })
@@ -568,34 +580,37 @@ function Examenes1(props) {
   };
 
   const sendRejection = (currentQuestion, rejectionOption) => {
-    if(rejectionOption==="") {
+    if (rejectionOption === "") {
       setSubmission(true);
-    }
-    else {
+    } else {
       const rejectionData = {
-        description:reason,
-        studentId:data.id,
-        qaId:currentQuestion.qaId,
-        selectedoption:rejectionOption,
-      }
+        description: reason,
+        studentId: data.id,
+        qaId: currentQuestion.qaId,
+        selectedoption: rejectionOption,
+      };
       axios
         .post(`https://neoestudio.net/api/questionqueries`, rejectionData)
         .then((response) => {
-          toast.success("La impugnación ha sido enviada con éxito. Muchas gracias por tu colabración.");
+          toast.success(
+            "La impugnación ha sido enviada con éxito. Muchas gracias por tu colabración."
+          );
         })
         .catch((error) => {
           console.log(error, "Error sending rejection");
-          toast.error('Error al enviar en este momento, inténtalo de nuevo más tarde.');
+          toast.error(
+            "Error al enviar en este momento, inténtalo de nuevo más tarde."
+          );
         });
-        closeRejectionForm();
+      closeRejectionForm();
     }
-  }
+  };
 
   const closeRejectionForm = () => {
     setRejectQuestion(false);
-    setRejectionOption('');
+    setRejectionOption("");
     setSubmission(false);
-  }
+  };
 
   return (
     <>
@@ -605,15 +620,30 @@ function Examenes1(props) {
             <Container maxWidth="lg">
               <Grid container spacing={2}>
                 <Grid item xs={3} md={3} className={Styles.topImgHeadWrapper}>
-                  <img src={Conocimientos} srcSet={iosConocimientos} alt="" height={150} />
+                  <img
+                    src={Conocimientos}
+                    srcSet={iosConocimientos}
+                    alt=""
+                    height={150}
+                  />
                   <div className={Styles.headingText}>Conocimientos</div>
                 </Grid>
                 <Grid item xs={3} md={3} className={Styles.topImgHeadWrapper}>
-                  <img src={inglesImg} srcSet={iosInglesImg} alt="" height={150} />
+                  <img
+                    src={inglesImg}
+                    srcSet={iosInglesImg}
+                    alt=""
+                    height={150}
+                  />
                   <div className={Styles.headingText}>Ingles</div>
                 </Grid>
                 <Grid item xs={3} md={3} className={Styles.topImgHeadWrapper}>
-                  <img src={psicoImg} srcSet={iosPsicoImg} alt="" height={150} />
+                  <img
+                    src={psicoImg}
+                    srcSet={iosPsicoImg}
+                    alt=""
+                    height={150}
+                  />
                   <div className={Styles.headingText}>Psicotecnicos</div>
                 </Grid>
                 <Grid item xs={3} md={3} className={Styles.topImgHeadWrapper}>
@@ -643,7 +673,12 @@ function Examenes1(props) {
                         resetExamFile();
                       }}
                     >
-                      <img src={siBtnImg} srcSet={iosSiBtnImg} alt="" height={50} />
+                      <img
+                        src={siBtnImg}
+                        srcSet={iosSiBtnImg}
+                        alt=""
+                        height={50}
+                      />
                     </Button>
                     <Button
                       size="medium"
@@ -651,7 +686,12 @@ function Examenes1(props) {
                         setResetExam(false);
                       }}
                     >
-                      <img src={noBtnImg} srcSet={iosNoBtnImg} alt="" height={50} />
+                      <img
+                        src={noBtnImg}
+                        srcSet={iosNoBtnImg}
+                        alt=""
+                        height={50}
+                      />
                     </Button>
                   </div>
                 </Box>
@@ -700,7 +740,7 @@ function Examenes1(props) {
                                     return (
                                       <div className={Styles.examLinks}>
                                         {Conocimientos.studentExamStatus ===
-                                        ("notAttempted"||"started") ? (
+                                        ("notAttempted" || "started") ? (
                                           <button
                                             id={Conocimientos.id}
                                             onClick={(e) =>
@@ -719,10 +759,10 @@ function Examenes1(props) {
                                               fontFamily: "ProximaSoft-bold",
                                             }}
                                             onClick={(e) => {
-                                                return reviewExam(
-                                                  e,
-                                                  Conocimientos
-                                                );
+                                              return reviewExam(
+                                                e,
+                                                Conocimientos
+                                              );
                                             }}
                                             onMouseDown={() => {
                                               triggerTime = setTimeout(() => {
@@ -733,7 +773,7 @@ function Examenes1(props) {
                                                   Conocimientos.folderId
                                                 );
                                                 setResetExam(true);
-                                            }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                              }, 1000); //Change 1000 to number of milliseconds required for mouse hold
                                             }}
                                             onMouseUp={() => {
                                               clearTimeout(triggerTime);
@@ -741,36 +781,28 @@ function Examenes1(props) {
                                           >
                                             {Conocimientos.name}
                                           </button>
-                                        ) :  Conocimientos.studentExamStatus ===
-                                        "paused" ? (
+                                        ) : Conocimientos.studentExamStatus ===
+                                          "paused" ? (
                                           <button
                                             id={Conocimientos.id}
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Conocimientos
-                                              )
+                                              startExams(e, Conocimientos)
                                             }
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                               color: "#0A52CB",
                                             }}
                                           >
                                             {Conocimientos.name}
                                           </button>
-                                        ):(
+                                        ) : (
                                           <button
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Conocimientos
-                                              )
+                                              startExams(e, Conocimientos)
                                             }
                                             id={Conocimientos.id}
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                             }}
                                           >
                                             {Conocimientos.name}
@@ -785,7 +817,7 @@ function Examenes1(props) {
                                     return (
                                       <div className={Styles.examLinks}>
                                         {Inglés.studentExamStatus ===
-                                        "notAttempted"? (
+                                        "notAttempted" ? (
                                           <button
                                             id={Inglés.id}
                                             onClick={(e) =>
@@ -804,7 +836,7 @@ function Examenes1(props) {
                                               fontFamily: "ProximaSoft-bold",
                                             }}
                                             onClick={(e) => {
-                                                return reviewExam(e, Inglés);
+                                              return reviewExam(e, Inglés);
                                             }}
                                             onMouseDown={() => {
                                               triggerTime = setTimeout(() => {
@@ -822,35 +854,27 @@ function Examenes1(props) {
                                             {Inglés.name}
                                           </button>
                                         ) : Inglés.studentExamStatus ===
-                                        "paused" ? (
+                                          "paused" ? (
                                           <button
                                             id={Inglés.id}
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Inglés
-                                              )
+                                              startExams(e, Inglés)
                                             }
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                               color: "#0A52CB",
                                             }}
                                           >
                                             {Inglés.name}
                                           </button>
-                                        ):(
+                                        ) : (
                                           <button
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Inglés
-                                              )
+                                              startExams(e, Inglés)
                                             }
                                             id={Inglés.id}
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                             }}
                                           >
                                             {Inglés.name}
@@ -865,7 +889,7 @@ function Examenes1(props) {
                                     return (
                                       <div className={Styles.examLinks}>
                                         {Psicotécnicos.studentExamStatus ===
-                                        "notAttempted"? (
+                                        "notAttempted" ? (
                                           <button
                                             onClick={(e) =>
                                               startExams(e, Psicotécnicos)
@@ -884,10 +908,10 @@ function Examenes1(props) {
                                               fontFamily: "ProximaSoft-bold",
                                             }}
                                             onClick={(e) => {
-                                                return reviewExam(
-                                                  e,
-                                                  Psicotécnicos
-                                                );                                        
+                                              return reviewExam(
+                                                e,
+                                                Psicotécnicos
+                                              );
                                             }}
                                             onMouseDown={() => {
                                               triggerTime = setTimeout(() => {
@@ -898,7 +922,7 @@ function Examenes1(props) {
                                                   Psicotécnicos.folderId
                                                 );
                                                 setResetExam(true);
-                                            }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                              }, 1000); //Change 1000 to number of milliseconds required for mouse hold
                                             }}
                                             onMouseUp={() => {
                                               clearTimeout(triggerTime);
@@ -907,35 +931,27 @@ function Examenes1(props) {
                                             {Psicotécnicos.name}
                                           </button>
                                         ) : Psicotécnicos.studentExamStatus ===
-                                        "paused" ? (
+                                          "paused" ? (
                                           <button
                                             id={Psicotécnicos.id}
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Psicotécnicos
-                                              )
+                                              startExams(e, Psicotécnicos)
                                             }
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                               color: "#0A52CB",
                                             }}
                                           >
                                             {Psicotécnicos.name}
                                           </button>
-                                        ):  (
+                                        ) : (
                                           <button
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Psicotécnicos
-                                              )
+                                              startExams(e, Psicotécnicos)
                                             }
                                             id={Psicotécnicos.id}
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                             }}
                                           >
                                             {Psicotécnicos.name}
@@ -950,7 +966,7 @@ function Examenes1(props) {
                                     return (
                                       <div className={Styles.examLinks}>
                                         {Ortografía.studentExamStatus ===
-                                        "notAttempted"? (
+                                        "notAttempted" ? (
                                           <button
                                             id={Ortografía.id}
                                             onClick={(e) =>
@@ -969,11 +985,7 @@ function Examenes1(props) {
                                               fontFamily: "ProximaSoft-bold",
                                             }}
                                             onClick={(e) => {
-                                                return reviewExam(
-                                                  e,
-                                                  Ortografía
-                                                );
-                                              
+                                              return reviewExam(e, Ortografía);
                                             }}
                                             onMouseDown={() => {
                                               triggerTime = setTimeout(() => {
@@ -984,7 +996,7 @@ function Examenes1(props) {
                                                   Ortografía.folderId
                                                 );
                                                 setResetExam(true);
-                                            }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                              }, 1000); //Change 1000 to number of milliseconds required for mouse hold
                                             }}
                                             onMouseUp={() => {
                                               clearTimeout(triggerTime);
@@ -993,35 +1005,27 @@ function Examenes1(props) {
                                             {Ortografía.name}
                                           </button>
                                         ) : Ortografía.studentExamStatus ===
-                                        "paused" ? (
+                                          "paused" ? (
                                           <button
                                             id={Ortografía.id}
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Ortografía
-                                              )
+                                              startExams(e, Ortografía)
                                             }
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                               color: "#0A52CB",
                                             }}
                                           >
                                             {Ortografía.name}
                                           </button>
-                                        ):(
+                                        ) : (
                                           <button
                                             onClick={(e) =>
-                                              startExams(
-                                                e,
-                                                Ortografía
-                                              )
+                                              startExams(e, Ortografía)
                                             }
                                             id={Ortografía.id}
                                             style={{
-                                              fontFamily:
-                                                "ProximaSoft-regular",
+                                              fontFamily: "ProximaSoft-regular",
                                             }}
                                           >
                                             {Ortografía.name}
@@ -1097,7 +1101,9 @@ function Examenes1(props) {
                                                         e,
                                                         Conocimientos
                                                       );
-                                                      console.log("not attempted");
+                                                      console.log(
+                                                        "not attempted"
+                                                      );
                                                     }}
                                                     style={{
                                                       fontFamily:
@@ -1117,21 +1123,24 @@ function Examenes1(props) {
                                                       Conocimientos.studentExamRecordId
                                                     }
                                                     onClick={(e) => {
-                                                        return reviewExam(
-                                                          e,
-                                                          Conocimientos
-                                                        );
+                                                      return reviewExam(
+                                                        e,
+                                                        Conocimientos
+                                                      );
                                                     }}
                                                     onMouseDown={() => {
-                                                      triggerTime = setTimeout(() => {
-                                                        setStudentExamRecId(
-                                                          Conocimientos.studentExamRecordId
-                                                        );
-                                                        setFolderId(
-                                                          Conocimientos.folderId
-                                                        );
-                                                        setResetExam(true);
-                                                    }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                                      triggerTime = setTimeout(
+                                                        () => {
+                                                          setStudentExamRecId(
+                                                            Conocimientos.studentExamRecordId
+                                                          );
+                                                          setFolderId(
+                                                            Conocimientos.folderId
+                                                          );
+                                                          setResetExam(true);
+                                                        },
+                                                        1000
+                                                      ); //Change 1000 to number of milliseconds required for mouse hold
                                                     }}
                                                     onMouseUp={() => {
                                                       clearTimeout(triggerTime);
@@ -1139,8 +1148,8 @@ function Examenes1(props) {
                                                   >
                                                     {Conocimientos.name}
                                                   </button>
-                                                ) :  Conocimientos.studentExamStatus ===
-                                                "paused" ? (
+                                                ) : Conocimientos.studentExamStatus ===
+                                                  "paused" ? (
                                                   <button
                                                     id={Conocimientos.id}
                                                     onClick={(e) =>
@@ -1157,7 +1166,7 @@ function Examenes1(props) {
                                                   >
                                                     {Conocimientos.name}
                                                   </button>
-                                                ):(
+                                                ) : (
                                                   <button
                                                     onClick={(e) =>
                                                       startExams(
@@ -1205,21 +1214,24 @@ function Examenes1(props) {
                                                       "ProximaSoft-bold",
                                                   }}
                                                   onClick={(e) => {
-                                                      return reviewExam(
-                                                        e,
-                                                        Inglés
-                                                      );
+                                                    return reviewExam(
+                                                      e,
+                                                      Inglés
+                                                    );
                                                   }}
                                                   onMouseDown={() => {
-                                                    triggerTime = setTimeout(() => {
-                                                      setStudentExamRecId(
-                                                        Inglés.studentExamRecordId
-                                                      );
-                                                      setFolderId(
-                                                        Inglés.folderId
-                                                      );
-                                                      setResetExam(true);
-                                                  }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                                    triggerTime = setTimeout(
+                                                      () => {
+                                                        setStudentExamRecId(
+                                                          Inglés.studentExamRecordId
+                                                        );
+                                                        setFolderId(
+                                                          Inglés.folderId
+                                                        );
+                                                        setResetExam(true);
+                                                      },
+                                                      1000
+                                                    ); //Change 1000 to number of milliseconds required for mouse hold
                                                   }}
                                                   onMouseUp={() => {
                                                     clearTimeout(triggerTime);
@@ -1228,14 +1240,11 @@ function Examenes1(props) {
                                                   {Inglés.name}
                                                 </button>
                                               ) : Inglés.studentExamStatus ===
-                                              "paused" ? (
+                                                "paused" ? (
                                                 <button
                                                   id={Inglés.id}
                                                   onClick={(e) =>
-                                                    startExams(
-                                                      e,
-                                                      Inglés
-                                                    )
+                                                    startExams(e, Inglés)
                                                   }
                                                   style={{
                                                     fontFamily:
@@ -1245,13 +1254,10 @@ function Examenes1(props) {
                                                 >
                                                   {Inglés.name}
                                                 </button>
-                                              ):(
+                                              ) : (
                                                 <button
                                                   onClick={(e) =>
-                                                    startExams(
-                                                      e,
-                                                      Inglés
-                                                    )
+                                                    startExams(e, Inglés)
                                                   }
                                                   id={Inglés.id}
                                                   style={{
@@ -1272,7 +1278,7 @@ function Examenes1(props) {
                                             return (
                                               <div className={Styles.examLinks}>
                                                 {Psicotécnicos.studentExamStatus ===
-                                                "notAttempted"? (
+                                                "notAttempted" ? (
                                                   <button
                                                     onClick={(e) =>
                                                       startExams(
@@ -1296,21 +1302,24 @@ function Examenes1(props) {
                                                         "ProximaSoft-bold",
                                                     }}
                                                     onClick={(e) => {
-                                                        return reviewExam(
-                                                          e,
-                                                          Psicotécnicos
-                                                        );
+                                                      return reviewExam(
+                                                        e,
+                                                        Psicotécnicos
+                                                      );
                                                     }}
                                                     onMouseDown={() => {
-                                                      triggerTime = setTimeout(() => {
-                                                        setStudentExamRecId(
-                                                          Psicotécnicos.studentExamRecordId
-                                                        );
-                                                        setFolderId(
-                                                          Psicotécnicos.folderId
-                                                        );
-                                                        setResetExam(true);
-                                                    }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                                      triggerTime = setTimeout(
+                                                        () => {
+                                                          setStudentExamRecId(
+                                                            Psicotécnicos.studentExamRecordId
+                                                          );
+                                                          setFolderId(
+                                                            Psicotécnicos.folderId
+                                                          );
+                                                          setResetExam(true);
+                                                        },
+                                                        1000
+                                                      ); //Change 1000 to number of milliseconds required for mouse hold
                                                     }}
                                                     onMouseUp={() => {
                                                       clearTimeout(triggerTime);
@@ -1319,7 +1328,7 @@ function Examenes1(props) {
                                                     {Psicotécnicos.name}
                                                   </button>
                                                 ) : Psicotécnicos.studentExamStatus ===
-                                                "paused" ? (
+                                                  "paused" ? (
                                                   <button
                                                     id={Psicotécnicos.id}
                                                     onClick={(e) =>
@@ -1336,7 +1345,7 @@ function Examenes1(props) {
                                                   >
                                                     {Psicotécnicos.name}
                                                   </button>
-                                                ):(
+                                                ) : (
                                                   <button
                                                     onClick={(e) =>
                                                       startExams(
@@ -1359,92 +1368,90 @@ function Examenes1(props) {
                                         )}
                                       </div>
                                       <div>
-                                        {files?.Ortografía?.map((Ortografía) => {
-                                          return (
-                                            <div className={Styles.examLinks}>
-                                              {Ortografía.studentExamStatus ===
-                                              "notAttempted" ? (
-                                                <button
-                                                  id={Ortografía.id}
-                                                  onClick={(e) =>
-                                                    startExams(e, Ortografía)
-                                                  }
-                                                  style={{
-                                                    fontFamily:
-                                                      "ProximaSoft-regular",
-                                                  }}
-                                                >
-                                                  {Ortografía.name}
-                                                </button>
-                                              ) : Ortografía.studentExamStatus ===
-                                                "end" ? (
-                                                <button
-                                                  style={{
-                                                    fontFamily:
-                                                      "ProximaSoft-bold",
-                                                  }}
-                                                  onClick={(e) => {
+                                        {files?.Ortografía?.map(
+                                          (Ortografía) => {
+                                            return (
+                                              <div className={Styles.examLinks}>
+                                                {Ortografía.studentExamStatus ===
+                                                "notAttempted" ? (
+                                                  <button
+                                                    id={Ortografía.id}
+                                                    onClick={(e) =>
+                                                      startExams(e, Ortografía)
+                                                    }
+                                                    style={{
+                                                      fontFamily:
+                                                        "ProximaSoft-regular",
+                                                    }}
+                                                  >
+                                                    {Ortografía.name}
+                                                  </button>
+                                                ) : Ortografía.studentExamStatus ===
+                                                  "end" ? (
+                                                  <button
+                                                    style={{
+                                                      fontFamily:
+                                                        "ProximaSoft-bold",
+                                                    }}
+                                                    onClick={(e) => {
                                                       return reviewExam(
                                                         e,
                                                         Ortografía
                                                       );
-                                                    
-                                                  }}
-                                                  onMouseDown={() => {
-                                                    triggerTime = setTimeout(() => {
-                                                      setStudentExamRecId(
-                                                        Ortografía.studentExamRecordId
-                                                      );
-                                                      setFolderId(
-                                                        Ortografía.folderId
-                                                      );
-                                                      setResetExam(true);
-                                                  }, 1000); //Change 1000 to number of milliseconds required for mouse hold
-                                                  }}
-                                                  onMouseUp={() => {
-                                                    clearTimeout(triggerTime);
-                                                  }}
-                                                >
-                                                  {Ortografía.name}
-                                                </button>
-                                              ) :  Ortografía.studentExamStatus ===
-                                              "paused" ? (
-                                                <button
-                                                  id={Ortografía.id}
-                                                  onClick={(e) =>
-                                                    startExams(
-                                                      e,
-                                                      Ortografía
-                                                    )
-                                                  }
-                                                  style={{
-                                                    fontFamily:
-                                                      "ProximaSoft-regular",
-                                                    color: "#0A52CB",
-                                                  }}
-                                                >
-                                                  {Ortografía.name}
-                                                </button>
-                                              ):(
-                                                <button
-                                                  onClick={(e) =>
-                                                    startExams(
-                                                      e,
-                                                      Ortografía
-                                                    )
-                                                  }
-                                                  id={Ortografía.id}
-                                                  style={{
-                                                    fontFamily:
-                                                      "ProximaSoft-regular",
-                                                  }}
-                                                >
-                                                  {Ortografía.name}
-                                                </button>
-                                              )}
-                                            </div>
-                                          );
-                                        })}
+                                                    }}
+                                                    onMouseDown={() => {
+                                                      triggerTime = setTimeout(
+                                                        () => {
+                                                          setStudentExamRecId(
+                                                            Ortografía.studentExamRecordId
+                                                          );
+                                                          setFolderId(
+                                                            Ortografía.folderId
+                                                          );
+                                                          setResetExam(true);
+                                                        },
+                                                        1000
+                                                      ); //Change 1000 to number of milliseconds required for mouse hold
+                                                    }}
+                                                    onMouseUp={() => {
+                                                      clearTimeout(triggerTime);
+                                                    }}
+                                                  >
+                                                    {Ortografía.name}
+                                                  </button>
+                                                ) : Ortografía.studentExamStatus ===
+                                                  "paused" ? (
+                                                  <button
+                                                    id={Ortografía.id}
+                                                    onClick={(e) =>
+                                                      startExams(e, Ortografía)
+                                                    }
+                                                    style={{
+                                                      fontFamily:
+                                                        "ProximaSoft-regular",
+                                                      color: "#0A52CB",
+                                                    }}
+                                                  >
+                                                    {Ortografía.name}
+                                                  </button>
+                                                ) : (
+                                                  <button
+                                                    onClick={(e) =>
+                                                      startExams(e, Ortografía)
+                                                    }
+                                                    id={Ortografía.id}
+                                                    style={{
+                                                      fontFamily:
+                                                        "ProximaSoft-regular",
+                                                    }}
+                                                  >
+                                                    {Ortografía.name}
+                                                  </button>
+                                                )}
+                                              </div>
+                                            );
+                                          }
+                                        )}
                                       </div>
                                     </div>
                                   );
@@ -1473,7 +1480,9 @@ function Examenes1(props) {
                       src={rejectIcon}
                       srcSet={iosRejectIcon}
                       className={Styles.timerIcons}
-                      onClick={() => {setRejectQuestion(true)}}
+                      onClick={() => {
+                        setRejectQuestion(true);
+                      }}
                     />
                   </div>
                 </div>
@@ -1484,14 +1493,16 @@ function Examenes1(props) {
                     aria-labelledby="reject-question-modal"
                     aria-describedby="reject-question-description"
                   >
-                    <Box className={Styles.modalStyle} style={{width:'auto',height:'auto'}}>
-                        <div>
-                          <div style={{ fontFamily: "ProximaSoft-bold" }}>
-                            <Markup content={rejectionData.Description} />
-                          </div>
-                          <div className={Styles.Options}>
-                          {
-                            rejectionData.Option1!==null?
+                    <Box
+                      className={Styles.modalStyle}
+                      style={{ width: "auto", height: "auto" }}
+                    >
+                      <div>
+                        <div style={{ fontFamily: "ProximaSoft-bold" }}>
+                          <Markup content={rejectionData.Description} />
+                        </div>
+                        <div className={Styles.Options}>
+                          {rejectionData.Option1 !== null ? (
                             <button
                               id="a"
                               value="a"
@@ -1502,7 +1513,12 @@ function Examenes1(props) {
                             >
                               <div className={Styles.answerLinksInner1}>
                                 {rejectionOption === "option1" ? (
-                                  <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
                                 ) : (
                                   ""
                                 )}
@@ -1513,92 +1529,129 @@ function Examenes1(props) {
                                   width="90%"
                                 />
                               </div>
-                            </button>:<></>
-                          }
-                          {
-                            rejectionData.Option2!==null?
-                              <button
-                                onClick={(e) => {
-                                  setRejectionOption("option2");
-                                }}
-                                className={Styles.answerLinks}
-                              >
-                                <div className={Styles.answerLinksInner1}>
-                                  {rejectionOption === "option2" ? (
-                                    <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                                <div className={Styles.answerLinksInner2}>
-                                  <Markup content={rejectionData.Option2} />
-                                </div>
-                              </button>:<></>
-                          }
-                          {
-                            rejectionData.Option3!==null?
-                              <button
-                                onClick={(e) => {
-                                  setRejectionOption("option3")
-                                }}
-                                className={Styles.answerLinks}
-                              >
-                                <div className={Styles.answerLinksInner1}>
-                                  {rejectionOption === "option3" ? (
-                                    <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                                <div className={Styles.answerLinksInner2}>
-                                  <Markup content={rejectionData.Option3} />
-                                </div>
-                              </button>:<></>
-                          }
-                          {
-                            rejectionData.Option4!==null?
-                              <button
-                                onClick={(e) => {
-                                  setRejectionOption("option4");
-                                }}
-                                className={Styles.answerLinks}
-                              >
-                                <div className={Styles.answerLinksInner1}>
-                                  { rejectionOption === "option4" ? (
-                                    <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
-                                  )  : (
-                                    ""
-                                  )}
-                                </div>
-                                <div className={Styles.answerLinksInner2}>
-                                  <Markup content={rejectionData.Option4} />
-                                </div>
-                              </button>:<></>
-                          }
-                          </div>
-                          <div className='text-red-600 text-xs'>
-                            {submission&&rejectionOption===""?"¡Por favor selecciona una opcion!":""}
-                          </div>
-                          <div className="flex justify-center">
-                            <TextField
-                              id="outlined-multiline-static"
-                              multiline
-                              rows={4}
-                              label="Explica con detalle qué es lo que se debe corregir."
-                              className={Styles.answerLinksInner2}
-                              onChange={(event) => {setReason(event.target.value)}} //whenever the text field change, you save the value in state
-                            />
-                          </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
+                          {rejectionData.Option2 !== null ? (
+                            <button
+                              onClick={(e) => {
+                                setRejectionOption("option2");
+                              }}
+                              className={Styles.answerLinks}
+                            >
+                              <div className={Styles.answerLinksInner1}>
+                                {rejectionOption === "option2" ? (
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className={Styles.answerLinksInner2}>
+                                <Markup content={rejectionData.Option2} />
+                              </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
+                          {rejectionData.Option3 !== null ? (
+                            <button
+                              onClick={(e) => {
+                                setRejectionOption("option3");
+                              }}
+                              className={Styles.answerLinks}
+                            >
+                              <div className={Styles.answerLinksInner1}>
+                                {rejectionOption === "option3" ? (
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className={Styles.answerLinksInner2}>
+                                <Markup content={rejectionData.Option3} />
+                              </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
+                          {rejectionData.Option4 !== null ? (
+                            <button
+                              onClick={(e) => {
+                                setRejectionOption("option4");
+                              }}
+                              className={Styles.answerLinks}
+                            >
+                              <div className={Styles.answerLinksInner1}>
+                                {rejectionOption === "option4" ? (
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className={Styles.answerLinksInner2}>
+                                <Markup content={rejectionData.Option4} />
+                              </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
                         </div>
-                        <br/>
-                        <div className="flex justify-between w-full">
-                          <Button variant="contained" size="medium" onClick={closeRejectionForm}>
-                            Cancelar
-                          </Button>
-                          <Button variant="contained" size="medium" onClick={() => sendRejection(examReviewData[currentQuestion],rejectionOption)}>
-                            Enviar
-                          </Button>
+                        <div className="text-red-600 text-xs">
+                          {submission && rejectionOption === ""
+                            ? "¡Por favor selecciona una opcion!"
+                            : ""}
                         </div>
+                        <div className="flex justify-center">
+                          <TextField
+                            id="outlined-multiline-static"
+                            multiline
+                            rows={4}
+                            label="Explica con detalle qué es lo que se debe corregir."
+                            className={Styles.answerLinksInner2}
+                            onChange={(event) => {
+                              setReason(event.target.value);
+                            }} //whenever the text field change, you save the value in state
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div className="flex justify-between w-full">
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          onClick={closeRejectionForm}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          onClick={() =>
+                            sendRejection(
+                              examReviewData[currentQuestion],
+                              rejectionOption
+                            )
+                          }
+                        >
+                          Enviar
+                        </Button>
+                      </div>
                     </Box>
                   </Modal>
                   <div style={{ fontFamily: "ProximaSoft-bold" }}>
@@ -1611,7 +1664,13 @@ function Examenes1(props) {
                       src={examReviewData[currentQuestion].image}
                       alt=""
                       width="50%"
-                      style={{display:examReviewData[currentQuestion].image === "https://neoestudio.net/" ? 'none': 'block'}}
+                      style={{
+                        display:
+                          examReviewData[currentQuestion].image ===
+                          "https://neoestudio.net/"
+                            ? "none"
+                            : "block",
+                      }}
                     />
                   </div>
                   <div className={Styles.Options}>
@@ -1619,22 +1678,47 @@ function Examenes1(props) {
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
                         examReviewData[currentQuestion].correct == "a" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].correct == "a" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "a" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
                           examReviewData[currentQuestion].correct == "a" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer1" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -1650,22 +1734,47 @@ function Examenes1(props) {
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
                         examReviewData[currentQuestion].correct == "b" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].correct == "b" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "b" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
                           examReviewData[currentQuestion].correct == "b" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer2" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -1680,22 +1789,47 @@ function Examenes1(props) {
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
                         examReviewData[currentQuestion].correct == "c" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].correct == "c" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "c" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
                           examReviewData[currentQuestion].correct == "c" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer3" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -1710,22 +1844,47 @@ function Examenes1(props) {
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
                         examReviewData[currentQuestion].correct == "d" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].correct == "d" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "d" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
                           examReviewData[currentQuestion].correct == "d" ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer4" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -1750,23 +1909,37 @@ function Examenes1(props) {
                   <div className="flex justify-center">
                     <Button
                       onClick={() => {
-                        if(currentQuestion!==0) {
-                          setCurrentQuestion(prevQuestion => prevQuestion - 1);
+                        if (currentQuestion !== 0) {
+                          setCurrentQuestion(
+                            (prevQuestion) => prevQuestion - 1
+                          );
                         }
                       }}
                     >
-                      <img className="lg:h-16 lg:w-44 md:h-12 md:w-36 sm:h-8 sm:w-24 h-4 w-16" src={atras} srcSet={iosAtras} alt="Atras Button"/>
+                      <img
+                        className="lg:h-16 lg:w-44 md:h-12 md:w-36 sm:h-8 sm:w-24 h-4 w-16"
+                        src={atras}
+                        srcSet={iosAtras}
+                        alt="Atras Button"
+                      />
                     </Button>
                     <Button
                       onClick={() => {
-                        if(currentQuestion<examReviewData.length-1) {
-                          setCurrentQuestion(prevQuestion => prevQuestion + 1);
+                        if (currentQuestion < examReviewData.length - 1) {
+                          setCurrentQuestion(
+                            (prevQuestion) => prevQuestion + 1
+                          );
                         }
                       }}
                     >
-                      <img className="lg:h-16 lg:w-44 md:h-12 md:w-36 sm:h-8 sm:w-24 h-4 w-16" src={sigiuiente} srcSet={iosSiguiente} alt="Siguiente Button"/>
+                      <img
+                        className="lg:h-16 lg:w-44 md:h-12 md:w-36 sm:h-8 sm:w-24 h-4 w-16"
+                        src={sigiuiente}
+                        srcSet={iosSiguiente}
+                        alt="Siguiente Button"
+                      />
                     </Button>
-                    </div>
+                  </div>
                 </div>
                 <div className={Styles.resultBtnWrapper}>
                   {examReviewData.map((data, index) => {
@@ -1800,20 +1973,25 @@ function Examenes1(props) {
                 </div>
                 <div className="flex justify-center">
                   <Button
-                      onClick={() => {
-                        if (props.showExam === "true") {
-                          props.updateView();
-                        } else {
-                          setShowScreen(true);
-                          setExamStatusCheck(false);
-                        }
-                        setShowResult(false);
-                        setShowScore(false);
-                      }}
-                    >
-                      <img className="lg:h-16 lg:w-44 md:h-12 md:w-36 sm:h-8 sm:w-24 h-4 w-16" src={volverButton} srcSet={iosVolverButton} alt="Salir Button"/>
-                    </Button>
-                  </div>
+                    onClick={() => {
+                      if (props.showExam === "true") {
+                        props.updateView();
+                      } else {
+                        setShowScreen(true);
+                        setExamStatusCheck(false);
+                      }
+                      setShowResult(false);
+                      setShowScore(false);
+                    }}
+                  >
+                    <img
+                      className="lg:h-16 lg:w-44 md:h-12 md:w-36 sm:h-8 sm:w-24 h-4 w-16"
+                      src={volverButton}
+                      srcSet={iosVolverButton}
+                      alt="Salir Button"
+                    />
+                  </Button>
+                </div>
               </div>
             </Container>
           </main>
@@ -1876,14 +2054,24 @@ function Examenes1(props) {
                     bgcolor={`linear-gradient(to bottom, rgba(17,148,47,1), rgba(106,170,101,1))`}
                     progress={endExam.correctPercentage.toFixed(1)}
                   />
-                  <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                  <img
+                    src={tick}
+                    srcSet={iosTick}
+                    alt=""
+                    style={{ width: "40px" }}
+                  />
                 </div>
                 <div className={Styles.progressBarWrapper}>
                   <Progressbar
                     bgcolor={`linear-gradient(to bottom, rgba(206,8,17,1), rgba(222,110,81,1))`}
                     progress={endExam.wrongPercentage.toFixed(1)}
                   />
-                  <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                  <img
+                    src={cross}
+                    srcSet={iosCross}
+                    alt=""
+                    style={{ width: "40px" }}
+                  />
                 </div>
                 <div className={Styles.progressBarWrapper}>
                   <Progressbar
@@ -1896,10 +2084,20 @@ function Examenes1(props) {
               <Grid item xs={12} md={4} className={Styles.ResultWrappers}>
                 <div className={Styles.resultBtnMain}>
                   <button className={Styles.revisarBtn} onClick={reviewExam}>
-                    <img src={Revisar} srcSet={iosRevisar} alt="Revisar Button" width={"350px"} />
+                    <img
+                      src={Revisar}
+                      srcSet={iosRevisar}
+                      alt="Revisar Button"
+                      width={"350px"}
+                    />
                   </button>
                   <button className={Styles.salirBtn} onClick={SalirBtn}>
-                    <img src={Salir} srcSet={iosSalir} alt="Salir Button" width={"350px"} />
+                    <img
+                      src={Salir}
+                      srcSet={iosSalir}
+                      alt="Salir Button"
+                      width={"350px"}
+                    />
                   </button>
                 </div>
               </Grid>
@@ -1942,14 +2140,14 @@ function Examenes1(props) {
                     {/* Timer STARTS HERE                      */}
                     <div className={Styles.timerWrapper}>
                       <div className="flex">
-                        <Tooltip 
-                          title="Pausar el examen temporalmente" 
-                          placement="bottom" 
+                        <Tooltip
+                          title="Pausar el examen temporalmente"
+                          placement="bottom"
                           arrow
                           componentsProps={{
                             tooltip: {
                               sx: {
-                                bgcolor: '5c5c5c'
+                                bgcolor: "5c5c5c",
                               },
                             },
                           }}
@@ -1962,14 +2160,14 @@ function Examenes1(props) {
                             onClick={handleStart}
                           />
                         </Tooltip>
-                        <Tooltip 
-                          title="Finalizar el examen" 
-                          placement="top" 
+                        <Tooltip
+                          title="Finalizar el examen"
+                          placement="top"
                           arrow
                           componentsProps={{
                             tooltip: {
                               sx: {
-                                bgcolor: '#050e94'
+                                bgcolor: "#050e94",
                               },
                             },
                           }}
@@ -1982,14 +2180,14 @@ function Examenes1(props) {
                             alt=""
                           />
                         </Tooltip>
-                        <Tooltip 
-                          title="Corregir pregunta" 
-                          placement="right" 
+                        <Tooltip
+                          title="Corregir pregunta"
+                          placement="right"
                           arrow
                           componentsProps={{
                             tooltip: {
                               sx: {
-                                bgcolor: '#c2a824'
+                                bgcolor: "#c2a824",
                               },
                             },
                           }}
@@ -2045,7 +2243,13 @@ function Examenes1(props) {
                         }
                         alt=""
                         width="50%"
-                        style={{display:examData[currentQuestion].image === "https://neoestudio.net/" ? 'none': 'block'}}
+                        style={{
+                          display:
+                            examData[currentQuestion].image ===
+                            "https://neoestudio.net/"
+                              ? "none"
+                              : "block",
+                        }}
                       />
                     </div>
                     <div className={Styles.Options}>
@@ -2077,14 +2281,30 @@ function Examenes1(props) {
                           {ansArry[currentQuestion].answer == "answer1" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct == "a" ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : examData[currentQuestion].studentAnswered ==
                               "answer1" &&
-                            examData[currentQuestion].correct != "a" && ansArry[currentQuestion].showDescript === true? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            examData[currentQuestion].correct != "a" &&
+                            ansArry[currentQuestion].showDescript === true ? (
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -2122,14 +2342,30 @@ function Examenes1(props) {
                           {ansArry[currentQuestion].answer == "answer2" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct == "b" ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : examData[currentQuestion].studentAnswered ==
                               "answer2" &&
-                            examData[currentQuestion].correct != "b" && ansArry[currentQuestion].showDescript === true ? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            examData[currentQuestion].correct != "b" &&
+                            ansArry[currentQuestion].showDescript === true ? (
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -2164,14 +2400,30 @@ function Examenes1(props) {
                           {ansArry[currentQuestion].answer == "answer3" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct == "c" ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : examData[currentQuestion].studentAnswered ==
                               "answer3" &&
-                            examData[currentQuestion].correct != "c" && ansArry[currentQuestion].showDescript === true? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            examData[currentQuestion].correct != "c" &&
+                            ansArry[currentQuestion].showDescript === true ? (
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -2206,14 +2458,30 @@ function Examenes1(props) {
                           {ansArry[currentQuestion].answer == "answer4" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct == "d" ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : examData[currentQuestion].studentAnswered ==
                               "answer4" &&
-                            examData[currentQuestion].correct != "d" && ansArry[currentQuestion].showDescript === true? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            examData[currentQuestion].correct != "d" &&
+                            ansArry[currentQuestion].showDescript === true ? (
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -2255,7 +2523,8 @@ function Examenes1(props) {
                                 backgroundImage:
                                   currentQuestion == index
                                     ? `url(${golden}),url(${iosGolden})`
-                                    : data.answer == null || data.answer == "null"
+                                    : data.answer == null ||
+                                      data.answer == "null"
                                     ? `url(${noSelect}), url(${iosNoSelect})`
                                     : `url(${answerImg1}), url(${iosAnswerImg1})`,
                               }}

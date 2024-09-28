@@ -57,7 +57,7 @@ const GetMobileNumber = ({ onVerify }) => {
       return;
     }
     if (isVerifiedData?.IsRegistered === "NO") {
-      onVerify(false);
+      onVerify(true);
       return;
     }
     if (
@@ -253,51 +253,110 @@ const GetMobileNumber = ({ onVerify }) => {
                   >
                     PRUEBA 30 DÍAS GRATIS
                   </center>
-                  <center
+                  <div
                     style={{
                       color: "white",
-
                       fontFamily: '"Montserrat", sans-serif',
-                      whiteSpace: "nowrap", // Prevent text wrapping
+                      textAlign: "center",
+                      whiteSpace: "nowrap",
+                      fontSize: "10px", // Default font size
                     }}
                   >
-                    INTRODUCE EL CÓDIGO DE VERIFICACIÓN
-                  </center>
-                  <center
-                    style={{
-                      color: "white",
-
-                      fontFamily: '"Montserrat", sans-serif',
-                      whiteSpace: "nowrap", // Prevent text wrapping
-                    }}
-                  >
-                    ENVIADO AL TELEFONO POR SMS
-                  </center>
+                    INTRODUCE EL CÓDIGO DE VERIFICACIÓN ENVIADO AL TELEFONO POR
+                    SMS
+                    <style>
+                      {`
+      @media (max-width: 768px) {
+        div {
+          white-space: normal;
+          font-size: 14px; // Smaller font size for mobile
+        }
+      }
+    `}
+                    </style>
+                  </div>
 
                   {/* Replace OtpInput with a single input field */}
-                  <input
-                    type="text"
-                    maxLength="6"
-                    value={otp}
-                    onChange={handleChangeOtp}
-                    style={{
-                      width: "300px",
-                      height: "60px",
-                      backgroundColor: "white",
-                      borderColor: "gray",
-                      color: "black",
-                      borderWidth: 1,
-                      borderRadius: "10px", // Increased border radius for rounded corners
-                      textAlign: "center",
-                      fontSize: "24px",
-                      marginTop: "10px",
-                      "@media (max-width: 342px)": {
-                        width: "200px", // Adjust width for mobile
-                        height: "40px", // Adjust height for mobile
-                        fontSize: "16px", // Adjust font size for mobile
+                  <div style={{ position: "relative", marginTop: "20px" }}>
+                    <label
+                      htmlFor="otp"
+                      style={{
+                        position: "absolute",
+                        left: "10px",
+                        top: otp ? "-10px" : "15px",
+                        transition: "top 0.2s ease, font-size 0.2s ease",
+                        fontSize: otp ? "12px" : "16px",
+                        color: otp ? "gray" : "black",
+                        pointerEvents: "none",
+                      }}
+                    >
+                      Teléfono
+                    </label>
+                    <input
+                      id="otp"
+                      type="text"
+                      maxLength="6"
+                      value={otp}
+                      onChange={handleChangeOtp}
+                      style={{
+                        width: "300px",
+                        height: "60px",
+                        backgroundColor: "white",
+                        borderColor: "gray",
+                        color: "black",
+                        borderWidth: 1,
+                        borderRadius: "10px",
+                        textAlign: "center",
+                        fontSize: "24px",
+                        marginTop: "10px",
+                        outline: "none",
+                        "@media (max-width: 342px)": {
+                          width: "200px",
+                          height: "40px",
+                          fontSize: "16px",
+                        },
+                      }}
+                      onFocus={() => {
+                        const label =
+                          document.querySelector('label[for="otp"]');
+                        if (label) {
+                          label.style.top = "-10px";
+                          label.style.fontSize = "12px";
+                          label.style.color = "gray";
+                        }
+                      }}
+                      onBlur={() => {
+                        if (!otp) {
+                          const label =
+                            document.querySelector('label[for="otp"]');
+                          if (label) {
+                            label.style.top = "15px";
+                            label.style.fontSize = "16px";
+                            label.style.color = "black";
+                          }
+                        }
+                      }}
+                    />
+                  </div>
+
+                  <Box
+                    sx={{
+                      backgroundColor: "black",
+                      color: "white",
+
+                      padding: "5px 10px",
+                      fontSize: "12px",
+                      marginTop: "8px", // Add margin for spacing
+                      cursor: "pointer",
+                      textAlign: "center", // Center the text
+                      "&:hover": {
+                        backgroundColor: "darkgrey", // Optional: darker shade on hover
                       },
                     }}
-                  />
+                    onClick={() => getOtp(data?.id, phoneNumber)} // Handle the resend code logic here
+                  >
+                    Reenviar código
+                  </Box>
                   <Button
                     type="button"
                     fullWidth

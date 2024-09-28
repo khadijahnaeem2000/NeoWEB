@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 // import LandingPage from 'pages/Landingpage';
 import Signin from "pages/Signin";
 import Home from "pages/Home";
@@ -11,7 +7,7 @@ import Menu from "pages/Menu";
 import history from "../history";
 import Course from "pages/Course";
 import GetMobileNumber from "components/Modals/GetMobileNumber";
-import Verification from "pages/verification"
+import Verification from "pages/verification";
 
 const Directo = React.lazy(() => import("pages/Directo"));
 

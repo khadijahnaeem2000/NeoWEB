@@ -26,7 +26,7 @@ const Verification = () => {
       const response = await userServices.verifyingUser("/user", {
         id: userId,
       });
-      
+
       if (response?.data?.status === "Successfull") {
         localStorage.setItem(
           "neoestudio",
@@ -47,12 +47,8 @@ const Verification = () => {
 
         navigate("/");
       } else if (response?.data?.status === "Unsuccessfull") {
-        if (response?.data?.is_deleted) {
-          setMessage("¡Lo siento! el usuario no existe");
-        }
-        if (response?.data?.is_blocked) {
-          setMessage("Estas bloqueada contacta con la administradora");
-        }
+        localStorage.clear();
+        window.location.replace("https://neoestudio.net/pago-blocked");
       }
     } catch (error) {
       return error;
