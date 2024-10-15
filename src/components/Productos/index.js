@@ -224,25 +224,27 @@ const ProductosCarrito = () => {
             justifyContent:
               getData?.IsRegistered === "NO" ? "space-between" : "center",
             alignItems: "center",
+            flexWrap: { xs: "wrap", sm: "nowrap" }, // Ensure flexibility on smaller screens
           }}
         >
           {getData?.IsRegistered === "NO" && <div className="empty-div"></div>}
           <Typography
-            style={{
-              margin: "0px",
-            }}
+            style={{ margin: "0px" }}
             variant="h4"
             gutterBottom
           >
             Tienda
           </Typography>
-
+  
           {getData?.IsRegistered === "NO" && (
             <Button
               type="button"
               variant="contained"
               color="primary"
-              sx={{ marginBlock: 2 }}
+              sx={{
+                marginBlock: 2,
+                width: { xs: "100%", sm: "auto" }, // Full-width button on small screens
+              }}
               onClick={() => {
                 setShowRegister(true);
               }}
@@ -251,6 +253,7 @@ const ProductosCarrito = () => {
             </Button>
           )}
         </Box>
+  
         {loading === true ? (
           <Box sx={{ display: "flex", justifyContent: "center" }} width="100%">
             <CircularProgress />
@@ -272,7 +275,7 @@ const ProductosCarrito = () => {
                     ))}
                 </Grid>
               </Grid>
-
+  
               {items?.length > 0 && (
                 <Grid item xs={12} sm={4}>
                   <TableContainer
@@ -367,7 +370,7 @@ const ProductosCarrito = () => {
                             {totalSum.toFixed(2)}€
                           </TableCell>
                         </TableRow>
-
+  
                         <TableRow>
                           <TableCell colSpan={3} align="center">
                             {couponPercent > 0 ? (
@@ -402,7 +405,7 @@ const ProductosCarrito = () => {
                               <Box
                                 sx={{
                                   display: "flex",
-                                  flexDirection: { md: "row" },
+                                  flexDirection: { xs: "column", sm: "row" }, // Adjusted for mobile
                                   alignItems: "center",
                                   gap: 2,
                                 }}
@@ -433,11 +436,10 @@ const ProductosCarrito = () => {
                                     },
                                   }}
                                   sx={{
-                                    width: "70%",
-                                    // Adjust the width as per your requirement
+                                    width: { xs: "100%", sm: "70%" }, // Full width on mobile
                                   }}
                                 />
-
+  
                                 {coupon && (
                                   <Button
                                     disabled={applyCouponLoading}
@@ -456,57 +458,67 @@ const ProductosCarrito = () => {
                             )}
                           </TableCell>
                         </TableRow>
+  
                         {shouldShowCityDropdown && (
-                          <TableRow>
-                            <Box
-                              sx={{
-                                display: "flex",
-                                flexDirection: { md: "row" },
-                                alignItems: "center",
-                                gap: 2,
-                              }}
-                            >
-                              <Typography
-                                sx={{
-                                  fontWeight: "bold",
-                                  marginLeft: "5px",
-                                }}
-                                variant="subtitle2"
-                              >
-                                &nbsp;&nbsp;&nbsp; Ciudad:
-                              </Typography>
-                              <TableCell colSpan={3} align="center">
-                                <Select
-                                  value={selectedCity}
-                                  onChange={handleCityChange}
-                                  fullWidth
-                                  variant="outlined"
-                                  sx={{
-                                    fontSize: "15px",
-                                    width: "200px",
-                                    height: "35px",
-                                    color: "#818589",
-                                  }}
-                                >
-                                  {cities.length > 0 ? (
-                                    cities.map((city) => (
-                                      <MenuItem
-                                        key={city.CityName}
-                                        value={city.CityName}
-                                      >
-                                        {city.CityName}
-                                      </MenuItem>
-                                    ))
-                                  ) : (
-                                    <MenuItem disabled>
-                                      No cities available
-                                    </MenuItem>
-                                  )}
-                                </Select>
-                              </TableCell>
-                            </Box>
-                          </TableRow>
-                        )}
+  <TableRow>
+    <TableCell colSpan={3} align="center">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", sm: "row" }, // Column on mobile, row on larger screens
+          alignItems: { xs: "center", sm: "flex-start" }, // Center on mobile, start on larger screens
+          gap: 2,
+          justifyContent: { xs: "center", sm: "flex-start" }, // Center on mobile, start on larger screens
+        }}
+      >
+        <Typography
+          sx={{
+            fontWeight: "bold",
+            marginLeft: { xs: 0, sm: "3px" }, // Adjust margin based on screen size
+          }}
+          variant="subtitle2"
+        >
+          Ciudad:
+        </Typography>
+        <Select
+          value={selectedCity}
+          onChange={handleCityChange}
+          fullWidth
+          variant="outlined"
+          sx={{
+            fontSize: "15px",
+            width: { 
+              xs: "100%",     // Full width on mobile
+              sm:"70%",
+            }, // Full width on mobile, fixed width on larger screens
+            height: "35px",
+            textAlign: "left", // Align text to the left
+    "& .MuiSelect-select": {
+      justifyContent: "flex-start", // Start the text from the left
+    },
+            color: "#818589",
+          }}
+        >
+          {cities.length > 0 ? (
+            cities.map((city) => (
+              <MenuItem
+                key={city.CityName}
+                value={city.CityName}
+              >
+                {city.CityName}
+              </MenuItem>
+            ))
+          ) : (
+            <MenuItem disabled>
+              No cities available
+            </MenuItem>
+          )}
+        </Select>
+      </Box>
+    </TableCell>
+  </TableRow>
+)}
+
                       </TableBody>
                     </Table>
                   </TableContainer>
@@ -524,7 +536,7 @@ const ProductosCarrito = () => {
             </Grid>
           </>
         )}
-
+  
         {isVerifiedData && showRegister && (
           <div className="overlay">
             <div className="popup">
@@ -539,6 +551,7 @@ const ProductosCarrito = () => {
       </div>
     </div>
   );
+  
 };
 
 export default ProductosCarrito;

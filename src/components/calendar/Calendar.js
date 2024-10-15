@@ -28,8 +28,8 @@ const localizer = dateFnsLocalizer({
 
 const MyCalendar = (props) => {
   const [schedule, setSchedule] = useState([]);
-  const [month, setMonth] = useState(new Date().getMonth() + 1); // Default to the current month
-  const data = getLocalUserdata(); // Fetch user data from local storage
+  const [month, setMonth] = useState(new Date().getMonth() + 1);
+  const data = getLocalUserdata();
 
   const lang = {
     es: {
@@ -75,7 +75,7 @@ const MyCalendar = (props) => {
     };
 
     fetchSchedule();
-  }, [month, data?.id]); // Re-fetch data when the month or studentId changes
+  }, [month, data?.id]);
 
   const { defaultDate, messages, views, formats } = useMemo(
     () => ({
@@ -130,7 +130,7 @@ const MyCalendar = (props) => {
           events={schedule}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 550 }}
+          style={{ height: 'auto', minHeight: '550px', maxHeight: '80vh' }} // Allow height to adjust and set limits
           culture={"es"}
           messages={messages}
           defaultDate={defaultDate}

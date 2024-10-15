@@ -26,6 +26,7 @@ const Verification = () => {
       const response = await userServices.verifyingUser("/user", {
         id: userId,
       });
+      
 
       if (response?.data?.status === "Successfull") {
         localStorage.setItem(
