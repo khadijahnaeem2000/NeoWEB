@@ -40,9 +40,9 @@
    
 .calendar-container {
     overflow-x: auto;
-    display:flex;
-    width:96%;
-    margin:2%;
+    display: flex;
+    width: 96%;
+    margin: 2%;
 }
 
 .calendar-container-child {
@@ -50,15 +50,41 @@
 }
 
 .calendar-event-cell {
-    display:flex;
+    display: flex;
 }
 
 .calendar-event-cell-image {
-    max-width:3em;
-    border-radius:3%;
+    max-width: 3em;
+    border-radius: 3%;
 }
 
 .rbc-toolbar-label {
     font-weight: bolder;
     font-size: x-large;
+}
+
+/* Responsive Styles */
+@media (max-width: 600px) {
+    .calendar-container {
+        flex-direction: column; /* Stack vertically */
+        padding: 10px; /* Add padding for mobile */
+    }
+
+    .calendar-container-child {
+        height: auto; /* Allow height to adjust */
+        width: 100%; /* Full width on mobile */
+    }
+
+    .rbc-toolbar-label {
+        font-size: large; /* Smaller font size for mobile */
+    }
+
+    .calendar-event-cell {
+        flex-direction: column; /* Stack images and text vertically */
+        align-items: center; /* Center align items */
+    }
+
+    .calendar-event-cell-image {
+        max-width: 2.5em; /* Smaller image size for mobile */
+    }
 }

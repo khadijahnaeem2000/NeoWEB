@@ -26,6 +26,7 @@ const Verification = () => {
       const response = await userServices.verifyingUser("/userverify", {
         id: userId,
       });
+      
 
       if (response?.data?.status === "Successfull") {
         if (response?.data?.data.field1x === "Bloquear") {

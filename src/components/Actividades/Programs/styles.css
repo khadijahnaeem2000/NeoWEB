@@ -1,22 +1,26 @@
+/* styles.css */
+
 .activities_carousel {
     width: 100%;
-    height:100%;
-    margin-top:2%;
+    height: 100%;
+    margin-top: 2%;
     overflow-y: scroll !important;
+    padding: 0 10px; /* Add horizontal padding to the carousel */
 }
 
 .activity_image {
-    width: 25%;
-    height: 70%;
+    width: 25%; /* Default width */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .actividadesButton {
-    margin-right: 1px;
+    margin: 10px 0; /* Add margin to button for spacing */
     border: none;
     width: 160px;
     cursor: pointer;
 }
 
+/* Media Queries for Responsiveness */
 @media screen and (max-width: 1254px) {
     .activity_image {
         width: 38%;
@@ -45,14 +49,42 @@
     .activity_image {
         width: 85%;
     }
-    .carousel_navigation{
-        bottom: 100px ;
+    .carousel_navigation {
+        bottom: 100px;
         top: unset !important;
     }
 }
 
 @media screen and (max-width: 420px) {
     .activity_image {
-        width: 100%;
+        width: 100%; /* Full width for small screens */
+        margin: 0 auto; /* Center image */
+    }
+}
+
+/* Additional mobile styles */
+@media (max-width: 600px) {
+    .actividadesButton {
+        padding: 10px; /* Adjust button padding */
+        width: 80%; /* Make button width responsive */
+    }
+
+    .flex {
+        flex-direction: column; /* Stack items vertically */
+        align-items: center; /* Center items */
+    }
+
+    .carousel_navigation {
+        display: none; /* Hide navigation buttons on mobile */
+    }
+
+    .activities_carousel {
+        width: 100%; /* Make carousel take full width */
+        padding: 0 10px; /* Maintain horizontal padding */
+    }
+
+    /* Adjust text styles for mobile */
+    p {
+        font-size: 14px; /* Smaller font size for mobile */
     }
 }
