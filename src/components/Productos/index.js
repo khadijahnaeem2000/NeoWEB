@@ -583,7 +583,7 @@ const ProductosCarrito = () => {
           </>
         )}
 
-        {showRegister && (
+        {isVerifiedData && showRegister && (
           <div className="overlay">
             <div className="popup">
               <ExpiryRegistrationForm
