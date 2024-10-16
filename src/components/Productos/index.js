@@ -30,10 +30,17 @@ import { toast } from "react-toastify";
 import ProductCard from "../ProductCard";
 import { useSelector } from "react-redux";
 import ExpiryRegistrationForm from "components/ExpiryRegister";
+import userServices from "services/httpService/userAuth/userServices";
+import {
+  getLocalUserdata,
+  updateLocalUserdata, // Assuming you have a function to update local storage
+} from "../../services/auth/localStorageData";
+import BlockedMessage from "../BlockedMessage";
 
 const ProductosCarrito = () => {
   const data = useSelector((state) => state.userInfo.userRegister.success);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
+  const datatwo = getLocalUserdata() || {};
 
   const [loading, setLoading] = useState(false);
   const [applyCouponLoading, setApplyCouponLoading] = useState(false);
@@ -48,6 +55,7 @@ const ProductosCarrito = () => {
   const [selectedCity, setSelectedCity] = useState(""); // State for selected city
   const [cityCost, setCityCost] = useState(0); // State for city cost
   const [cities, setCities] = useState([]);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const fetchCities = async () => {
     try {
@@ -215,6 +223,43 @@ const ProductosCarrito = () => {
     return (firstItemSelected && anyOtherItemSelected) || anyOtherItemSelected;
   }, [items]);
 
+  useEffect(() => {
+    // Fetch user status and update isBlocked
+    const fetchUserStatus = async () => {
+      try {
+        const response = await userServices.commonPostService("/user", {
+          id: datatwo?.id,
+        });
+        if (response.status === 200) {
+          if (response.data.is_block === true) {
+            setIsBlocked(true);
+          } else if (response.data.data.field1x === "Bloquear") {
+            setIsBlocked(true); // Update state to block the user
+          } else {
+            setIsBlocked(false);
+            if (
+              response.data.data.IsRegistered == "NO" &&
+              response.data.data.IsTelephoneverified == "YES"
+            ) {
+              setShowRegister(true);
+              console.log("SUCCESS");
+              console.log(response.data);
+            } else {
+              console.log("SUCCESS else");
+              console.log(response.data);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+      }
+    };
+
+    fetchUserStatus();
+  }, [datatwo?.id]);
+  if (isBlocked) {
+    return <BlockedMessage />;
+  }
   return (
     <div className="flex flex-col">
       <div style={{ marginTop: "1%", marginLeft: "2%", marginRight: "2%" }}>
@@ -525,7 +570,7 @@ const ProductosCarrito = () => {
           </>
         )}
 
-        {isVerifiedData && showRegister && (
+        {showRegister && (
           <div className="overlay">
             <div className="popup">
               <ExpiryRegistrationForm

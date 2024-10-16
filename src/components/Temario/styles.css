@@ -1,11 +1,16 @@
-.stackStyle{
-    display: flex;
+.stackStyle {
+  display: flex;
 }
 
 @media screen and (max-width: 850px) {
-    .stackStyle{
-        flex-direction: column-reverse;
-        height: 96.5vh;
-        justify-content: flex-end;
-    }
+  .stackStyle {
+    flex-direction: column-reverse;
+    height: 96.5vh;
+    justify-content: flex-end;
+  }
+}
+@media (max-width: 768px) {
+  .folder-list {
+    display: none; /* Hide FolderList on mobile */
+  }
 }

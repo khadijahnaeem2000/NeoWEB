@@ -143,7 +143,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 fontSize: "22px",
               }}
             >
-              {item?.price}€
+              {item?.price}€ {item?.order === 1 && "/mes"}
             </Typography>
 
             {item?.order === 1 && (
@@ -153,7 +153,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                   color: "#636363", // Ensure no overflow
                 }}
               >
-                Expiración: {getData?.Payment_ExpiryDate} (Faltan{"30"}
+                Expiración: {getData?.Payment_ExpiryDate} (Faltan{" "}
                 {getData?.dias} días)
               </Typography>
             )}

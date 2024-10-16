@@ -40,7 +40,7 @@ function Home() {
     //     expiry_date = new Date(expiry_date);
     //     const trial_ended = compareAsc(new Date(), expiry_date);
     //     if (trial_ended === 1) {
-          
+
     //       setLogout(true);
     //       localStorage.clear();
     //       toast.error(
@@ -120,8 +120,9 @@ function Home() {
     else if (currentPage === "Temario")
       return <Temario folderToggle={folderToggle} />;
     else if (currentPage === "Entrevista") return <Entrevista />;
-    else if (currentPage === "Exámenes") return <ExamenesPage />;
-    else if (currentPage === "Repaso") return <Repaso />;
+    else if (currentPage === "Exámenes") {
+      return <ExamenesPage />;
+    } else if (currentPage === "Repaso") return <Repaso />;
     else if (currentPage === "Salir") {
       localStorage.clear();
       window.location.replace("https://neoestudio.net/aula_virtual");

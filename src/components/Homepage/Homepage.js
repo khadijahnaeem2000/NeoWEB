@@ -14,6 +14,9 @@ import tiempo from "../../assets/img/images/Tiempo.png";
 import medallas from "../../assets/img/images/Medallas.png";
 import percentil from "../../assets/img/images/Porcentaje2.png";
 import puntos from "../../assets/img/images/Recurso3Pestaaprueba.png";
+import AudioLibro from "components/AudioLibro/AudioLibro";
+import ProductosCarrito from "components/Productos";
+import BlockedMessage from "../BlockedMessage";
 import {
   getLocalUserdata,
   updateLocalstoragepic,
@@ -46,18 +49,22 @@ const Homepage = () => {
       .padStart(2, "0")
   );
   const [logout, setLogout] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false); // New state to track blocked status
 
   useEffect(() => {
+    if (!data || Object.keys(data).length === 0) {
+      localStorage.clear();
+      window.open("https://neoestudio.net/aula_virtual", "_blank");
+    }
     userServices
       .commonPostService("/user", { id: data?.id })
       .then((response) => {
         if (response.status === 200) {
-          if (response.data.data.IsBlocked === "True") {
-            setLogout(true);
-            localStorage.clear();
-            toast.error(
-              "¡Estás bloqueado, por favor contacta al administrador!"
-            );
+          console.log(response);
+          if (response.data.is_block === true) {
+            setIsBlocked(true); // Update blocked status
+            // setLogout(true);
+            // localStorage.clear();
           } else {
             if (response.data.data.smartcount >= 3) {
               toast.error(
@@ -113,25 +120,16 @@ const Homepage = () => {
     };
   });
 
+  // If the user is blocked, return the AudioLibro component
+  if (isBlocked) {
+    return <BlockedMessage />;
+  }
+
   return (
     <div
       className={classes.container}
       style={{ display: "flex", flexDirection: "column" }}
     >
-      {/* {showTimer?
-      <div style={{display:'flex', marginLeft:'5%'}}>
-        <div className={`${classes.wrapper} flex flex-col justify-between mr-1 w-1/4 lg:w-2/12 h-2/5 lg:ml-24`}>
-          <h4 style={{fontWeight:'bold'}}>
-            Preuba
-          </h4>
-          <h4 style={{fontWeight:'bold',color:'red'}}>
-            {hours}:{minutes}:{seconds}
-          </h4>
-          <br/>
-        </div>
-        </div>:
-        <></>
-      } */}
       <div className={`${classes.wrapper} flex`}>
         <div
           style={{ flex: "1 1 0px" }}
@@ -235,7 +233,6 @@ const Homepage = () => {
         </div>
       </div>
       {logout ? <Navigate to="/" /> : null}
-
       <MyCalendar />
     </div>
   );

@@ -30,7 +30,7 @@ import { Markup } from "interweave";
 import Modal from "@mui/material/Modal";
 import tick from "../../assets/img/images/tick.webp";
 import cross from "../../assets/img/images/cross.webp";
-import TextField from '@mui/material/TextField';
+import TextField from "@mui/material/TextField";
 import useStyles from "./style";
 import "./style.css";
 import rejectIcon from "../../assets/img/images/rejectIcon.webp";
@@ -53,10 +53,12 @@ import iosTick from "../../assets/img/images/tick.png";
 import iosCross from "../../assets/img/images/cross.png";
 import iosRepasoNotDone from "../../assets/img/images/Iconorepaso.png";
 import iosRepasoDone from "../../assets/img/images/repasouncompleted.png";
+import userServices from "services/httpService/userAuth/userServices";
+import BlockedMessage from "../BlockedMessage";
 
 function Entrevista(props) {
   const Styles = useStyles();
-  const [reason, setReason] = useState('');
+  const [reason, setReason] = useState("");
   const [rejectQuestion, setRejectQuestion] = useState(false);
   const [rejectionData, setRejectionData] = useState([]);
   const [rejectionOption, setRejectionOption] = useState("");
@@ -84,6 +86,7 @@ function Entrevista(props) {
   const [studentExamRecId, setStudentExamRecId] = useState(0);
   const [folderId, setFolderId] = useState(0);
   const [resetExam, setResetExam] = useState(false);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const handleModalClose = () => setResetExam(false);
   let triggerTime;
@@ -96,7 +99,37 @@ function Entrevista(props) {
     studentId: student_id,
     studentType: student_type,
   };
+  useEffect(() => {
+    // Fetch user status and update isBlocked
+    const fetchUserStatus = async () => {
+      try {
+        const response = await userServices.commonPostService("/user", {
+          id: data?.id,
+        });
+        if (response.status === 200) {
+          if (response.data.is_block === true) {
+            setIsBlocked(true);
+          } else if (response.data.data.field1x === "Bloquear") {
+            setIsBlocked(true); // Update state to block the user
+            //updateLocalUserdata(userData); // Update local storage with the user data
+            // Optionally, show an error message
+            console.log("here here ");
+            toast.error(
+              "¡Estás bloqueado, por favor contacta al administrador!"
+            );
+          } else {
+            setIsBlocked(false); // Unblock if the user is not blocked
+          }
+        } else {
+          console.log("Cannot get updated info");
+        }
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+      }
+    };
 
+    fetchUserStatus();
+  }, [data?.id]);
   useEffect(() => {
     if (props.showExam === "true") {
       if (props.item.type === "repaso") {
@@ -253,15 +286,19 @@ function Entrevista(props) {
         setEndExam(response.data);
         setShowScore(true);
         axios
-          .post(`https://neoestudio.net/api/SendSchedule`,{"studentId":data.id,"task":`Entrevista: ${response.data.examName}`,"type":"Entrevista"})
+          .post(`https://neoestudio.net/api/SendSchedule`, {
+            studentId: data.id,
+            task: `Entrevista: ${response.data.examName}`,
+            type: "Entrevista",
+          })
           .then((response) => {
-            if(response.data.status==='Successfull') {
-              console.log('added to schedule');
+            if (response.data.status === "Successfull") {
+              console.log("added to schedule");
+            } else {
+              console.log("Could not add to schedule");
             }
-            else {
-              console.log('Could not add to schedule');
-            }
-          }).catch((err) => {
+          })
+          .catch((err) => {
             console.log(err);
           });
       })
@@ -434,45 +471,51 @@ function Entrevista(props) {
   };
 
   const sendRejection = (currentQuestion, rejectionOption) => {
-    if(rejectionOption==="") {
+    if (rejectionOption === "") {
       setSubmission(true);
-    }
-    else {
+    } else {
       const rejectionData = {
-        description:reason,
-        studentId:data.id,
-        qaId:currentQuestion.qaId,
-        selectedoption:rejectionOption,
-      }
+        description: reason,
+        studentId: data.id,
+        qaId: currentQuestion.qaId,
+        selectedoption: rejectionOption,
+      };
       axios
         .post(`https://neoestudio.net/api/questionqueries`, rejectionData)
         .then((response) => {
-          toast.success("La impugnación ha sido enviada con éxito. Muchas gracias por tu colabración.");
+          toast.success(
+            "La impugnación ha sido enviada con éxito. Muchas gracias por tu colabración."
+          );
         })
         .catch((error) => {
           console.log(error, "Error sending rejection");
-          toast.error('Error al enviar en este momento, inténtalo de nuevo más tarde.');
+          toast.error(
+            "Error al enviar en este momento, inténtalo de nuevo más tarde."
+          );
         });
-        closeRejectionForm();
+      closeRejectionForm();
     }
-  }
+  };
 
   const closeRejectionForm = () => {
     setRejectQuestion(false);
-    setRejectionOption('');
+    setRejectionOption("");
     setSubmission(false);
-  }
+  };
 
   const rejectOptions = () => {
-    axios.get(`https://neoestudio.net/api/rejectionoptions`)
-      .then(res => {
+    axios
+      .get(`https://neoestudio.net/api/rejectionoptions`)
+      .then((res) => {
         setRejectionData(res.data.data[0]);
       })
       .catch((error) => {
         console.log(error);
-      })
+      });
+  };
+  if (isBlocked) {
+    return <BlockedMessage />;
   }
-
   return (
     <>
       {showScreen ? (
@@ -519,7 +562,12 @@ function Entrevista(props) {
                         resetRepasoExam();
                       }}
                     >
-                      <img src={siBtnImg} srcSet={iosSiBtnImg} alt="" height={50} />
+                      <img
+                        src={siBtnImg}
+                        srcSet={iosSiBtnImg}
+                        alt=""
+                        height={50}
+                      />
                     </Button>
                     <Button
                       size="medium"
@@ -527,7 +575,12 @@ function Entrevista(props) {
                         setResetExam(false);
                       }}
                     >
-                      <img src={noBtnImg} srcSet={iosNoBtnImg} alt="" height={50} />
+                      <img
+                        src={noBtnImg}
+                        srcSet={iosNoBtnImg}
+                        alt=""
+                        height={50}
+                      />
                     </Button>
                   </div>
                 </Box>
@@ -549,129 +602,121 @@ function Entrevista(props) {
                     const panel = data.name;
                     return (
                       <div className={Styles.folderWrapper}>
-                            {listLoading ? (
-                              <div className="w-100 text-center">
-                                <CircularProgress
-                                  style={{
-                                    width: "20px",
-                                    height: "20px",
-                                    margin: "10px",
-                                  }}
-                                />
-                              </div>
-                            ) : (
-                              <>
-                                {filesData.map((data) => {
-                                  return (
-                                    <div className={Styles.dataWrapper}>
-                                      <div>
-                                        <div className={Styles.examLinks}>
-                                          {data.studentExamStatus ===
-                                          ("notAttempted"||"started") ? (
-                                            <>
-                                              <img
-                                                src={RepasoNotDone}
-                                                srcSet={iosRepasoNotDone}
-                                                alt=""
-                                                className={Styles.headingImg}
-                                              />
-                                              <button
-                                                id={data.id}
-                                                onClick={(e) =>
-                                                  startExams(e, data)
-                                                }
-                                                style={{
-                                                  fontFamily:
-                                                    "ProximaSoft-regular",
-                                                }}
-                                              >
-                                                {data.name}
-                                              </button>
-                                            </>
-                                          ) : data.studentExamStatus ===
-                                            "end" ? (
-                                            <>
-                                              <img
-                                                src={RepasoDone}
-                                                srcSet={iosRepasoDone}
-                                                alt=""
-                                                className={Styles.headingImg}
-                                              />
-                                              <button
-                                                style={{
-                                                  fontFamily:
-                                                    "ProximaSoft-bold",
-                                                }}
-                                                onClick={(e) => {
-                                                    reviewExam(e, data);
-                                                }}
-                                                onMouseDown={() => {
-                                                  triggerTime = setTimeout(() => {
-                                                      setStudentExamRecId(data.studentExamRecordId);
-                                                      setFolderId(data.folderId);
-                                                      setResetExam(true);
-                                                  }, 1000); //Change 1000 to number of milliseconds required for mouse hold
-                                                }}
-                                                onMouseUp={() => {
-                                                  clearTimeout(triggerTime);
-                                                }}
-                                              >
-                                                {data.name}
-                                              </button>
-                                            </>
-                                          ) : data.studentExamStatus === "paused" ?(
-                                            <>
-                                              <img
-                                                src={RepasoNotDone}
-                                                srcSet={iosRepasoNotDone}
-                                                alt=""
-                                                className={Styles.headingImg}
-                                              />
-                                              <button
-                                                id={data.id}
-                                                onClick={(e) =>
-                                                  startExams(e, data)
-                                                }
-                                                style={{
-                                                  fontFamily:
-                                                    "ProximaSoft-regular",
-                                                  color: "#0A52CB",
-                                                  display: "flex",
-                                                }}
-                                              >
-                                                {data.name}
-                                              </button>
-                                            </>
-                                          ) : (
-                                            <>
-                                              <img
-                                                src={RepasoNotDone}
-                                                srcSet={iosRepasoNotDone}
-                                                alt=""
-                                                className={Styles.headingImg}
-                                              />
-                                              <button
-                                                id={data.id}
-                                                onClick={(e) =>
-                                                  startExams(e, data)
-                                                }
-                                                style={{
-                                                  fontFamily:
-                                                    "ProximaSoft-regular",
-                                                  display: "flex",
-                                                }}
-                                              >
-                                                {data.name}
-                                              </button>
-                                            </>
-                                          )}
-                                        </div>
-                                      </div>
+                        {listLoading ? (
+                          <div className="w-100 text-center">
+                            <CircularProgress
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                margin: "10px",
+                              }}
+                            />
+                          </div>
+                        ) : (
+                          <>
+                            {filesData.map((data) => {
+                              return (
+                                <div className={Styles.dataWrapper}>
+                                  <div>
+                                    <div className={Styles.examLinks}>
+                                      {data.studentExamStatus ===
+                                      ("notAttempted" || "started") ? (
+                                        <>
+                                          <img
+                                            src={RepasoNotDone}
+                                            srcSet={iosRepasoNotDone}
+                                            alt=""
+                                            className={Styles.headingImg}
+                                          />
+                                          <button
+                                            id={data.id}
+                                            onClick={(e) => startExams(e, data)}
+                                            style={{
+                                              fontFamily: "ProximaSoft-regular",
+                                            }}
+                                          >
+                                            {data.name}
+                                          </button>
+                                        </>
+                                      ) : data.studentExamStatus === "end" ? (
+                                        <>
+                                          <img
+                                            src={RepasoDone}
+                                            srcSet={iosRepasoDone}
+                                            alt=""
+                                            className={Styles.headingImg}
+                                          />
+                                          <button
+                                            style={{
+                                              fontFamily: "ProximaSoft-bold",
+                                            }}
+                                            onClick={(e) => {
+                                              reviewExam(e, data);
+                                            }}
+                                            onMouseDown={() => {
+                                              triggerTime = setTimeout(() => {
+                                                setStudentExamRecId(
+                                                  data.studentExamRecordId
+                                                );
+                                                setFolderId(data.folderId);
+                                                setResetExam(true);
+                                              }, 1000); //Change 1000 to number of milliseconds required for mouse hold
+                                            }}
+                                            onMouseUp={() => {
+                                              clearTimeout(triggerTime);
+                                            }}
+                                          >
+                                            {data.name}
+                                          </button>
+                                        </>
+                                      ) : data.studentExamStatus ===
+                                        "paused" ? (
+                                        <>
+                                          <img
+                                            src={RepasoNotDone}
+                                            srcSet={iosRepasoNotDone}
+                                            alt=""
+                                            className={Styles.headingImg}
+                                          />
+                                          <button
+                                            id={data.id}
+                                            onClick={(e) => startExams(e, data)}
+                                            style={{
+                                              fontFamily: "ProximaSoft-regular",
+                                              color: "#0A52CB",
+                                              display: "flex",
+                                            }}
+                                          >
+                                            {data.name}
+                                          </button>
+                                        </>
+                                      ) : (
+                                        <>
+                                          <img
+                                            src={RepasoNotDone}
+                                            srcSet={iosRepasoNotDone}
+                                            alt=""
+                                            className={Styles.headingImg}
+                                          />
+                                          <button
+                                            id={data.id}
+                                            onClick={(e) => startExams(e, data)}
+                                            style={{
+                                              fontFamily: "ProximaSoft-regular",
+                                              display: "flex",
+                                            }}
+                                          >
+                                            {data.name}
+                                          </button>
+                                        </>
+                                      )}
                                     </div>
-                                  );
-                                })}
-                              </>
-                            )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </>
+                        )}
                       </div>
                     );
                   })}
@@ -692,7 +737,9 @@ function Entrevista(props) {
                       src={rejectIcon}
                       srcSet={iosRejectIcon}
                       className={Styles.timerIcons}
-                      onClick={() => {setRejectQuestion(true)}}
+                      onClick={() => {
+                        setRejectQuestion(true);
+                      }}
                     />
                   </div>
                 </div>
@@ -703,14 +750,16 @@ function Entrevista(props) {
                     aria-labelledby="reject-question-modal"
                     aria-describedby="reject-question-description"
                   >
-                    <Box className={Styles.modalStyle} style={{width:'auto',height:'auto'}}>
-                        <div>
-                          <div style={{ fontFamily: "ProximaSoft-bold" }}>
-                            <Markup content={rejectionData.Description} />
-                          </div>
-                          <div className={Styles.Options}>
-                          {
-                            rejectionData.Option1!==null?
+                    <Box
+                      className={Styles.modalStyle}
+                      style={{ width: "auto", height: "auto" }}
+                    >
+                      <div>
+                        <div style={{ fontFamily: "ProximaSoft-bold" }}>
+                          <Markup content={rejectionData.Description} />
+                        </div>
+                        <div className={Styles.Options}>
+                          {rejectionData.Option1 !== null ? (
                             <button
                               id="a"
                               value="a"
@@ -721,7 +770,12 @@ function Entrevista(props) {
                             >
                               <div className={Styles.answerLinksInner1}>
                                 {rejectionOption === "option1" ? (
-                                  <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
                                 ) : (
                                   ""
                                 )}
@@ -732,92 +786,129 @@ function Entrevista(props) {
                                   width="90%"
                                 />
                               </div>
-                            </button>:<></>
-                          }
-                          {
-                            rejectionData.Option2!==null?
-                              <button
-                                onClick={(e) => {
-                                  setRejectionOption("option2");
-                                }}
-                                className={Styles.answerLinks}
-                              >
-                                <div className={Styles.answerLinksInner1}>
-                                  {rejectionOption === "option2" ? (
-                                    <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                                <div className={Styles.answerLinksInner2}>
-                                  <Markup content={rejectionData.Option2} />
-                                </div>
-                              </button>:<></>
-                          }
-                          {
-                            rejectionData.Option3!==null?
-                              <button
-                                onClick={(e) => {
-                                  setRejectionOption("option3")
-                                }}
-                                className={Styles.answerLinks}
-                              >
-                                <div className={Styles.answerLinksInner1}>
-                                  {rejectionOption === "option3" ? (
-                                    <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
-                                  ) : (
-                                    ""
-                                  )}
-                                </div>
-                                <div className={Styles.answerLinksInner2}>
-                                  <Markup content={rejectionData.Option3} />
-                                </div>
-                              </button>:<></>
-                          }
-                          {
-                            rejectionData.Option4!==null?
-                              <button
-                                onClick={(e) => {
-                                  setRejectionOption("option4");
-                                }}
-                                className={Styles.answerLinks}
-                              >
-                                <div className={Styles.answerLinksInner1}>
-                                  { rejectionOption === "option4" ? (
-                                    <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
-                                  )  : (
-                                    ""
-                                  )}
-                                </div>
-                                <div className={Styles.answerLinksInner2}>
-                                  <Markup content={rejectionData.Option4} />
-                                </div>
-                              </button>:<></>
-                          }
-                          </div>
-                          <div className='text-red-600 text-xs'>
-                            {submission&&rejectionOption===""?"¡Por favor selecciona una opcion!":""}
-                          </div>
-                          <div className="flex justify-center">
-                            <TextField
-                              id="outlined-multiline-static"
-                              multiline
-                              rows={4}
-                              label="Explica con detalle qué es lo que se debe corregir."
-                              className={Styles.answerLinksInner2}
-                              onChange={(event) => {setReason(event.target.value)}} //whenever the text field change, you save the value in state
-                            />
-                          </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
+                          {rejectionData.Option2 !== null ? (
+                            <button
+                              onClick={(e) => {
+                                setRejectionOption("option2");
+                              }}
+                              className={Styles.answerLinks}
+                            >
+                              <div className={Styles.answerLinksInner1}>
+                                {rejectionOption === "option2" ? (
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className={Styles.answerLinksInner2}>
+                                <Markup content={rejectionData.Option2} />
+                              </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
+                          {rejectionData.Option3 !== null ? (
+                            <button
+                              onClick={(e) => {
+                                setRejectionOption("option3");
+                              }}
+                              className={Styles.answerLinks}
+                            >
+                              <div className={Styles.answerLinksInner1}>
+                                {rejectionOption === "option3" ? (
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className={Styles.answerLinksInner2}>
+                                <Markup content={rejectionData.Option3} />
+                              </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
+                          {rejectionData.Option4 !== null ? (
+                            <button
+                              onClick={(e) => {
+                                setRejectionOption("option4");
+                              }}
+                              className={Styles.answerLinks}
+                            >
+                              <div className={Styles.answerLinksInner1}>
+                                {rejectionOption === "option4" ? (
+                                  <img
+                                    src={ansSelectImg}
+                                    srcSet={iosAnsSelectImg}
+                                    alt=""
+                                    width={"80%"}
+                                  />
+                                ) : (
+                                  ""
+                                )}
+                              </div>
+                              <div className={Styles.answerLinksInner2}>
+                                <Markup content={rejectionData.Option4} />
+                              </div>
+                            </button>
+                          ) : (
+                            <></>
+                          )}
                         </div>
-                        <br/>
-                        <div className="flex justify-between w-full">
-                          <Button variant="contained" size="medium" onClick={closeRejectionForm}>
-                            Cancelar
-                          </Button>
-                          <Button variant="contained" size="medium" onClick={() => sendRejection(examReviewData[currentQuestion],rejectionOption)}>
-                            Enviar
-                          </Button>
+                        <div className="text-red-600 text-xs">
+                          {submission && rejectionOption === ""
+                            ? "¡Por favor selecciona una opcion!"
+                            : ""}
                         </div>
+                        <div className="flex justify-center">
+                          <TextField
+                            id="outlined-multiline-static"
+                            multiline
+                            rows={4}
+                            label="Explica con detalle qué es lo que se debe corregir."
+                            className={Styles.answerLinksInner2}
+                            onChange={(event) => {
+                              setReason(event.target.value);
+                            }} //whenever the text field change, you save the value in state
+                          />
+                        </div>
+                      </div>
+                      <br />
+                      <div className="flex justify-between w-full">
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          onClick={closeRejectionForm}
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          variant="contained"
+                          size="medium"
+                          onClick={() =>
+                            sendRejection(
+                              examReviewData[currentQuestion],
+                              rejectionOption
+                            )
+                          }
+                        >
+                          Enviar
+                        </Button>
+                      </div>
                     </Box>
                   </Modal>
                   <div style={{ fontFamily: "ProximaSoft-bold" }}>
@@ -836,23 +927,54 @@ function Entrevista(props) {
                     <button className={Styles.answerLinks}>
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
-                        examReviewData[currentQuestion].correct.includes("a") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                        examReviewData[currentQuestion].correct.includes(
+                          "a"
+                        ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
-                          examReviewData[currentQuestion].correct.includes("a") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "a"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "a" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
-                          examReviewData[currentQuestion].correct.includes("a") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "a"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer1" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -867,23 +989,54 @@ function Entrevista(props) {
                     <button className={Styles.answerLinks}>
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
-                        examReviewData[currentQuestion].correct.includes("b") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                        examReviewData[currentQuestion].correct.includes(
+                          "b"
+                        ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
-                          examReviewData[currentQuestion].correct.includes("b") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "b"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "b" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
-                          examReviewData[currentQuestion].correct.includes("b") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "b"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer2" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -897,23 +1050,54 @@ function Entrevista(props) {
                     <button className={Styles.answerLinks}>
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
-                        examReviewData[currentQuestion].correct.includes("c") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                        examReviewData[currentQuestion].correct.includes(
+                          "c"
+                        ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
-                          examReviewData[currentQuestion].correct.includes("c") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "c"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "c" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
-                          examReviewData[currentQuestion].correct.includes("c") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "c"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer3" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -927,23 +1111,54 @@ function Entrevista(props) {
                     <button className={Styles.answerLinks}>
                       <div className={Styles.answerLinksInner3}>
                         {examReviewData[currentQuestion].status == "correct" &&
-                        examReviewData[currentQuestion].correct.includes("d") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                        examReviewData[currentQuestion].correct.includes(
+                          "d"
+                        ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
-                          examReviewData[currentQuestion].correct.includes("d") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "d"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "d" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status ==
                             "notAttempted" &&
-                          examReviewData[currentQuestion].correct.includes("d") ? (
-                          <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                          examReviewData[currentQuestion].correct.includes(
+                            "d"
+                          ) ? (
+                          <img
+                            src={tick}
+                            srcSet={iosTick}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : examReviewData[currentQuestion].status == "wrong" &&
                           examReviewData[currentQuestion].studentAnswered ==
                             "answer4" ? (
-                          <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                          <img
+                            src={cross}
+                            srcSet={iosCross}
+                            alt=""
+                            style={{ width: "40px" }}
+                          />
                         ) : (
                           ""
                         )}
@@ -1075,14 +1290,24 @@ function Entrevista(props) {
                     bgcolor={`linear-gradient(to bottom, rgba(17,148,47,1), rgba(106,170,101,1))`}
                     progress={endExam.correctPercentage.toFixed(1)}
                   />
-                  <img src={tick} srcSet={iosTick} alt='' style={{ width: "40px" }} />
+                  <img
+                    src={tick}
+                    srcSet={iosTick}
+                    alt=""
+                    style={{ width: "40px" }}
+                  />
                 </div>
                 <div className={Styles.progressBarWrapper}>
                   <Progressbar
                     bgcolor={`linear-gradient(to bottom, rgba(206,8,17,1), rgba(222,110,81,1))`}
                     progress={endExam.wrongPercentage.toFixed(1)}
                   />
-                  <img src={cross} srcSet={iosCross} alt='' style={{ width: "40px" }} />
+                  <img
+                    src={cross}
+                    srcSet={iosCross}
+                    alt=""
+                    style={{ width: "40px" }}
+                  />
                 </div>
                 <div className={Styles.progressBarWrapper}>
                   <Progressbar
@@ -1095,10 +1320,20 @@ function Entrevista(props) {
               <Grid item xs={12} md={4} className={Styles.ResultWrappers}>
                 <div className={Styles.resultBtnMain}>
                   <button className={Styles.revisarBtn} onClick={reviewExam}>
-                    <img src={Revisar} srcSet={iosRevisar} alt="Revisar Button" width={"350px"} />
+                    <img
+                      src={Revisar}
+                      srcSet={iosRevisar}
+                      alt="Revisar Button"
+                      width={"350px"}
+                    />
                   </button>
                   <button className={Styles.salirBtn} onClick={SalirBtn}>
-                    <img src={Salir} srcSet={iosSalir} alt="Salir Button" width={"350px"} />
+                    <img
+                      src={Salir}
+                      srcSet={iosSalir}
+                      alt="Salir Button"
+                      width={"350px"}
+                    />
                   </button>
                 </div>
               </Grid>
@@ -1146,32 +1381,39 @@ function Entrevista(props) {
                           srcSet={iosPauseImg}
                           className={Styles.timerIcons}
                           onClick={handleStart}
-                          alt=''
+                          alt=""
                         />
                         <img
                           src={stopImg}
                           srcSet={iosStopImg}
-                          alt=''
+                          alt=""
                           className={Styles.timerIcons}
                           onClick={endQuiz}
                         />
                         <img
                           src={correctAnswerImg}
                           srcSet={iosCorrectAnswerImg}
-                          alt=''
+                          alt=""
                           className={Styles.timerIcons}
                           onClick={() => {
                             ansArry.splice(ansCheck, 1, {
-                              answer:
-                                examData[currentQuestion].correct.includes("a")
-                                  ? "answer1"
-                                  : examData[currentQuestion].correct.includes("b")
-                                  ? "answer2"
-                                  : examData[currentQuestion].correct.includes("c")
-                                  ? "answer3"
-                                  : examData[currentQuestion].correct.includes("d")
-                                  ? "answer4"
-                                  : answerClicked,
+                              answer: examData[
+                                currentQuestion
+                              ].correct.includes("a")
+                                ? "answer1"
+                                : examData[currentQuestion].correct.includes(
+                                    "b"
+                                  )
+                                ? "answer2"
+                                : examData[currentQuestion].correct.includes(
+                                    "c"
+                                  )
+                                ? "answer3"
+                                : examData[currentQuestion].correct.includes(
+                                    "d"
+                                  )
+                                ? "answer4"
+                                : answerClicked,
                               showDescript: true,
                             });
                             return handleSetAnswer();
@@ -1236,15 +1478,30 @@ function Entrevista(props) {
                           {ansArry[currentQuestion].answer == "answer1" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct.includes("a") ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].studentAnswered ==
                               "answer1" &&
                             !examData[currentQuestion].correct.includes("a") ? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -1282,15 +1539,30 @@ function Entrevista(props) {
                           {ansArry[currentQuestion].answer == "answer2" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct.includes("b") ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].studentAnswered ==
                               "answer2" &&
                             !examData[currentQuestion].correct.includes("b") ? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -1325,15 +1597,30 @@ function Entrevista(props) {
                           {ansArry[currentQuestion].answer == "answer3" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt="" width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct.includes("c") ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].studentAnswered ==
                               "answer3" &&
                             !examData[currentQuestion].correct.includes("c") ? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -1368,15 +1655,30 @@ function Entrevista(props) {
                           {ansArry[currentQuestion].answer == "answer4" &&
                           currentQuestion == ansCheck &&
                           ansArry[currentQuestion].showDescript != true ? (
-                            <img src={ansSelectImg} srcSet={iosAnsSelectImg} alt='' width={"80%"} />
+                            <img
+                              src={ansSelectImg}
+                              srcSet={iosAnsSelectImg}
+                              alt=""
+                              width={"80%"}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].correct.includes("d") ? (
-                            <img src={tick} srcSet={iosTick} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={tick}
+                              srcSet={iosTick}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : ansArry[currentQuestion].showDescript === true &&
                             examData[currentQuestion].studentAnswered ==
                               "answer4" &&
                             !examData[currentQuestion].correct.includes("d") ? (
-                            <img src={cross} srcSet={iosCross} alt="" style={{ width: "40px" }} />
+                            <img
+                              src={cross}
+                              srcSet={iosCross}
+                              alt=""
+                              style={{ width: "40px" }}
+                            />
                           ) : (
                             ""
                           )}
@@ -1418,7 +1720,8 @@ function Entrevista(props) {
                                 backgroundImage:
                                   currentQuestion == index
                                     ? `url(${golden}),url(${iosGolden})`
-                                    : data.answer == null || data.answer == "null"
+                                    : data.answer == null ||
+                                      data.answer == "null"
                                     ? `url(${noSelect}),url(${iosNoSelect})`
                                     : `url(${answerImg1}),url(${iosAnswerImg1})`,
                               }}

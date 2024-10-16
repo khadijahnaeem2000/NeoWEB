@@ -23,29 +23,37 @@ const Verification = () => {
 
   const userVerification = async () => {
     try {
-      const response = await userServices.verifyingUser("/user", {
+      const response = await userServices.verifyingUser("/userverify", {
         id: userId,
       });
 
       if (response?.data?.status === "Successfull") {
-        localStorage.setItem(
-          "neoestudio",
-          JSON.stringify(response?.data?.data)
-        );
+        if (response?.data?.data.field1x === "Bloquear") {
+          localStorage.setItem(
+            "neoestudio",
+            JSON.stringify(response?.data?.data)
+          );
+          navigate("/");
+        } else {
+          localStorage.setItem(
+            "neoestudio",
+            JSON.stringify(response?.data?.data)
+          );
 
-        dispatch({
-          type: "User_Register_Success",
-          payload: response.data.data,
-        });
-        localStorage.setItem(
-          "package",
-          JSON.stringify(response?.data?.package)
-        );
-        if (response?.data?.data?.IsTelephoneverified === "YES") {
-          handleLoginSuccess();
+          dispatch({
+            type: "User_Register_Success",
+            payload: response.data.data,
+          });
+          localStorage.setItem(
+            "package",
+            JSON.stringify(response?.data?.package)
+          );
+          if (response?.data?.data?.IsTelephoneverified === "YES") {
+            handleLoginSuccess();
+          }
+
+          navigate("/");
         }
-
-        navigate("/");
       } else if (response?.data?.status === "Unsuccessfull") {
         localStorage.clear();
         window.location.replace("https://neoestudio.net/pago-blocked");

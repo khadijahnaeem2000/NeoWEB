@@ -234,7 +234,7 @@ const ExpiryRegistrationForm = ({
             whiteSpace: "nowrap", // Prevent text wrapping
           }}
         >
-          PRUEBA DE 30 DÍAS GRATIS!
+          PRUEBA DE 48 HORAS GRATIS!
         </center>
         <br></br>
 
@@ -646,7 +646,7 @@ const ExpiryRegistrationForm = ({
           },
         }}
       >
-        {isSuccess ? "Éxito" : "AMPLIAR A 30 días Gratis"}
+        {isSuccess ? "Éxito" : "AMPLIAR A 48 HORAS Gratis"}
         {/* Corrected typo here */}
       </Button>
     </Box>
