@@ -18,6 +18,7 @@ import {
   updateLocalstoragepic,
   updateLocalstoragetime,
 } from "../../services/auth/localStorageData";
+import Popup from "./Popup/Popup"; // Import the new Popup component
 
 const Homepage = () => {
   const classes = useStyles();
@@ -37,6 +38,29 @@ const Homepage = () => {
     Math.floor(temp % 60).toString().padStart(2, "0")
   );
   const [logout, setLogout] = useState(false);
+  const [showPopup, setShowPopup] = useState(false); // State for showing popup
+
+  // Check screen width for mobile view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (window.innerWidth <= 768) { // Consider mobile if width <= 768px
+        setShowPopup(true);
+      } else {
+        setShowPopup(false);
+      }
+    };
+
+    // Initial check
+    checkScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkScreenSize);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   useEffect(() => {
     userServices
@@ -106,30 +130,50 @@ const Homepage = () => {
 
   return (
     <div className={classes.container}>
-        <div className={classes.wrapper}>
-            <div className={`flex flex-column items-center ${classes.imgWidth}`}>
-                <img
-                    id="profile_pic"
-                    alt="Profile_picture"
-                    src={data?.photo != null ? `https://neoestudio.net/userImage/${data?.photo}` : profilepic}
-                    className={`${classes.imgSize} h-28`}
-                />
-                <SelectButton />
-            </div>
-            <div className={`flex flex-column items-center ${classes.imgWidth}`}>
-                <img
-                    alt="Rank_image"
-                    src={data?.rank_image != null ? `https://neoestudio.net/${data?.rank_image}` : defaultrank}
-                    className={`${classes.imgSize} h-28`}
-                />
-                <h2 className={`${classes.font} text-center fontSize`}>
-                    {userInfo?.data?.rank_name != null ? userInfo.data.rank_name : "-"}
-                </h2>
-                <div className="text-center fontSize">
-                    {userInfo?.data?.userName != null ? userInfo.data.userName : "-"}
-                </div>
-            </div>
-            <div className="imgWidth flex flex-column items-center">
+      {showPopup && (
+        <Popup
+          message={{ title: "Testsss", body: "This isdsfd a tejhgukst popup njkjhkjjhjhusghdghjhvj,on dkldjsldhqsdhdhdhqsudhmobile vkjqsiohscishliew" }}
+          onClose={() => setShowPopup(false)} // Passing onClose handler
+        />
+      )}
+
+      <div className={classes.wrapper}>
+        {/* Rest of your JSX */}
+        <div className={`flex flex-column items-center ${classes.imgWidth}`}>
+          <img
+            id="profile_pic"
+            alt="Profile_picture"
+            src={
+              data?.photo != null
+                ? `https://neoestudio.net/userImage/${data?.photo}`
+                : profilepic
+            }
+            className={`${classes.imgSize} h-28`}
+          />
+          <SelectButton />
+        </div>
+        <div className={`flex flex-column items-center ${classes.imgWidth}`}>
+          <img
+            alt="Rank_image"
+            src={
+              data?.rank_image != null
+                ? `https://neoestudio.net/${data?.rank_image}`
+                : defaultrank
+            }
+            className={`${classes.imgSize} h-28`}
+          />
+          <h2 className={`${classes.font} text-center fontSize`}>
+            {userInfo?.data?.rank_name != null
+              ? userInfo.data.rank_name
+              : "-"}
+          </h2>
+          <div className="text-center fontSize">
+            {userInfo?.data?.userName != null
+              ? userInfo.data.userName
+              : "-"}
+          </div>
+        </div>
+             <div className="imgWidth flex flex-column items-center">
         <img
             alt="Tiempo"
             src={tiempo}
@@ -176,15 +220,12 @@ const Homepage = () => {
         </h2>
         <div className="text-center fontSize">Percentil</div>
     </div>
-        </div>
+      </div>
 
-        {logout ? <Navigate to="/" /> : null}
-        <MyCalendar />
+      {logout ? <Navigate to="/" /> : null}
+      <MyCalendar />
     </div>
-);
-
-
-
+  );
 };
 
 export default Homepage;

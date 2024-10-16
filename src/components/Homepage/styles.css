@@ -1,47 +1,49 @@
-/* styles.css */
-
 /* Common image styles */
 .imgWidth {
-    width: 16.66%; /* This allows for six images in a row (100% / 6 = 16.66%) */
+    width: 16.66%; /* Six images per row */
 }
 
-/* Mobile styles */
+/* Adjust the wrapper to make space for sidebar and prevent content push */
+.wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between; /* Spread items evenly */
+    align-items: flex-start; /* Align items to the top */
+    padding: 10px 0;
+    width: 100%;
+}
+
+.wrapper > div {
+    flex: 0 0 auto; /* Prevent shrinking */
+    margin-right: 10px; /* Add small space between images */
+}
+
+.content {
+    flex-grow: 1; /* Content (e.g., calendar) will take the remaining space */
+    padding: 20px;
+}
+
+/* Control image heights on mobile */
 @media screen and (max-width: 767px) {
     .imgWidth {
-        width: 20%; /* Adjust width for better fit on mobile screens */
+        width: 20%; /* Adjust for mobile screens */
     }
 
-    /* Control image heights to prevent overflow */
     .wrapper img {
-        height: auto; /* Allow image height to scale */
-        max-height: 40px; /* Set a smaller max-height to control image size */
+        height: auto;
+        max-height: 40px;
     }
 }
 
-/* Font sizes */
+/* Font sizes for responsiveness */
 @media screen and (max-width: 1530px) {
     .fontSize {
-        font-size: 10px; /* Slightly decreased for better readability */
+        font-size: 10px;
     }
 }
 
 @media screen and (max-width: 940px) {
     .fontSize {
-        font-size: 8px; /* Adjusted for better readability */
+        font-size: 8px;
     }
-}
-
-/* Additional styles for horizontal alignment */
-.wrapper {
-    display: flex;
-    flex-wrap: nowrap; /* Prevent wrapping */
-    overflow-x: auto; /* Allow horizontal scrolling if necessary */
-    justify-content: flex-start; /* Align items to the left */
-    align-items: center; /* Center items vertically */
-    padding: 10px 0; /* Add some vertical padding */
-}
-
-.wrapper > div {
-    flex: 0 0 auto; /* Prevent flex items from shrinking */
-    margin-right: 0; /* Remove margin to avoid overflow */
 }

@@ -1,0 +1,39 @@
+/* Popup.css */
+
+.popup-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url('../../../assets/img/otp.png'); /* Add your background image here */
+    background-size: cover; /* Ensure the image covers the container */
+    background-position: center; /* Center the background image */
+    color: #fff;
+    padding: 30px;
+    border-radius: 10px;
+    z-index: 1000;
+    width: 350px; /* Increase width */
+    height: 250px; /* Increase height */
+    text-align: center;
+  }
+  
+  .popup-close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: transparent;
+    color: #fff;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  
+  .popup-title {
+    font-size: 22px; /* Adjust font size for better layout */
+    margin-bottom: 15px;
+  }
+  
+  .popup-body {
+    font-size: 16px; /* Adjust font size for readability */
+  }
