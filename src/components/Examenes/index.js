@@ -70,6 +70,8 @@ import iosCorrectAnswerImg from "../../assets/img/images/correctAnswer.png";
 import iosStopImg from "../../assets/img/images/stop.png";
 import iosTick from "../../assets/img/images/tick.png";
 import iosCross from "../../assets/img/images/cross.png";
+import userServices from "services/httpService/userAuth/userServices";
+import BlockedMessage from "../BlockedMessage";
 
 function Examenes1(props) {
   let triggerTime;
@@ -106,6 +108,7 @@ function Examenes1(props) {
   const [totalLoading, setTotalLoading] = useState(0);
   const [stateRend, setStateRend] = useState(0);
   const [folderId, setFolderId] = useState(0);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const handleModalClose = () => setResetExam(false);
 
@@ -119,6 +122,37 @@ function Examenes1(props) {
   };
 
   // GET ALL EXAM FOLDERS API
+  useEffect(() => {
+    // Fetch user status and update isBlocked
+    const fetchUserStatus = async () => {
+      try {
+        const response = await userServices.commonPostService("/userverify", {
+          id: data?.id,
+        });
+        if (response.status === 200) {
+          if (response.data.is_block === true) {
+            setIsBlocked(true);
+          } else if (response.data.data.field1x === "Bloquear") {
+            setIsBlocked(true); // Update state to block the user
+            //updateLocalUserdata(userData); // Update local storage with the user data
+            // Optionally, show an error message
+            console.log("here here ");
+            toast.error(
+              "¡Estás bloqueado, por favor contacta al administrador!"
+            );
+          } else {
+            setIsBlocked(false); // Unblock if the user is not blocked
+          }
+        } else {
+          console.log("Cannot get updated info");
+        }
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+      }
+    };
+
+    fetchUserStatus();
+  }, [data?.id]);
 
   useEffect(() => {
     if (props.showExam === "true") {
@@ -611,7 +645,9 @@ function Examenes1(props) {
     setRejectionOption("");
     setSubmission(false);
   };
-
+  if (isBlocked) {
+    return <BlockedMessage />;
+  }
   return (
     <>
       {showScreen ? (

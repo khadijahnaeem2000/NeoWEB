@@ -30,10 +30,17 @@ import { toast } from "react-toastify";
 import ProductCard from "../ProductCard";
 import { useSelector } from "react-redux";
 import ExpiryRegistrationForm from "components/ExpiryRegister";
+import userServices from "services/httpService/userAuth/userServices";
+import {
+  getLocalUserdata,
+  updateLocalUserdata, // Assuming you have a function to update local storage
+} from "../../services/auth/localStorageData";
+import BlockedMessage from "../BlockedMessage";
 
 const ProductosCarrito = () => {
   const data = useSelector((state) => state.userInfo.userRegister.success);
   const getData = JSON.parse(localStorage.getItem("neoestudio"));
+  const datatwo = getLocalUserdata() || {};
 
   const [loading, setLoading] = useState(false);
   const [applyCouponLoading, setApplyCouponLoading] = useState(false);
@@ -48,6 +55,7 @@ const ProductosCarrito = () => {
   const [selectedCity, setSelectedCity] = useState(""); // State for selected city
   const [cityCost, setCityCost] = useState(0); // State for city cost
   const [cities, setCities] = useState([]);
+  const [isBlocked, setIsBlocked] = useState(false);
 
   const fetchCities = async () => {
     try {
@@ -215,6 +223,43 @@ const ProductosCarrito = () => {
     return (firstItemSelected && anyOtherItemSelected) || anyOtherItemSelected;
   }, [items]);
 
+  useEffect(() => {
+    // Fetch user status and update isBlocked
+    const fetchUserStatus = async () => {
+      try {
+        const response = await userServices.commonPostService("/user", {
+          id: datatwo?.id,
+        });
+        if (response.status === 200) {
+          if (response.data.is_block === true) {
+            setIsBlocked(true);
+          } else if (response.data.data.field1x === "Bloquear") {
+            setIsBlocked(true); // Update state to block the user
+          } else {
+            setIsBlocked(false);
+            if (
+              response.data.data.IsRegistered == "NO" &&
+              response.data.data.IsTelephoneverified == "YES"
+            ) {
+              setShowRegister(true);
+              console.log("SUCCESS");
+              console.log(response.data);
+            } else {
+              console.log("SUCCESS else");
+              console.log(response.data);
+            }
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user status:", error);
+      }
+    };
+
+    fetchUserStatus();
+  }, [datatwo?.id]);
+  if (isBlocked) {
+    return <BlockedMessage />;
+  }
   return (
     <div className="flex flex-col">
       <div style={{ marginTop: "1%", marginLeft: "2%", marginRight: "2%" }}>
@@ -228,14 +273,10 @@ const ProductosCarrito = () => {
           }}
         >
           {getData?.IsRegistered === "NO" && <div className="empty-div"></div>}
-          <Typography
-            style={{ margin: "0px" }}
-            variant="h4"
-            gutterBottom
-          >
+          <Typography style={{ margin: "0px" }} variant="h4" gutterBottom>
             Tienda
           </Typography>
-  
+
           {getData?.IsRegistered === "NO" && (
             <Button
               type="button"
@@ -253,7 +294,7 @@ const ProductosCarrito = () => {
             </Button>
           )}
         </Box>
-  
+
         {loading === true ? (
           <Box sx={{ display: "flex", justifyContent: "center" }} width="100%">
             <CircularProgress />
@@ -275,7 +316,7 @@ const ProductosCarrito = () => {
                     ))}
                 </Grid>
               </Grid>
-  
+
               {items?.length > 0 && (
                 <Grid item xs={12} sm={4}>
                   <TableContainer
@@ -370,7 +411,7 @@ const ProductosCarrito = () => {
                             {totalSum.toFixed(2)}€
                           </TableCell>
                         </TableRow>
-  
+
                         <TableRow>
                           <TableCell colSpan={3} align="center">
                             {couponPercent > 0 ? (
@@ -439,7 +480,7 @@ const ProductosCarrito = () => {
                                     width: { xs: "100%", sm: "70%" }, // Full width on mobile
                                   }}
                                 />
-  
+
                                 {coupon && (
                                   <Button
                                     disabled={applyCouponLoading}
@@ -458,67 +499,72 @@ const ProductosCarrito = () => {
                             )}
                           </TableCell>
                         </TableRow>
-  
-                        {shouldShowCityDropdown && (
-  <TableRow>
-    <TableCell colSpan={3} align="center">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" }, // Column on mobile, row on larger screens
-          alignItems: { xs: "center", sm: "flex-start" }, // Center on mobile, start on larger screens
-          gap: 2,
-          justifyContent: { xs: "center", sm: "flex-start" }, // Center on mobile, start on larger screens
-        }}
-      >
-        <Typography
-          sx={{
-            fontWeight: "bold",
-            marginLeft: { xs: 0, sm: "3px" }, // Adjust margin based on screen size
-          }}
-          variant="subtitle2"
-        >
-          Ciudad:
-        </Typography>
-        <Select
-          value={selectedCity}
-          onChange={handleCityChange}
-          fullWidth
-          variant="outlined"
-          sx={{
-            fontSize: "15px",
-            width: { 
-              xs: "100%",     // Full width on mobile
-              sm:"70%",
-            }, // Full width on mobile, fixed width on larger screens
-            height: "35px",
-            textAlign: "left", // Align text to the left
-    "& .MuiSelect-select": {
-      justifyContent: "flex-start", // Start the text from the left
-    },
-            color: "#818589",
-          }}
-        >
-          {cities.length > 0 ? (
-            cities.map((city) => (
-              <MenuItem
-                key={city.CityName}
-                value={city.CityName}
-              >
-                {city.CityName}
-              </MenuItem>
-            ))
-          ) : (
-            <MenuItem disabled>
-              No cities available
-            </MenuItem>
-          )}
-        </Select>
-      </Box>
-    </TableCell>
-  </TableRow>
-)}
 
+                        {shouldShowCityDropdown && (
+                          <TableRow>
+                            <TableCell colSpan={3} align="center">
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  flexDirection: { xs: "column", sm: "row" }, // Column on mobile, row on larger screens
+                                  alignItems: {
+                                    xs: "center",
+                                    sm: "flex-start",
+                                  }, // Center on mobile, start on larger screens
+                                  gap: 2,
+                                  justifyContent: {
+                                    xs: "center",
+                                    sm: "flex-start",
+                                  }, // Center on mobile, start on larger screens
+                                }}
+                              >
+                                <Typography
+                                  sx={{
+                                    fontWeight: "bold",
+                                    marginLeft: { xs: 0, sm: "3px" }, // Adjust margin based on screen size
+                                  }}
+                                  variant="subtitle2"
+                                >
+                                  Ciudad:
+                                </Typography>
+                                <Select
+                                  value={selectedCity}
+                                  onChange={handleCityChange}
+                                  fullWidth
+                                  variant="outlined"
+                                  sx={{
+                                    fontSize: "15px",
+                                    width: {
+                                      xs: "100%", // Full width on mobile
+                                      sm: "70%",
+                                    }, // Full width on mobile, fixed width on larger screens
+                                    height: "35px",
+                                    textAlign: "left", // Align text to the left
+                                    "& .MuiSelect-select": {
+                                      justifyContent: "flex-start", // Start the text from the left
+                                    },
+                                    color: "#818589",
+                                  }}
+                                >
+                                  {cities.length > 0 ? (
+                                    cities.map((city) => (
+                                      <MenuItem
+                                        key={city.CityName}
+                                        value={city.CityName}
+                                      >
+                                        {city.CityName}
+                                      </MenuItem>
+                                    ))
+                                  ) : (
+                                    <MenuItem disabled>
+                                      No cities available
+                                    </MenuItem>
+                                  )}
+                                </Select>
+                              </Box>
+                            </TableCell>
+                          </TableRow>
+                        )}
                       </TableBody>
                     </Table>
                   </TableContainer>
@@ -536,7 +582,7 @@ const ProductosCarrito = () => {
             </Grid>
           </>
         )}
-  
+
         {isVerifiedData && showRegister && (
           <div className="overlay">
             <div className="popup">
@@ -551,7 +597,6 @@ const ProductosCarrito = () => {
       </div>
     </div>
   );
-  
 };
 
 export default ProductosCarrito;

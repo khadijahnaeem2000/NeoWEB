@@ -18,6 +18,7 @@ const VideoList = (props) => {
         userServices.commonPostService('/fetch-videos', { "type": data.type })
             .then(response => {
                 if (response.status === 200) {
+                    console.log("Fetched Videos:", response.data); // Log fetched videos
                     props.updateTotal(response.data.length);
                     setVideos(response.data);
                 } else {
@@ -35,40 +36,31 @@ const VideoList = (props) => {
 
         if (width < 768) {
             // Mobile styles
-                // Mobile styles
-                return {
-                  container: {
-                      height: '96vh',
-                      overflowY: 'auto',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center', // Center content vertically
-                      alignItems: 'center', // Center align items horizontally
-                      width: '100%', // Ensure full width
-                    
-                      marginRight:'15px'
-                  },
-                  videoCard: {
-                      width: '90%', // Set width for mobile
-                      maxWidth: '400px', // Optional max width
-                      margin: '1rem auto', // Center the card
-                      boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)', // Optional styling
-                  },
-              
+            return {
+                container: {
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'flex-start', // Align to the top left on mobile
+                    justifyContent: 'flex-start', // Align items to the top
+                    width: '100%',
+                    marginRight: '15px'
+                },
+                videoCard: {
+                    width: '90%',
+                    margin: '1rem auto',
+                },
             };
         } else {
             // Desktop styles
             return {
                 container: {
-                    height: 'auto', // Allow height to adjust based on content
-                    overflowY: 'hidden', // Hide overflow on larger screens
                     display: 'flex',
-                    flexDirection: 'column', // Stack cards vertically
-                    alignItems: 'center', // Center align cards
+                    flexDirection: 'column',
+                    alignItems: 'center', // Center align cards on desktop
                     padding: '1rem',
                 },
                 videoCard: {
-                    width: '100%', // Full width for desktop, one video per row
+                    width: '100%',
                     marginBottom: '1rem',
                 },
             };

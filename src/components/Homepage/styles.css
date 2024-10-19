@@ -1,49 +1,51 @@
-/* Common image styles */
-.imgWidth {
-    width: 16.66%; /* Six images per row */
-}
-
-/* Adjust the wrapper to make space for sidebar and prevent content push */
+/* Default styles for desktop */
 .wrapper {
     display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-between; /* Spread items evenly */
-    align-items: flex-start; /* Align items to the top */
-    padding: 10px 0;
-    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
 }
 
-.wrapper > div {
-    flex: 0 0 auto; /* Prevent shrinking */
-    margin-right: 10px; /* Add small space between images */
+/* Ensure that text is below images on desktop */
+.desktopItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
-.content {
-    flex-grow: 1; /* Content (e.g., calendar) will take the remaining space */
-    padding: 20px;
-}
-
-/* Control image heights on mobile */
+/* Mobile-specific styles */
 @media screen and (max-width: 767px) {
-    .imgWidth {
-        width: 20%; /* Adjust for mobile screens */
+    .mobileRow {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
     }
 
-    .wrapper img {
-        height: auto;
-        max-height: 40px;
+    .mobileItem {
+        flex: 1 1 45%;
+        margin: 5px;
+        text-align: center;
     }
 }
+/* Default styles for desktop */
+.fontSize {
+    font-size: 16px; /* Default font size for desktop */
+}
 
-/* Font sizes for responsiveness */
-@media screen and (max-width: 1530px) {
+/* Mobile-specific styles */
+@media screen and (max-width: 767px) {
     .fontSize {
-        font-size: 10px;
+        font-size: 10px; /* Smaller font size for mobile */
+    }
+
+    .mobileItem h2 {
+        font-size: 12px; /* Specific heading size adjustment for mobile */
+    }
+
+    .mobileItem div {
+        font-size: 10px; /* General text size for mobile */
     }
 }
 
-@media screen and (max-width: 940px) {
-    .fontSize {
-        font-size: 8px;
-    }
-}

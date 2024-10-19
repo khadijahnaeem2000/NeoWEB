@@ -25,6 +25,7 @@ const GetMobileNumber = ({ onVerify }) => {
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [showRegister, setShowRegister] = useState(false);
   const [submitMobileNumberLoading, setSubmitMobileNumberLoading] =
     useState(false);
 
@@ -57,7 +58,20 @@ const GetMobileNumber = ({ onVerify }) => {
       return;
     }
     if (isVerifiedData?.IsRegistered === "NO") {
-      onVerify(true);
+      onVerify(false);
+      setShowRegister(true);
+      console.log("its here ");
+      console.log(showRegister);
+      return;
+    }
+    if (
+      isVerifiedData?.IsRegistered === "NO" &&
+      isVerifiedData?.IsTelephoneverified === "YES"
+    ) {
+      onVerify(false);
+      setShowRegister(true);
+      console.log("its here33 ");
+      setShowSteps(2);
       return;
     }
     if (
@@ -78,9 +92,12 @@ const GetMobileNumber = ({ onVerify }) => {
         mobile: encodeURIComponent(phoneNumber),
       });
       if (response?.status == 200) {
+        toast.success("OTP enviada a tu número de móvil");
+
         return response;
       }
       if (response?.status == 201) {
+        toast.success("El teléfono ya existe");
         return response;
       }
     } catch (error) {
@@ -99,10 +116,10 @@ const GetMobileNumber = ({ onVerify }) => {
         const response = await getOtp(data?.id, phoneNumber);
         if (response) {
           if (response?.status == 200) {
-            toast.success("OTP enviada a tu número de móvil");
+            //toast.success("OTP enviada a tu número de móvil");
             setShowSteps(1);
           } else {
-            toast.error("El teléfono ya existe");
+            //toast.error("El teléfono ya existe");
           }
         }
       } catch (error) {
@@ -122,17 +139,19 @@ const GetMobileNumber = ({ onVerify }) => {
 
   const submitOtp = async () => {
     try {
-      if (otp?.length === 6) {
+      if (otp?.length === 4) {
         const response = await userServices.commonPostService("/verifyOTP", {
           user_id: data?.id,
           mobileotp: otp,
         });
 
         if (response?.data?.status === 200) {
+          setShowRegister(true);
           setIsVerifiedData((prevState) => ({
             ...prevState,
             IsTelephoneverified: "YES",
           }));
+
           handleLoginSuccess();
         } else if (response?.data?.status === 100) {
           setIsVerifiedData((prevState) => ({
@@ -251,31 +270,30 @@ const GetMobileNumber = ({ onVerify }) => {
                       },
                     }}
                   >
-                    PRUEBA 30 DÍAS GRATIS
+                    PRUEBA 48 HORAS GRATIS
                   </center>
-                  <div
+                  <center
                     style={{
                       color: "white",
+                      marginTop: "1px",
                       fontFamily: '"Montserrat", sans-serif',
-                      textAlign: "center",
-                      whiteSpace: "nowrap",
-                      fontSize: "10px", // Default font size
+
+                      whiteSpace: "nowrap", // Prevent text wrapping
                     }}
                   >
-                    INTRODUCE EL CÓDIGO DE VERIFICACIÓN ENVIADO AL TELEFONO POR
-                    SMS
-                    <style>
-                      {`
-      @media (max-width: 768px) {
-        div {
-          white-space: normal;
-          font-size: 14px; // Smaller font size for mobile
-        }
-      }
-    `}
-                    </style>
-                  </div>
+                    INTRODUCE EL CÓDIGO DE VERIFICACIÓN
+                  </center>
+                  <center
+                    style={{
+                      color: "white",
+                      marginTop: "1px",
+                      fontFamily: '"Montserrat", sans-serif',
 
+                      whiteSpace: "nowrap", // Prevent text wrapping
+                    }}
+                  >
+                    ENVIADO AL TELEFONO POR SMS
+                  </center>
                   {/* Replace OtpInput with a single input field */}
                   <div style={{ position: "relative", marginTop: "20px" }}>
                     <label
@@ -290,12 +308,12 @@ const GetMobileNumber = ({ onVerify }) => {
                         pointerEvents: "none",
                       }}
                     >
-                      Teléfono
+                      Teléfono OTP
                     </label>
                     <input
                       id="otp"
                       type="text"
-                      maxLength="6"
+                      maxLength="4"
                       value={otp}
                       onChange={handleChangeOtp}
                       style={{
@@ -341,17 +359,14 @@ const GetMobileNumber = ({ onVerify }) => {
 
                   <Box
                     sx={{
-                      backgroundColor: "black",
+                      // backgroundColor: "black",
                       color: "white",
 
                       padding: "5px 10px",
-                      fontSize: "12px",
+                      fontSize: "15px",
                       marginTop: "8px", // Add margin for spacing
                       cursor: "pointer",
                       textAlign: "center", // Center the text
-                      "&:hover": {
-                        backgroundColor: "darkgrey", // Optional: darker shade on hover
-                      },
                     }}
                     onClick={() => getOtp(data?.id, phoneNumber)} // Handle the resend code logic here
                   >
@@ -531,12 +546,13 @@ const GetMobileNumber = ({ onVerify }) => {
               </Box>
             )}
           </Box>
-          {isVerifiedData?.IsRegistered === "NO" && showSteps === 2 && (
-            <ExpiryRegistrationForm
-              setIsVerifiedData={setIsVerifiedData}
-              isVerifiedData={isVerifiedData}
-              onVerify={onVerify}
-            />
+          {showRegister === true && (
+            
+                <ExpiryRegistrationForm
+                  setIsVerifiedData={setIsVerifiedData}
+                  isVerifiedData={isVerifiedData}
+                  onVerify={onVerify}
+                />
           )}
         </>
       )}

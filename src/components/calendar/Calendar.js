@@ -60,7 +60,8 @@ const MyCalendar = (props) => {
               title: task.Task,
               start: date,
               end: date,
-              bgColor: task.bgcolor,
+              bgColor: task.bgcolor, // Background color from backend
+              textColor: task.textcolor, // Text color from backend
               image: task.image,
             };
           });
@@ -96,10 +97,12 @@ const MyCalendar = (props) => {
     }),
     []
   );
-
+  
+  // Event style getter with text and background color
   const eventStyleGetter = (event, start, end, isSelected) => {
     const style = {
-      backgroundColor: event?.bgColor,
+      backgroundColor: event?.bgColor ? event.bgColor : 'transparent', // Fallback to transparent if no background color
+      color: event?.textColor ? event.textColor : 'white', // Fallback to black if no text color
     };
     return {
       style: style,
@@ -143,7 +146,7 @@ const MyCalendar = (props) => {
             },
           }}
           formats={formats}
-          eventPropGetter={eventStyleGetter}
+          eventPropGetter={eventStyleGetter} // Apply event styles
           titleAccessor={renderTitle}
         />
       </div>
