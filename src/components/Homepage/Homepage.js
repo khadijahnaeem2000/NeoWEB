@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Navigate } from "react-router";
 import MyCalendar from "components/calendar/Calendar";
-
+import Popup from "./Popup/Popup"; 
 import useStyles from "./styles";
 import "./styles.css";
 import profilepic from "../../assets/img/images/layer_25.webp";
@@ -16,9 +16,7 @@ import percentil from "../../assets/img/images/Porcentaje2.png";
 import puntos from "../../assets/img/images/Recurso3Pestaaprueba.png";
 
 import AudioLibro from "components/AudioLibro/AudioLibro";
-
 import ProductosCarrito from "components/Productos";
-
 import BlockedMessage from "../BlockedMessage";
 import {
   getLocalUserdata,
@@ -33,7 +31,7 @@ const Homepage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [photo, setPhoto] = useState("");
   const [time, setTime] = useState("");
-  const [isBlocked, setIsBlocked] = useState(false); // New state to track blocked status
+  const [isBlocked, setIsBlocked] = useState(false);
   const [showTimer, setShowTimer] = useState(false);
   const [hours, setHours] = useState(
     Number(
@@ -53,6 +51,37 @@ const Homepage = () => {
       .padStart(2, "0")
   );
   const [logout, setLogout] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+  const [pruebaPopUpText, setPruebaPopUpText] = useState(''); // State for the popup text
+
+  // Function to handle button clicks in Popup
+  const handlePopupButtonClick = (buttonNumber) => {
+    console.log(`Button ${buttonNumber} clicked!`);
+    // You can add more logic based on which button is clicked
+    setShowPopup(false); // Close the popup after button click
+  };
+
+  // Check screen width for mobile view
+  useEffect(() => {
+    const checkScreenSize = () => {
+      if (window.innerWidth <= 768) {
+        setShowPopup(true);
+      } else {
+        setShowPopup(false);
+      }
+    };
+
+    // Initial check
+    checkScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener("resize", checkScreenSize);
+
+    // Cleanup the event listener
+    return () => {
+      window.removeEventListener("resize", checkScreenSize);
+    };
+  }, []);
 
   useEffect(() => {
     userServices
@@ -61,13 +90,8 @@ const Homepage = () => {
         if (response.status === 200) {
           if (response.data.data.IsBlocked === "True") {
             console.log(response);
-
             if (response.data.is_block === true) {
               setIsBlocked(true); // Update blocked status
-
-              // setLogout(true);
-
-              // localStorage.clear();
             }
           } else {
             if (response.data.data.smartcount >= 3) {
@@ -81,6 +105,7 @@ const Homepage = () => {
             }
             setUserInfo(response.data);
             setPhoto(response.data.data.photo);
+            setPruebaPopUpText(response.data.data.PruebaPopUpText); // Set the popup text from API response
             updateLocalstoragetime(response.data.time);
             updateLocalstoragepic(response.data.data.photo);
             setTime(response.data.time);
@@ -92,7 +117,7 @@ const Homepage = () => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }, [data?.id]); // Add data.id as a dependency
 
   useEffect(() => {
     let interval = setInterval(() => {
@@ -122,7 +147,8 @@ const Homepage = () => {
     return () => {
       clearInterval(interval);
     };
-  });
+  }, [seconds, minutes, hours]); // Add seconds, minutes, and hours as dependencies
+
   if (isBlocked) {
     return <BlockedMessage />;
   }
@@ -130,22 +156,20 @@ const Homepage = () => {
   return (
     <div
       className={classes.container}
-      style={{ display: "flex", flexDirection: "column" }}
+      style={{ display: "flex", flexDirection: "column", position: "relative" }} // Added position: relative
     >
-      {/* {showTimer?
-      <div style={{display:'flex', marginLeft:'5%'}}>
-        <div className={`${classes.wrapper} flex flex-col justify-between mr-1 w-1/4 lg:w-2/12 h-2/5 lg:ml-24`}>
-          <h4 style={{fontWeight:'bold'}}>
-            Preuba
-          </h4>
-          <h4 style={{fontWeight:'bold',color:'red'}}>
-            {hours}:{minutes}:{seconds}
-          </h4>
-          <br/>
-        </div>
-        </div>:
-        <></>
-      } */}
+            
+{showPopup && (
+  <div className="popup-overlay">
+    <Popup
+      message={{
+        body: "¿Quieres utilizar la app para tener una mejor experiencia desde el smartphone?"
+      }}
+      onClose={() => setShowPopup(false)}
+    />
+  </div>
+)}
+      {/* Homepage Content */}
       <div className={classes.wrapper}>
         {/* Profile Picture */}
         <div className={classes.desktopItem}>
@@ -182,6 +206,8 @@ const Homepage = () => {
             {userInfo?.data?.userName != null ? userInfo.data.userName : "-"}
           </div>
         </div>
+        
+        {/* Other Desktop Items */}
         <div className={classes.desktopItem}>
           <img
             alt="Tiempo"
@@ -237,7 +263,11 @@ const Homepage = () => {
       {logout ? <Navigate to="/" /> : null}
 
       <MyCalendar />
+
+
+
     </div>
   );
 };
+
 export default Homepage;
