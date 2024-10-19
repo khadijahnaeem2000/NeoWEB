@@ -14,6 +14,12 @@ import tiempo from "../../assets/img/images/Tiempo.png";
 import medallas from "../../assets/img/images/Medallas.png";
 import percentil from "../../assets/img/images/Porcentaje2.png";
 import puntos from "../../assets/img/images/Recurso3Pestaaprueba.png";
+
+import AudioLibro from "components/AudioLibro/AudioLibro";
+
+import ProductosCarrito from "components/Productos";
+
+import BlockedMessage from "../BlockedMessage";
 import {
   getLocalUserdata,
   updateLocalstoragepic,
@@ -27,6 +33,7 @@ const Homepage = () => {
   const [userInfo, setUserInfo] = useState([]);
   const [photo, setPhoto] = useState("");
   const [time, setTime] = useState("");
+  const [isBlocked, setIsBlocked] = useState(false); // New state to track blocked status
   const [showTimer, setShowTimer] = useState(false);
   const [hours, setHours] = useState(
     Number(
@@ -53,11 +60,15 @@ const Homepage = () => {
       .then((response) => {
         if (response.status === 200) {
           if (response.data.data.IsBlocked === "True") {
-            setLogout(true);
-            localStorage.clear();
-            toast.error(
-              "¡Estás bloqueado, por favor contacta al administrador!"
-            );
+            console.log(response);
+
+            if (response.data.is_block === true) {
+              setIsBlocked(true); // Update blocked status
+
+              // setLogout(true);
+
+              // localStorage.clear();
+            }
           } else {
             if (response.data.data.smartcount >= 3) {
               toast.error(
@@ -112,6 +123,9 @@ const Homepage = () => {
       clearInterval(interval);
     };
   });
+  if (isBlocked) {
+    return <BlockedMessage />;
+  }
 
   return (
     <div
@@ -132,37 +146,43 @@ const Homepage = () => {
         </div>:
         <></>
       } */}
-<div className={classes.wrapper}>
-    {/* Profile Picture */}
-    <div className={classes.desktopItem}>
-        <img
+      <div className={classes.wrapper}>
+        {/* Profile Picture */}
+        <div className={classes.desktopItem}>
+          <img
             id="profile_pic"
             alt="Profile_picture"
-            src={data?.photo != null ? `https://neoestudio.net/userImage/${data?.photo}` : profilepic}
+            src={
+              data?.photo != null
+                ? `https://neoestudio.net/userImage/${data?.photo}`
+                : profilepic
+            }
             className="lg:h-40 md:h-36 sm:h-32 h-28"
-        />
-        <div className="text-center fontSize" style={{ marginTop: "2%" }}>
+          />
+          <div className="text-center fontSize" style={{ marginTop: "2%" }}>
             <SelectButton />
+          </div>
         </div>
-    </div>
-    
-    {/* Rank Image */}
-    <div className={classes.desktopItem}>
-        <img
+
+        {/* Rank Image */}
+        <div className={classes.desktopItem}>
+          <img
             alt="Rank_image"
-            src={data?.rank_image != null ? `https://neoestudio.net/${data?.rank_image}` : defaultrank}
+            src={
+              data?.rank_image != null
+                ? `https://neoestudio.net/${data?.rank_image}`
+                : defaultrank
+            }
             className="lg:h-40 md:h-36 sm:h-32 h-28"
-        />
-        <h2 className={`${classes.font} text-center fontSize`}>
+          />
+          <h2 className={`${classes.font} text-center fontSize`}>
             {userInfo?.data?.rank_name != null ? userInfo.data.rank_name : "-"}
-        </h2>
-        <div className="text-center fontSize">
+          </h2>
+          <div className="text-center fontSize">
             {userInfo?.data?.userName != null ? userInfo.data.userName : "-"}
+          </div>
         </div>
-    </div>
-    <div
-        className={classes.desktopItem}
-        >
+        <div className={classes.desktopItem}>
           <img
             alt="Tiempo"
             src={require("assets/img/images/Tiempo.webp").default}
@@ -174,9 +194,7 @@ const Homepage = () => {
           </h2>
           <div className="text-center fontSize">Tiempo</div>
         </div>
-        <div
-          className={classes.desktopItem}
-        >
+        <div className={classes.desktopItem}>
           <img
             alt="Medellas"
             src={require("assets/img/images/Medallas.webp").default}
@@ -188,9 +206,7 @@ const Homepage = () => {
           </h2>
           <div className="text-center fontSize">Aptos</div>
         </div>
-        <div
-          className={classes.desktopItem}
-        >
+        <div className={classes.desktopItem}>
           <img
             style={{ paddingBottom: "5%" }}
             alt="Puntos"
@@ -203,9 +219,7 @@ const Homepage = () => {
           </h2>
           <div className="text-center fontSize">Puntos</div>
         </div>
-        <div
-          className={classes.desktopItem}
-        >
+        <div className={classes.desktopItem}>
           <img
             style={{ paddingBottom: "5%" }}
             alt="Percentil"
@@ -218,8 +232,7 @@ const Homepage = () => {
           </h2>
           <div className="text-center fontSize">Percentil</div>
         </div>
-</div>
-
+      </div>
 
       {logout ? <Navigate to="/" /> : null}
 
