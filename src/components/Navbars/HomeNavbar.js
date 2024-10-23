@@ -1,15 +1,12 @@
-import React from "react";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import useStyles from "./styles.js";
-import icon from "../../assets/img/images/icons-menu-white.svg";
-import logo from "../../assets/img/images/logo.webp";
-import iosLogo from "../../assets/img/images/logo.png";
-import { withStyles } from "@material-ui/core/styles";
-import ExpiryRegistrationForm from "components/ExpiryRegister/index.js";
-import { useState } from "react";
-import { useEffect } from "react";
-import { Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { AppBar, Toolbar, Typography, Avatar, Popover } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import { getLocalUserdata } from "../../services/auth/localStorageData";
+import { withStyles } from "@material-ui/core/styles"; 
+import useMediaQuery from "@material-ui/core/useMediaQuery"; 
+import useStyles from "./styles.js"; 
+import icon from "../../assets/img/images/icons-menu-white.svg";
+import profilepic from "../../assets/img/images/layer_25.webp"; // Importing default profile picture
 
 const WhiteTextTypography = withStyles({
   root: {
@@ -23,95 +20,98 @@ const WhiteTextTypography = withStyles({
 })(Typography);
 
 const HomeNavbar = (props) => {
+  const classes = useStyles(); 
+  const isMobile = useMediaQuery('(max-width:600px)'); 
   const data = useSelector((state) => state.userInfo.userRegister.success);
-
-  const [isVerifiedData, setIsVerifiedData] = useState(null);
-  const [showRegister, setShowRegister] = useState(false);
-  const getData = JSON.parse(localStorage.getItem("neoestudio"));
+  const [userName, setUserName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState(null); // State for avatar URL
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    try {
-      let localRegData = localStorage.getItem("registerData");
-      const parseData = localRegData ? JSON.parse(localRegData) : null;
-      if (data) {
-        setIsVerifiedData(data);
-      } else if (!parseData && !data) {
-        // localStorage.clear();
-        window.location.replace("https://neoestudio.net/aula_virtual");
-      }
-    } catch (error) {
-      console.log("error: ", error);
+    const userData = getLocalUserdata();
+    if (userData) {
+      setUserName(userData.name);
+      setUserEmail(userData.email);
+
+      // Setting avatar URL if available or using default URL
+      const userAvatar = userData.avatar ? `https://neoestudio.net/userImage/${userData.avatar}` : profilepic;
+      setAvatarUrl(userAvatar); 
     }
-  }, [data]);
 
-  useEffect(() => {
-    let timerInterval;
-    const regData = localStorage.getItem("registerData");
-    if (regData) {
-      try {
-        const parsedData = JSON.parse(regData);
-        if (parsedData.IsRegistered === "NO") {
-          timerInterval = setInterval(() => {
-            const logTime = localStorage.getItem("loginTime");
-            if (logTime) {
-              const currentTime = new Date().getTime();
-              const elapsedTime = currentTime - logTime;
-              const timeToPopup = 3 * 60 * 1000;
-
-              if (elapsedTime >= timeToPopup) {
-                if (getData?.IsRegistered === "NO") {
-                  setShowRegister(true);
-                }
-              } else {
-                if (getData?.IsRegistered === "NO") {
-                  setShowRegister(false);
-                }
-              }
-            }
-          }, 1000 * 60 * 1);
-        } else if (parsedData.IsRegistered === "YES") {
-          localStorage.removeItem("loginTime");
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    return () => {
-      clearInterval(timerInterval);
-    };
-  }, [isVerifiedData, getData, data]);
-
-  function triggerOnClose(event) {
-    event.preventDefault();
-    ///localStorage.clear();
-  }
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", triggerOnClose);
-
-    return () => {
-      window.removeEventListener("beforeunload", triggerOnClose);
-    };
+    // Fetching all local storage data and logging it to the console
+    const allLocalStorageData = { ...localStorage };
+    console.log("Local Storage Data:", allLocalStorageData);
   }, []);
 
-  const classes = useStyles();
+  const handleAvatarClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
+
   return (
-    <>
-      <AppBar position="sticky" className={classes.appBar} color="inherit">
-        <Toolbar>
-          <WhiteTextTypography
-            variant="h6"
-            className={classes.title}
-            onClick={props.toggleSideMenu}
+    <AppBar position="sticky" className={classes.appBar} color="inherit">
+      <Toolbar>
+        <WhiteTextTypography
+          variant="h6"
+          className={classes.title}
+          onClick={props.toggleSideMenu}
+        >
+          <img src={icon} alt="menu" className={classes.image} />
+          Menu
+        </WhiteTextTypography>
+        <div className={classes.logoHorizontallyCenter}></div>
+        <div className={classes.grow} />
+        <div className={classes.avatarContainer}>
+        {!isMobile && (
+            <div className={classes.userInfo}>
+              <Typography className={classes.userName}>{userName}</Typography>
+              <Typography className={classes.userEmail}>{userEmail}</Typography>
+            </div>
+          )}
+          <Avatar 
+            onClick={handleAvatarClick} 
+            className={classes.avatar}
+            src={avatarUrl} // Display avatar from external URL or fallback image
           >
-            <img src={icon} alt="menu" className={classes.image} />
-            Menu
-          </WhiteTextTypography>
-          <div className={classes.logoHorizontallyCenter}></div>
-          <div className={classes.grow} />
-        </Toolbar>
-      </AppBar>
-    </>
+            {/* If you want initials or other content when there's no image */}
+          </Avatar>
+        </div>
+        {isMobile && (
+          <Popover
+            id={id}
+            open={open}
+            anchorEl={anchorEl}
+            onClose={handleClose}
+            anchorOrigin={{
+              vertical: 'bottom',
+              horizontal: 'center',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'center',
+            }}
+            PaperProps={{
+              style: {
+                width: 'auto',
+              },
+            }}
+          >
+            <Typography style={{ padding: 10 }}>
+              {userName} <br />
+              {userEmail}
+            </Typography>
+          </Popover>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
+
 export default HomeNavbar;

@@ -1,92 +1,61 @@
-import { makeStyles, alpha } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import background from "../../assets/img/banner.jpeg";
-const drawerWidth = 0;
 
 export default makeStyles((theme) => ({
-appBar: {
+  appBar: {
     backgroundImage: `url(${background})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
     boxShadow: "10",
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-    // height: "86px", // default height for small screens
-    // [theme.breakpoints.up("md")]: {
-    //   height: "70px", // height for medium screens and up
-    // },
-    // [theme.breakpoints.up("lg")]: {
-    //   height: "60px", // height for large screens and up
-    // },
-    // [theme.breakpoints.up("sm")]: {
-    //   width: `calc(100% - ${drawerWidth}px)`,
-    //   marginLeft: drawerWidth,
-    // },
     display: "flex",
   },
-
   title: {
     flexGrow: 1,
     alignItems: "center",
     display: "flex",
     textDecoration: "none",
     [theme.breakpoints.down("xs")]: {
-      fontSize: "0.75rem",
+      fontSize: "0.75rem", // Adjust font size for mobile
     },
   },
   image: {
     marginRight: "10px",
     height: "25px",
   },
-  menuButton: {
-    marginRight: theme.spacing(2),
-    [theme.breakpoints.up("sm")]: {
-      display: "none",
-    },
-  },
   grow: {
     flexGrow: 1,
   },
-
-  inputRoot: {
-    color: "inherit",
-  },
-  inputInput: {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("md")]: {
-      width: "20ch",
+  avatarContainer: {
+    display: "flex",
+    alignItems: "center",
+    [theme.breakpoints.down("xs")]: {
+      flexDirection: "column", // Stack avatar and text for mobile
     },
   },
-  logo: {
-    margin: "auto",
-    textAlign: "center",
-    maxWidth: "50%",
-    maxHeight: "70%",
-    "@media (max-width: 775px)": {
-      maxWidth: "60%",
-    },
-    "@media (min-width: 550px)": {
-      maxWidth: "75%",
-    },
-    "@media (min-width: 1200px)": {
-      maxWidth: "50%",
-    },
-    "@media (min-width: 1500px)": {
-      maxWidth: "40%",
-    },
-    "@media (min-width: 2000px)": {
-      maxWidth: "30%",
-    },
-    "@media (min-width: 3000px)": {
-      maxWidth: "25%",
+  avatar: {
+    cursor: "pointer",
+    width: theme.spacing(7), // Default size for desktop (~56px)
+    height: theme.spacing(7), // Keep circular shape for desktop
+    [theme.breakpoints.down("xs")]: {
+      width: theme.spacing(5), // Smaller size for mobile (~40px)
+      height: theme.spacing(5), // Adjust height to match width
     },
   },
-  logoHorizontallyCenter: {
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)",
+  userName: {
+    marginLeft: theme.spacing(5), // Space between avatar and name on desktop
+    color: "#FFFFFF", // Set the color to white
+    fontWeight: "bold", // Set the text to bold
+    [theme.breakpoints.down("xs")]: {
+      display: "none", // Hide the username next to avatar on mobile
+    },
+  },
+  userEmail: {
+    marginLeft: theme.spacing(1), // Space between avatar and email on desktop
+    color: "#FFFFFF", // Set the color to white
+    fontWeight: "bold", // Set the text to bold
+    [theme.breakpoints.down("xs")]: {
+      display: "none", // Hide the email next to avatar on mobile
+    },
   },
 }));
