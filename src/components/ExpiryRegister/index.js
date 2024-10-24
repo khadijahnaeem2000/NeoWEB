@@ -1,4 +1,4 @@
-import React, { useState ,useEffect } from "react";
+import React, { useState ,useEffect} from "react";
 import { toast } from "react-toastify";
 import {
   TextField,
@@ -11,8 +11,6 @@ import {
   Box,
 } from "@mui/material";
 import Stack from "@mui/material/Stack";
-
-
 import { Send, DoneSharp, CloseOutlined } from "@mui/icons-material";
 import userServices from "services/httpService/userAuth/userServices";
 import { getLocalUserdata } from "services/auth/localStorageData";
@@ -28,6 +26,9 @@ const ExpiryRegistrationForm = ({
 }) => {
   const dispatch = useDispatch();
   const data = getLocalUserdata();
+  console.log("Local storage data:", data);
+  const id = data.id;
+  console.log("Local storage data:", id);
   const [formData, setFormData] = useState({
     id: data?.id,
     password: "",
@@ -45,7 +46,38 @@ const ExpiryRegistrationForm = ({
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [registrationData, setRegistrationData] = useState(null);
 
+
+  useEffect(() => {
+    const fetchRegistrationData = async () => {
+      try {
+        const response = await fetch(`https://neoestudio.net/api/Registerdata/${formData.id}`);
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        const data = await response.json();
+        setRegistrationData(data.data); // Store the fetched data in state
+        setFormData((prevFormData) => ({
+          ...prevFormData,
+          ...data.data, // Populate formData with the fetched data
+        }));
+        console.log("Fetched Registration Data:", data.data);
+      } catch (error) {
+        console.error("Error fetching registration data:", error);
+      }
+    };
+
+    if (formData.id) {
+      fetchRegistrationData();
+    }
+  }, [formData.id]); // Fetch data when formData.id is available
+
+  useEffect(() => {
+    if (registrationData) {
+      console.log(registrationData.color); // Now you can safely access color
+    }
+  }, [registrationData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -227,7 +259,9 @@ const ExpiryRegistrationForm = ({
             whiteSpace: "nowrap", // Prevent text wrapping
           }}
         >
-          iYA PUEDES DISFRUTAR DE TU
+             {Object.values(registrationData || {}).some(value => value)
+    ? "¿QUIERES MODIFICAR TUS DATOS?"
+    : "IYA PUEDES DISFRUTAR DE TU"}
         </center>
         <center
           style={{
@@ -237,7 +271,9 @@ const ExpiryRegistrationForm = ({
             whiteSpace: "nowrap", // Prevent text wrapping
           }}
         >
-          PRUEBA DE 48 HORAS GRATIS!
+         {Object.values(registrationData || {}).some(value => value)
+    ? "PERSONALES?"
+    : "PRUEBA DE 48 HORAS GRATIS!"}
         </center>
         <br></br>
 
@@ -458,50 +494,7 @@ const ExpiryRegistrationForm = ({
             }}
           />
         </center>
-        <div style={{ textAlign: "center" }}>
-          <TextField
-            variant="standard"
-            placeholder="Telegram (optional)"
-            name="telegram"
-            value={formData.telegram}
-            onChange={handleChange}
-            error={!!errors.telegram}
-            helperText={errors.telegram}
-            sx={{
-              "& .MuiFormLabel-root": {
-                color: "#ffffff",
-                marginLeft: "9px",
-                marginTop: "-3%",
-              },
-              "& .MuiInputBase-input": {
-                color: "#FFFFFF",
-                backgroundColor: "transparent",
-                padding: "25px",
-                width: "100%",
-                justifyContent: "center",
-                textAlign: "center",
-                borderRadius: "6px",
-                fontWeight: 300, // Adjusted to semi-light, assuming fontWeight of 300 is semi-light
-                boxShadow: "0 4px 20px grey",
-                "&::placeholder": {
-                  color: "#FFFFFF",
-                  fontFamily: "Montserrat-regular",
-                  fontSize: "16px",
-                  fontWeight: 300, // Adjusted to semi-light
-                },
-              },
-              "& .MuiInputBase-root": {
-                "&:focus-within": {
-                  boxShadow: "0 0 10px black",
-                },
-              },
-            }}
-            InputProps={{
-              disableUnderline: true,
-            }}
-          />
-        </div>
-
+   
         <center>
           <FormControl error={!!errors.shirtsize}>
             <Select
@@ -649,7 +642,12 @@ const ExpiryRegistrationForm = ({
           },
         }}
       >
-        {isSuccess ? "Éxito" : "AMPLIAR A 48 HORAS Gratis"}
+      {Object.values(registrationData || {}).some(value => value) 
+  ? "GUARDAR" 
+  : isSuccess ? "Éxito" : "AMPLIAR A 48 HORAS Gratis"}
+    
+
+
         {/* Corrected typo here */}
       </Button>
     </Box>

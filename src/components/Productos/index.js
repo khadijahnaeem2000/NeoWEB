@@ -86,6 +86,7 @@ const ProductosCarrito = () => {
     fetchCities();
   }, []);
 
+  
   const handleCheckboxChange = (id) => {
     setItems(
       items.map((item) =>
@@ -197,6 +198,7 @@ const ProductosCarrito = () => {
   };
 
   useEffect(() => {
+    setShowRegister(true);
     if (!isVerifiedData) {
       setIsVerifiedData(data);
     }
@@ -263,46 +265,43 @@ const ProductosCarrito = () => {
   return (
     <div className="flex flex-col">
       <div style={{ marginTop: "1%", marginLeft: "2%", marginRight: "2%" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent:
-              getData?.IsRegistered === "NO" ? "space-between" : "center",
-            alignItems: "center",
-            flexWrap: { xs: "wrap", sm: "nowrap" }, // Ensure flexibility on smaller screens
-          }}
-        >
-          {getData?.IsRegistered === "NO" && <div className="empty-div"></div>}
-          <Typography style={{ margin: "0px" }} variant="h4" gutterBottom>
-            Tienda
-          </Typography>
+      <Box
+  sx={{
+    display: "flex",
+    justifyContent: "space-between", // Center alignment for all
+    alignItems: "center",
+    flexWrap: { xs: "wrap", sm: "nowrap" },
+  }}
+>
+  <div className="empty-div"></div> {/* This div can remain for layout purposes */}
+  <Typography style={{ margin: "0px" }} variant="h4" gutterBottom>
+    Tienda
+  </Typography>
 
-          {getData?.IsRegistered === "NO" && (
-            <Button
-              type="button"
-              variant="contained"
-              color="primary"
-              sx={{
-                marginBlock: 2,
-                width: { xs: "100%", sm: "auto" }, // Full-width button on small screens
-              }}
-              onClick={() => {
-                setShowRegister(true);
-              }}
-            >
-              Registrarse
-            </Button>
-          )}
-        </Box>
+  <Button
+    type="button"
+    variant="contained"
+    color="primary"
+    sx={{
+      marginBlock: 2,
+      width: { xs: "100%", sm: "auto" },
+    }}
+    onClick={() => {
+      setShowRegister(true);
+    }}
+  >
+    Registrarse
+  </Button>
+</Box>
 
-        {loading === true ? (
-          <Box sx={{ display: "flex", justifyContent: "center" }} width="100%">
-            <CircularProgress />
-          </Box>
-        ) : (
-          <>
-            <CssBaseline />
-            <Grid container spacing={3}>
+{loading === true ? (
+  <Box sx={{ display: "flex", justifyContent: "center" }} width="100%">
+    <CircularProgress />
+  </Box>
+) : (
+  <>
+    <CssBaseline />
+    <Grid container spacing={3}>
               <Grid item xs={12} sm={8}>
                 <Grid container spacing={3}>
                   {items?.length > 0 &&
@@ -580,20 +579,21 @@ const ProductosCarrito = () => {
                 </Grid>
               )}
             </Grid>
-          </>
-        )}
+  </>
+)}
 
-        {isVerifiedData && showRegister && (
-          <div className="overlay">
-            <div className="popup">
-              <ExpiryRegistrationForm
-                isVerifiedData={isVerifiedData}
-                setIsVerifiedData={setIsVerifiedData}
-                onVerify={showRegForm}
-              />
-            </div>
-          </div>
-        )}
+{showRegister && (
+  <div className="overlay">
+    <div className="popup">
+      <ExpiryRegistrationForm
+        isVerifiedData={isVerifiedData}
+        setIsVerifiedData={setIsVerifiedData}
+        onVerify={showRegForm}
+      />
+    </div>
+  </div>
+)}
+
       </div>
     </div>
   );
