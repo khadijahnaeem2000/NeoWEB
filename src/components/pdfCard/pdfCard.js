@@ -3,13 +3,15 @@ import { Document, Page } from "react-pdf/dist/esm/entry.webpack";
 import { getLocalUserdata } from "../../services/auth/localStorageData";
 import userServices from "services/httpService/userAuth/userServices";
 import { toast } from "react-toastify";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
 const PdfCard = (props) => {
   const [pageNumber, setPageNumber] = useState(1);
   const [numPages, setNumPages] = useState(null);
   const [fileName, setFileName] = useState(props.fileName);
   const [title, setTitle] = useState("");
-  const [scale, setScale] = useState(1); // Add scale for dynamic scaling
+  const [scale, setScale] = useState(1);
   const data = getLocalUserdata();
   const inputval = useRef();
 
@@ -61,21 +63,20 @@ const PdfCard = (props) => {
     }
   };
 
-  // Dynamically set the scale based on the window size
   useEffect(() => {
     const updateScale = () => {
       const width = window.innerWidth;
       if (width < 768) {
-        setScale(0.6); // Adjust for small screens (mobile)
+        setScale(0.6);
       } else if (width < 1024) {
-        setScale(0.8); // Adjust for tablets
+        setScale(0.8);
       } else {
-        setScale(1); // Full size for larger screens
+        setScale(1);
       }
     };
 
     window.addEventListener("resize", updateScale);
-    updateScale(); // Set initial scale on mount
+    updateScale();
 
     return () => window.removeEventListener("resize", updateScale);
   }, []);
@@ -109,21 +110,22 @@ const PdfCard = (props) => {
     }
   }, [props.pdf]);
 
-  // Inline styles
   const styles = {
     pdfContainer: {
       display: "flex",
-      justifyContent: "center",
+      alignItems: "center", 
       flexDirection: "column",
       margin: "0 auto",
       maxWidth: "100%",
-      padding: "1rem",
+      padding: window.innerWidth < 768 ? "0.5rem" : "1rem",
+      minHeight: "100vh",
     },
     pdfWrapper: {
       width: "100%",
-      maxWidth: "100%",
       overflow: "hidden",
-      margin: "0 auto",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center", 
     },
     pdfPage: {
       display: "flex",
@@ -131,7 +133,7 @@ const PdfCard = (props) => {
       width: "100%",
     },
     pageInput: {
-      width: "50px",
+      width: window.innerWidth < 768 ? "40px" : "50px",
       border: "1px solid #111827",
       padding: "5px",
       textAlign: "center",
@@ -141,101 +143,71 @@ const PdfCard = (props) => {
       display: "flex",
       marginTop: "1rem",
     },
-    temarioButton: {
-      backgroundColor: "transparent",
+    navigationButton: {
+      backgroundColor: "#808080",
       border: "none",
-      margin: "0 10px",
-      width: "120px", // Adjusted for mobile
-      height: "90px",
-      cursor: "pointer", // Change cursor on hover
+      padding: "0.8rem",
+      borderRadius: "50%",
+      color: "#fff",
+      margin: "0 20px",
+      cursor: "pointer",
+      fontSize: "1.5rem",
+      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.2)",
+      transition: "background-color 0.3s",
     },
-    buttonImage: {
-      width: "100%",
-      height: "100%",
-    },
-    // Mobile-specific adjustments using media queries
-    "@media (max-width: 768px)": {
-      pdfWrapper: {
-        maxWidth: "100%",
-        padding: "0.5rem",
-      },
-      temarioButton: {
-        margin: "0 5px",
-        width: "80px", // Adjusted for mobile
-        height: "80px",
-      },
-      pageInput: {
-        width: "40px",
-        margin: "0 5px",
-      },
+    navigationButtonDisabled: {
+      backgroundColor: "#d1d1d1",
+      cursor: "not-allowed",
     },
   };
 
-  if (typeof fileName !== "undefined") {
-    return (
-      <div style={styles.pdfContainer}>
-        <div style={styles.pdfWrapper}>
-          <Document
-            file={fileName}
-            onLoadSuccess={onDocumentLoadSuccess}
-            onContextMenu={(e) => e.preventDefault()}
-            loading="Cargando PDF..."
-          >
-            <div style={styles.pdfPage}>
-              <Page renderMode="canvas" scale={scale} pageNumber={pageNumber} />
-            </div>
-          </Document>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+  return (
+    <div style={styles.pdfContainer}>
+      <div style={styles.pdfWrapper}>
+        <Document
+          file={fileName}
+          onLoadSuccess={onDocumentLoadSuccess}
+          onContextMenu={(e) => e.preventDefault()}
+          loading="Cargando PDF..."
         >
-          <p>
-            Página{" "}
-            <input
-              type="text"
-              placeholder={pageNumber || (numPages ? 1 : "--")}
-              style={styles.pageInput}
-              onChange={userChange}
-              ref={inputval}
-            />{" "}
-            of {numPages || "--"}
-          </p>
-          <div style={styles.buttonWrapper}>
-            <button
-              style={styles.temarioButton}
-              type="button"
-              disabled={pageNumber <= 1}
-              onClick={previousPage}
-            >
-              <img
-                style={styles.buttonImage}
-                src={require("assets/img/images/atras.webp").default}
-                alt="previous"
-              />
-            </button>
-            <button
-              style={styles.temarioButton}
-              type="button"
-              disabled={pageNumber >= numPages}
-              onClick={nextPage}
-            >
-              <img
-                style={styles.buttonImage}
-                src={require("assets/img/images/siguiente.webp").default}
-                alt="next"
-              />
-            </button>
+          <div style={styles.pdfPage}>
+            <Page renderMode="canvas" scale={scale} pageNumber={pageNumber} />
           </div>
+        </Document>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+        <p>
+          Página{" "}
+          <input
+            type="text"
+            placeholder={pageNumber || (numPages ? 1 : "--")}
+            style={styles.pageInput}
+            onChange={userChange}
+            ref={inputval}
+          />{" "}
+          of {numPages || "--"}
+        </p>
+        <div style={styles.buttonWrapper}>
+          <button
+            style={styles.navigationButton}
+            type="button"
+            disabled={pageNumber <= 1}
+            onClick={previousPage}
+          >
+            <ArrowBackIcon fontSize="inherit" />
+          </button>
+          <button
+            style={styles.navigationButton}
+            type="button"
+            disabled={pageNumber >= numPages}
+            onClick={nextPage}
+          >
+             <ArrowForwardIcon fontSize="inherit" />
+          </button>
         </div>
       </div>
-    );
-  } else {
-    return <div style={styles.pdfContainer}>Loading...</div>;
-  }
+    </div>
+  );
 };
 
 export default PdfCard;

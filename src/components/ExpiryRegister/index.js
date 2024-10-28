@@ -1,5 +1,7 @@
 import React, { useState ,useEffect} from "react";
 import { toast } from "react-toastify";
+import { InputAdornment, IconButton } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import {
   TextField,
   Select,
@@ -48,7 +50,9 @@ const ExpiryRegistrationForm = ({
   const [isSuccess, setIsSuccess] = useState(false);
   const [registrationData, setRegistrationData] = useState(null);
 
+  const [showPassword, setShowPassword] = useState(false); // Toggle for password visibility
 
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
   useEffect(() => {
     const fetchRegistrationData = async () => {
       try {
@@ -276,7 +280,99 @@ const ExpiryRegistrationForm = ({
     : "PRUEBA DE 48 HORAS GRATIS!"}
         </center>
         <br></br>
+        <center>
+ 
+    
+    <TextField
+      variant="standard"
+      placeholder="Nombre"
+      name="name"
+      value={formData.name}
+      onChange={handleChange}
+      error={!!errors.name}
+      helperText={errors.name}
+      sx={{
+        "& .MuiFormLabel-root": {
+          color: "#ffffff",
+          marginLeft: "9px",
+          marginTop: "-3%",
+        },
+        "& .MuiInputBase-input": {
+          color: "#FFFFFF",
+          backgroundColor: "transparent",
+          padding: "25px",
+          width: "100%", // Width set to 100%
+          justifyContent: "center",
+          textAlign: "center",
+          borderRadius: "5px",
+          fontWeight: 300,
+          boxShadow: "0 4px 20px grey",
+          "&::placeholder": {
+            color: "#FFFFFF",
+            fontFamily: "Montserrat-regular",
+            fontSize: "16px",
+            fontWeight: 300,
+          },
+        },
+        "& .MuiInputBase-root": {
+          "&:focus-within": {
+            boxShadow: "0 0 10px black",
+          },
+        },
+      }}
+      InputProps={{
+        disableUnderline: true,
+      }}
+    />
+    
+   
+ 
+</center>
 
+<center>
+<TextField
+      variant="standard"
+      placeholder="Contraseña"
+      name="password"
+      value={formData.password}
+      onChange={handleChange}
+      error={!!errors.name}
+      helperText={errors.name}
+      sx={{
+        "& .MuiFormLabel-root": {
+          color: "#ffffff",
+          marginLeft: "9px",
+          marginTop: "-3%",
+        },
+        "& .MuiInputBase-input": {
+          color: "#FFFFFF",
+          backgroundColor: "transparent",
+          padding: "25px",
+          width: "100%", // Width set to 100%
+          justifyContent: "center",
+          textAlign: "center",
+          borderRadius: "5px",
+          fontWeight: 300,
+          boxShadow: "0 4px 20px grey",
+          "&::placeholder": {
+            color: "#FFFFFF",
+            fontFamily: "Montserrat-regular",
+            fontSize: "16px",
+            fontWeight: 300,
+          },
+        },
+        "& .MuiInputBase-root": {
+          "&:focus-within": {
+            boxShadow: "0 0 10px black",
+          },
+        },
+      }}
+      InputProps={{
+        disableUnderline: true,
+      }}
+    />
+
+</center>
         <center>
           <TextField
             variant="standard"
