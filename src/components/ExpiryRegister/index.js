@@ -66,7 +66,7 @@ const ExpiryRegistrationForm = ({
           ...prevFormData,
           ...data.data, // Populate formData with the fetched data
         }));
-        console.log("Fetched Registration Data:", data.data);
+       
       } catch (error) {
         console.error("Error fetching registration data:", error);
       }
@@ -79,7 +79,7 @@ const ExpiryRegistrationForm = ({
 
   useEffect(() => {
     if (registrationData) {
-      console.log(registrationData.color); // Now you can safely access color
+      // Now you can safely access color
     }
   }, [registrationData]);
 
@@ -551,11 +551,11 @@ const ExpiryRegistrationForm = ({
           <TextField
             variant="standard"
             placeholder="Instagram (optional)"
-            name="instagram"
-            value={formData.instagram}
+            name="Instagram"
+            value={formData.Instagram}
             onChange={handleChange}
-            error={!!errors.instagram}
-            helperText={errors.instagram}
+            error={!!errors.Instagram}
+            helperText={errors.Instagram}
             sx={{
               "& .MuiFormLabel-root": {
                 color: "#ffffff",
