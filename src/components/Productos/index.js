@@ -57,6 +57,33 @@ const ProductosCarrito = () => {
   const [cities, setCities] = useState([]);
   const [isBlocked, setIsBlocked] = useState(false);
 
+  const dataId = getLocalUserdata();
+  console.log("Local storage data:", data);
+  const id = dataId.id;
+
+  useEffect(() => {
+    const fetchRegistrationData = async () => {
+      try {
+        const response = await fetch(`https://neoestudio.net/api/Registerdata/${id}`);
+        const users = await response.json();
+        
+  
+        // Check if `domi` and `localidad` have data
+        const hasDomiAndLocalidad = users.data?.domi && users.data?.localidad;
+       
+        if (hasDomiAndLocalidad) {
+          setShowRegister(false); // Show form only on button click
+        } else {
+          setShowRegister(true); // Show form automatically
+        }
+      } catch (error) {
+        console.error("Error fetching registration data:", error);
+      }
+    };
+  
+    fetchRegistrationData();
+  }, [id]);
+
   const fetchCities = async () => {
     try {
       const cityResponse = await fetch(

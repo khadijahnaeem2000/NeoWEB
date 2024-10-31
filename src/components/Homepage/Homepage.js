@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { Navigate } from "react-router";
 import MyCalendar from "components/calendar/Calendar";
 import Popup from "./Popup/Popup"; 
+import PopupUser from "../popup/popup"; 
 import useStyles from "./styles";
 import "./styles.css";
 import profilepic from "../../assets/img/images/layer_25.webp";
@@ -52,6 +53,7 @@ const Homepage = () => {
   );
   const [logout, setLogout] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showPopupUser, setShowPopupUser] = useState(false);
   const [pruebaPopUpText, setPruebaPopUpText] = useState(''); // State for the popup text
 
   // Function to handle button clicks in Popup
@@ -81,6 +83,12 @@ const Homepage = () => {
     return () => {
       window.removeEventListener("resize", checkScreenSize);
     };
+  }, []);
+  useEffect(() => {
+  
+        setShowPopupUser(true);
+   
+
   }, []);
 
   useEffect(() => {
@@ -166,6 +174,14 @@ const Homepage = () => {
         body: "¿Quieres utilizar la app para tener una mejor experiencia desde el smartphone?"
       }}
       onClose={() => setShowPopup(false)}
+    />
+  </div>
+)}
+{showPopupUser && (
+  <div className="popup-overlay">
+    <PopupUser
+     
+      onClose={() => setShowPopupUser(false)}
     />
   </div>
 )}
