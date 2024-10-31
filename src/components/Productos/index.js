@@ -290,7 +290,7 @@ const ProductosCarrito = () => {
       setShowRegister(true);
     }}
   >
-    Registrarse
+       Datos Registro Modificar
   </Button>
 </Box>
 

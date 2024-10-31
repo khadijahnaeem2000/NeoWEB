@@ -143,7 +143,7 @@ const ProductCard = ({ item, handleCheckboxChange, getData }) => {
                 fontSize: "22px",
               }}
             >
-              {item?.price}€ {item?.order === 1 && "/mes"}
+              {item?.price}€{item?.order === 1 && "/mes"}
             </Typography>
 
             {item?.order === 1 && (
