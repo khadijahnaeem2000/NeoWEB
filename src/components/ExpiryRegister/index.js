@@ -592,115 +592,112 @@ const ExpiryRegistrationForm = ({
         </center>
    
         <center>
-          <FormControl error={!!errors.shirtsize}>
-            <Select
-              variant="standard"
-              displayEmpty
-              name="shirtsize"
-              value={formData.shirtsize}
-              onChange={handleChange}
-              error={!!errors.shirtsize}
-              sx={{
-                color: "black",
-                ".MuiSelect-icon": { color: "black" },
-                "& .MuiInputBase-input": {
-                  color: "#999999",
-                  backgroundColor: "transparent",
-                  padding: "12px",
-                  width: "200px",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  borderRadius: "6px",
+        <FormControl error={!!errors.shirtsize}>
+  <Select
+    variant="standard"
+    displayEmpty
+    name="shirtsize"
+    value={formData.shirtsize || ""} // Ensure value is an empty string by default
+    onChange={handleChange}
+    error={!!errors.shirtsize}
+    sx={{
+      color: "black",
+      ".MuiSelect-icon": { color: "black" },
+      "& .MuiInputBase-input": {
+        color: "#999999",
+        backgroundColor: "transparent",
+        padding: "12px",
+        width: "200px",
+        justifyContent: "center",
+        textAlign: "center",
+        borderRadius: "6px",
+        boxShadow: "0 4px 20px grey",
+      },
+      backgroundColor: "transparent",
+    }}
+    inputProps={{ disableUnderline: false }}
+    renderValue={(selected) => {
+      if (selected === "") {
+        return (
+          <span
+            style={{
+              color: "#999999",
+              fontFamily: "Montserrat-regular",
+              fontSize: "16px",
+              fontWeight: 300,
+            }}
+          >
+            Talla de camiseta
+          </span>
+        );
+      }
+      return selected;
+    }}
+  >
+    <MenuItem value="" disabled>
+      Talla de camiseta
+    </MenuItem>
+    <MenuItem value="S">S</MenuItem>
+    <MenuItem value="M">M</MenuItem>
+    <MenuItem value="L">L</MenuItem>
+  </Select>
+  <FormHelperText sx={{ color: "#ffffff" }}>{errors.shirtsize}</FormHelperText>
+</FormControl>
 
-                  boxShadow: "0 4px 20px grey",
-                },
-                backgroundColor: "tranparent",
-              }}
-              inputProps={{ disableUnderline: false }}
-              renderValue={(selected) => {
-                if (selected === "") {
-                  return (
-                    <span
-                      style={{
-                        color: "#999999",
-                        fontFamily: "Montserrat-regular",
-                        fontSize: "16px",
-                        fontWeight: 300,
-                      }}
-                    >
-                      Talla de camiseta
-                    </span>
-                  );
-                }
-                return selected;
-              }}
-            >
-              <MenuItem value="" disabled>
-                Talla de camiseta
-              </MenuItem>
-              <MenuItem value="S">S</MenuItem>
-              <MenuItem value="M">M</MenuItem>
-              <MenuItem value="L">L</MenuItem>
-            </Select>
-            <FormHelperText sx={{ color: "#ffffff" }}>
-              {errors.shirtsize}
-            </FormHelperText>
-          </FormControl>
         </center>
         <center>
-          <FormControl error={!!errors.color} sx={commonSelectStyles}>
-            <Select
-              variant="standard"
-              displayEmpty
-              name="color"
-              value={formData.color}
-              onChange={handleChange}
-              error={!!errors.color}
-              sx={{
-                color: "#212529",
-                ".MuiSelect-icon": { color: "black" },
-                "& .MuiInputBase-input": {
-                  color: "#999999",
-                  backgroundColor: "transparent",
-                  padding: "12px",
-                  width: "200px",
-                  justifyContent: "center",
-                  textAlign: "center",
-                  borderRadius: "6px",
-                  fontWeight: "light",
-                  boxShadow: "0 4px 20px grey",
-                },
-                backgroundColor: "transparent",
-              }}
-              inputProps={{ disableUnderline: false, color: "#aaa" }}
-              renderValue={(selected) => {
-                if (selected === "") {
-                  return (
-                    <span
-                      style={{
-                        color: "#999999",
-                        fontFamily: "Montserrat-regular",
-                        fontSize: "16px",
-                        fontWeight: 300,
-                      }}
-                    >
-                      Color de camiseta
-                    </span>
-                  );
-                }
-                return selected;
-              }}
-            >
-              <MenuItem value="" disabled>
-                Color de camiseta
-              </MenuItem>
-              <MenuItem value="Blanco">Blanco</MenuItem>
-              <MenuItem value="Negro">Negro</MenuItem>
-            </Select>
-            <FormHelperText sx={{ color: "#ffffff" }}>
-              {errors.color}
-            </FormHelperText>
-          </FormControl>
+        <FormControl error={!!errors.color} sx={commonSelectStyles}>
+  <Select
+    variant="standard"
+    displayEmpty
+    name="color"
+    value={formData.color || ""} // Ensure an empty string default
+    onChange={handleChange}
+    error={!!errors.color}
+    sx={{
+      color: "#212529",
+      ".MuiSelect-icon": { color: "black" },
+      "& .MuiInputBase-input": {
+        color: "#999999",
+        backgroundColor: "transparent",
+        padding: "12px",
+        width: "200px",
+        justifyContent: "center",
+        textAlign: "center",
+        borderRadius: "6px",
+        fontWeight: "light",
+        boxShadow: "0 4px 20px grey",
+      },
+      backgroundColor: "transparent",
+    }}
+    inputProps={{ disableUnderline: false }}
+    renderValue={(selected) => {
+      if (selected === "") {
+        return (
+          <span
+            style={{
+              color: "#999999",
+              fontFamily: "Montserrat-regular",
+              fontSize: "16px",
+              fontWeight: 300,
+            }}
+          >
+            Color de camiseta
+          </span>
+        );
+      }
+      return selected;
+    }}
+  >
+    <MenuItem value="" disabled>
+      Color de camiseta
+    </MenuItem>
+    <MenuItem value="Blanco">Blanco</MenuItem>
+    <MenuItem value="Negro">Negro</MenuItem>
+  </Select>
+  <FormHelperText sx={{ color: "#ffffff" }}>{errors.color}</FormHelperText>
+</FormControl>
+
         </center>
       </Box>
       <Button

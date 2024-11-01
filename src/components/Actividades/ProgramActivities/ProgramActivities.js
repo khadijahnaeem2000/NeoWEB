@@ -53,14 +53,12 @@ const ProgramActivities = (props) => {
         .then(response => {
            
             if(response.data.status==='Successfull') {
-                console.log("fetched results",response.data);
+            
                 response.data.data.forEach((item)=>{
-                    if (item.activityName.startsWith("Examen Tema")) {
-                        console.log("Filtered Activity:", item.activityName,item.id,item.type);
-                    }
+                   
                     if(item.type==='exam') {
                         setList(oldArray => [...oldArray, {
-                            type:item.activityName.toLowerCase().includes('inglés')?'english':item.activityName.toLowerCase().includes('psicotécnicos')?'psico':item.activityName.toLowerCase().includes('ortografía')?'orto':item.activityName.toLowerCase().includes('conocimientos')?'conocimiento':item.activityName.toLowerCase().includes('gramática')?'gramatica':'',
+                            type:item.activityName.toLowerCase().includes('inglés')?'english':item.activityName.toLowerCase().includes('psicotécnicos')?'psico':item.activityName.toLowerCase().includes('ortografía')?'orto':item.activityName.toLowerCase().includes('conocimientos')?'conocimiento':item.activityName.toLowerCase().includes('gramática')?'gramatica':'conocimiento',
                             id:item.activityId,
                             activityName: item.activityName,
                             isCompleted: item.isCompleted,
@@ -220,7 +218,7 @@ const ProgramActivities = (props) => {
                                         srcSet={item.type==='video'?ios_video_icon:item.type==='pdf'?ios_pdf_icon:item.type==='repaso'?ios_repaso_icon:item.type==='orto'?ios_orto_icon:item.type==='english'?ios_english_icon:item.type==='psico'?ios_psico_icon:item.type==='audio'?ios_audio_icon:item.type==='conocimiento'?ios_coco_icon:item.type==='gramatica'?ios_orto_icon:""}
                                         style={{width:'40px'}}
                                     />
-                                    <p>{item.type}</p>
+                                   
                                 </ListItemAvatar>
                                 <ListItemText primaryTypographyProps={{fontFamily:decideFont(item)}}  primary={item.activityName} />
                             </ListItemButton>
