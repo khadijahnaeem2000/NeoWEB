@@ -33,8 +33,8 @@ const ExpiryRegistrationForm = ({
   console.log("Local storage data:", id);
   const [formData, setFormData] = useState({
     id: data?.id,
-    password: "",
-    usuario: "",
+    // password: "",
+    // usuario: "",
     shirtsize: "",
     color: "",
     dni: "",
@@ -280,7 +280,7 @@ const ExpiryRegistrationForm = ({
     : "PRUEBA DE 48 HORAS GRATIS!"}
         </center>
         <br></br>
-        <center>
+        {/* <center>
  
     
     <TextField
@@ -372,7 +372,7 @@ const ExpiryRegistrationForm = ({
       }}
     />
 
-</center>
+</center> */}
         <center>
           <TextField
             variant="standard"

@@ -12,7 +12,7 @@
     border-radius: 10px;
     z-index: 1001; /* Higher than overlay */
     width: 350px; /* Adjust width */
-    height: 250px; /* Adjust height */
+    height: 270px; /* Adjust height */
     text-align: center;
   
     /* Flexbox centering for content inside the popup */

@@ -84,23 +84,49 @@ const Homepage = () => {
       window.removeEventListener("resize", checkScreenSize);
     };
   }, []);
-  useEffect(() => {
+  const checkCredentials = async () => {
+    try {
+      const id = data?.id; // Ensure data and id are defined
+      if (!id) {
+        console.error("ID is not provided");
+        return;
+      }
   
+      // Use fetch to call the API
+      const response = await fetch(`https://neoestudio.net/api/checkcredentials/${id}`);
+      const result = await response.json();
+  
+      // Check the response status
+      console.log(result);
+      if (result.status === true) {
         setShowPopupUser(true);
-   
-
+      }
+    } catch (error) {
+      console.error('Error checking credentials:', error);
+    }
+  };
+  
+  // Call the function inside useEffect
+  useEffect(() => {
+    checkCredentials();
   }, []);
+  
+  
 
   useEffect(() => {
     userServices
       .commonPostService("/user", { id: data?.id })
       .then((response) => {
         if (response.status === 200) {
+          console.log(response);
+          if (response.data.is_block === true) {
+            setIsBlocked(true); // Update blocked status
+          }
           if (response.data.data.IsBlocked === "True") {
-            console.log(response);
-            if (response.data.is_block === true) {
+           
+           
               setIsBlocked(true); // Update blocked status
-            }
+  
           } else {
             if (response.data.data.smartcount >= 3) {
               toast.error(
